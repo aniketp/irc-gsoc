@@ -1,2 +1,3 @@
 [21:28 29-April]: make buildworld took around 46 minutes with max possible specs and 8 jobs
 [21:28 29-April]: do make "-DNO_CLEAN buildworld" on subsequent invocations
+[23:35 29-April]: Created a basic page for my project at freebsd wiki. Need to update it continuously
