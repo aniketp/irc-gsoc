@@ -1,0 +1,377 @@
+[2018-04-26 07:57:55] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-04-26 07:57:55] * undefined topic Welcome to #FreeBSD! | Have fun, be civilized, respect others, stay on-topic or /join #freebsd-social | /join #freebsd-irc for channel assistance | Spectre & Meldown Security Advisory: https://goo.gl/d4oKVv (SA-18:03)
+[2018-04-26 07:57:55] * koobs topic_set_by
+[2018-04-26 07:58:14] <engblom> I just installed freebsd and I install hs-xmonad and firefox. When trying to launch firefox, it is just dumping core
+[2018-04-26 07:58:41] <engblom> Is the firefox package broken, or do I need to do something extra in order to get firefox working?
+[2018-04-26 08:02:38] * mitchnull (~mitch@apn-151-0-109-255.vodafone.hu) join
+[2018-04-26 08:02:56] * wowas (~mario@projekte.imos.net) join
+[2018-04-26 08:02:58] <wowas> Hello!
+[2018-04-26 08:03:18] <dh> engblom: Check which gdb -c firefox.core /usr/local/lib/firefox/firefox why core was dumped (might not give any useful information)
+[2018-04-26 08:03:28] * amrfrsh (~Thunderbi@5.79.84.73) join
+[2018-04-26 08:03:31] <wowas> i copied a FreeBSD Host with dd to another host. When it now boots up it always runs into sysinstall
+[2018-04-26 08:04:03] <wowas> is this because the diskname changed from da0 to ad0?
+[2018-04-26 08:04:06] <dh> engblom: And you could use truss to see how far firefox manages to run before crashing
+[2018-04-26 08:04:29] <stl> engblom: starting firefox from the terminal may also give you some clues
+[2018-04-26 08:06:00] <engblom> It is complaining about a missing /etc/machine-id
+[2018-04-26 08:07:49] <dh> Ignore that
+[2018-04-26 08:09:34] <engblom> This was the problem. I created one with a 32 character long string of '1'
+[2018-04-26 08:09:38] <engblom> Now firefox starts
+[2018-04-26 08:10:18] <dh>  /etc/machine-id is a linux thing
+[2018-04-26 08:10:38] <stl> huh, i don't have /etc/machine-id and firefox works fine for me
+[2018-04-26 08:11:07] <dh> Yeah, missing /etc/machine-id shouldn't be an issue
+[2018-04-26 08:11:13] * rennj_ (~rennj@174-24-103-98.clsp.qwest.net) quit Ping timeout: 248 seconds
+[2018-04-26 08:11:25] <engblom> Still it was the problem for me... strange
+[2018-04-26 08:13:32] <engblom> Then I have another problem: I used 'startx' to get xorg and xmonad running. When I quit xmonad, I never get back to any commandline. Instead my screen turns red and no Ctrl-Alt-F* combination works
+[2018-04-26 08:14:04] <engblom> I am still able to use SSH to control it
+[2018-04-26 08:15:33] <stl> is X still running?  what's in your .xinitrc?  has the xmonad process actually stopped?
+[2018-04-26 08:17:30] * h-andersen (~h-anderse@149-210-142-190.colo.transip.net) quit Quit: left
+[2018-04-26 08:20:44] <engblom> stl: Neither xmonad nor X are running.
+[2018-04-26 08:20:59] * thnee1 nick thnee
+[2018-04-26 08:22:22] <stl> engblom: hmm, video driver bug?  anything interesting in /var/log/Xorg.0.log ?
+[2018-04-26 08:30:27] * zarez (~Thunderbi@fs-93-93-44-38.fullsave.info) quit Quit: zarez
+[2018-04-26 08:31:37] * zarez (~Thunderbi@93.93.44.38) join
+[2018-04-26 08:38:45] * amrfrsh (~Thunderbi@5.79.84.73) quit Ping timeout: 256 seconds
+[2018-04-26 08:39:26] * amrfrsh (~Thunderbi@5.79.84.73) join
+[2018-04-26 08:41:13] * Sakara (~Sakara@F01exxxcomm1aus.net.sas.com) quit Quit: leaving
+[2018-04-26 08:45:21] * aalm (~aalm@37-219-100-26.nat.bb.dnainternet.fi) quit Ping timeout: 248 seconds
+[2018-04-26 08:46:57] * korzybski (~daniel@96-66-252-217-static.hfc.comcastbusiness.net) quit Ping timeout: 240 seconds
+[2018-04-26 08:47:22] * parsa96 (~parsa96@217.11.23.94) quit Ping timeout: 260 seconds
+[2018-04-26 08:48:01] * sku1d (~sku1d@78.46.199.146) quit Ping timeout: 248 seconds
+[2018-04-26 08:48:11] * grahamperrin[m] (grahamperr@gateway/shell/matrix.org/x-tcapgsyzkrmrwili) join
+[2018-04-26 08:48:40] <engblom> stl: [  1092.079] (II) Server terminated successfully (0). Closing log file.
+[2018-04-26 08:49:39] <engblom> It is laptop with a third generation intel i3 and intel graphics
+[2018-04-26 08:50:58] * korzybski (~daniel@96-66-252-217-static.hfc.comcastbusiness.net) join
+[2018-04-26 08:51:39] * sku1d (~sku1d@78.46.199.146) join
+[2018-04-26 08:53:43] <stl> engblom: which driver is it using?  the intel one?  [699787.712] (II) intel: Driver for Intel(R) Integrated Graphics Chipsets:
+[2018-04-26 08:55:16] <stl> hopefully someone else will chime in, because i'm not really sure where to look next...
+[2018-04-26 08:57:25] <debdrup> engblom: you can try switching to another tty by pressing ctrl+alt+f2 and then switch back with alt+f1
+[2018-04-26 15:46:03] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-04-26 15:46:03] * undefined topic Welcome to #FreeBSD! | Have fun, be civilized, respect others, stay on-topic or /join #freebsd-social | /join #freebsd-irc for channel assistance | Spectre & Meldown Security Advisory: https://goo.gl/d4oKVv (SA-18:03)
+[2018-04-26 15:46:03] * koobs topic_set_by
+[2018-04-26 15:47:39] * jcarl43 (~jcarl@vpn-ca01.nbsig.com) join
+[2018-04-26 15:57:36] * drakonis_ (~drakonis@unaffiliated/drakonis) quit Quit: Leaving
+[2018-04-26 15:57:59] * gadi_ (~gadi_@unaffiliated/gadi-/x-2474299) quit Ping timeout: 260 seconds
+[2018-04-26 15:58:39] * Rollabunna (~Rollabunn@2400:2410:2841:f000:404d:153c:c7e7:391b) join
+[2018-04-26 15:59:03] * longshot (~nobody@2001:470:f0f4:a0a:4d1e:6a15:c6c6:3e78) quit Quit: Leaving.
+[2018-04-26 15:59:31] * ledeni (~ledeni@gateway/tor-sasl/ledeni) quit Quit: Bye everyone 😎
+[2018-04-26 16:00:53] * sigma6 (~mbeer@gate.codingtechnologies.de) quit Ping timeout: 255 seconds
+[2018-04-26 16:03:47] * Rollabunna (~Rollabunn@2400:2410:2841:f000:404d:153c:c7e7:391b) quit Ping timeout: 276 seconds
+[2018-04-26 16:03:58] * ranvel (~ranvel@2620:104:e001:5010:a9c6:db46:3a1d:6468) join
+[2018-04-26 16:06:23] * ranvel (~ranvel@2620:104:e001:5010:a9c6:db46:3a1d:6468) quit Read error: Connection reset by peer
+[2018-04-26 16:12:08] <dkeav> moin
+[2018-04-26 16:13:19] <siix> hey dkeav
+[2018-04-26 16:15:36] * zarez (~Thunderbi@fs-93-93-44-38.fullsave.info) quit Read error: Connection reset by peer
+[2018-04-26 16:17:19] * aalm (~aalm@37-219-100-26.nat.bb.dnainternet.fi) join
+[2018-04-26 16:19:13] * f4cl3y (~f4cl3y@unaffiliated/f4cl3y) quit Ping timeout: 248 seconds
+[2018-04-26 16:19:18] * blaztek (~blaztek@24.100.187.216) quit
+[2018-04-26 16:23:10] * VoiceOfReason (~max@162.219.178.66) join
+[2018-04-26 16:23:40] * longshot (~nobody@2001:470:f0f4:a0a:4d1e:6a15:c6c6:3e78) join
+[2018-04-26 16:25:14] * gadi_ (~gadi_@unaffiliated/gadi-/x-2474299) join
+[2018-04-26 16:25:34] * ca_cabotage (ca_cabotag@gateway/vpn/privateinternetaccess/cacabotage/x-53098932) quit Ping timeout: 268 seconds
+[2018-04-26 16:26:54] <kerio> w0ls0n: did you dd an image from a smaller disk?
+[2018-04-26 16:27:09] * gh34 (~textual@rrcs-162-155-182-218.central.biz.rr.com) quit Ping timeout: 260 seconds
+[2018-04-26 16:27:12] * dendazen (~dendazen@pool-96-242-161-215.nwrknj.fios.verizon.net) join
+[2018-04-26 16:27:18] <kerio> the GPT partitioning scheme has stuff at the beginning *and* end
+[2018-04-26 16:28:40] * variable (~variable@freebsd/developer/variable) quit Quit: /dev/null is full
+[2018-04-26 16:30:38] * gbeine (~Adium@46.189.28.91) join
+[2018-04-26 16:33:22] * Evol (~no@2804:14c:4383:83b9::1) quit Remote host closed the connection
+[2018-04-26 16:33:33] * vxla (~vxla@unaffiliated/vxla) join
+[2018-04-26 16:36:08] * gbeine (~Adium@46.189.28.91) quit Quit: Leaving.
+[2018-04-26 16:37:32] * Acrisor (~Cristian@compute-hel-1.sysadmin.im) join
+[2018-04-26 16:38:22] <vxla> i'm running 12.0-CURRENT with a gif tunnel to Hurricane Electric for an ipv6 tunnel. Using configs in /etc/rc.conf doesn't bring the tunnel up, but manually running the commands does. Anyone else having issues with that type of config as built from the handbook?
+[2018-04-26 16:38:27] * Acrisor (~Cristian@compute-hel-1.sysadmin.im) quit Read error: Connection reset by peer
+[2018-04-26 16:41:02] * gwydirsam (~textual@2601:645:4201:51f7:c4a3:6b89:901b:11e4) join
+[2018-04-26 16:41:45] * Acrisor (~Cristian@compute-hel-1.sysadmin.im) join
+[2018-04-26 16:43:12] * ferdna (~ferdna@68-73-71-246.lightspeed.elpstx.sbcglobal.net) join
+[2018-04-26 16:43:28] * ca_cabotage (ca_cabotag@gateway/vpn/privateinternetaccess/cacabotage/x-53098932) join
+[2018-04-26 16:45:28] * drakonis (~drakonis@unaffiliated/drakonis) quit Remote host closed the connection
+[2018-04-26 16:45:33] * dendazen (~dendazen@pool-96-242-161-215.nwrknj.fios.verizon.net) quit Quit: My Mac has gone to sleep. ZZZzzz…
+[2018-04-26 16:47:54] * craigger (~cwhipp@184-98-171-243.phnx.qwest.net) quit Quit: bye
+[2018-04-26 16:48:05] * gadi_ (~gadi_@unaffiliated/gadi-/x-2474299) quit Ping timeout: 240 seconds
+[2018-04-26 16:48:41] * svetlemodry (quassel@archlinux/trusteduser/drag0nl0rd) quit Read error: Connection reset by peer
+[2018-04-26 16:48:49] * gadi_ (~gadi_@unaffiliated/gadi-/x-2474299) join
+[2018-04-26 16:50:00] * craigger (~cwhipp@184-98-171-243.phnx.qwest.net) join
+[2018-04-26 16:50:03] * svetlemodry (quassel@archlinux/trusteduser/drag0nl0rd) join
+[2018-04-26 16:50:25] * grobe0ba (~grobe0ba@unaffiliated/grobe0ba) quit Ping timeout: 256 seconds
+[2018-04-26 16:54:07] * apus (~apus@gateway/tor-sasl/apus) quit Ping timeout: 255 seconds
+[2018-04-26 16:54:25] <bipul> When we execute "make buildworld" what does buildworld denotes?
+[2018-04-26 16:55:03] * apus (~apus@gateway/tor-sasl/apus) join
+[2018-04-26 16:55:31] * lawlesseel (~lawlessee@gateway/tor-sasl/lawlesseel) quit Remote host closed the connection
+[2018-04-26 16:55:46] <mpts> bipul: what do you mean?
+[2018-04-26 16:56:30] <qbsd> unlike linux, which is just a kernel that 'distro' builders add the gnu userland to in order to create a 'distro' - freebsd is a complete OS which includes its own userland. buildworld compiles this userland from source
+[2018-04-26 16:57:04] <VoidChicken> iirc buildworld also builds some things that buildkernel needs
+[2018-04-26 16:57:33] <bipul> You mean i 'm building OS inside /usr/src ?
+[2018-04-26 16:57:39] <VoidChicken> yup
+[2018-04-26 16:58:26] <bipul> So how buildworld is different from buildkerenl?
+[2018-04-26 16:58:55] <VoidChicken> https://en.wikipedia.org/wiki/Kernel_(operating_system)
+[2018-04-26 17:00:23] <bipul> I hope when we execute buildworld we just compile OS with /boot directory. Then what exactly kernel do?
+[2018-04-26 17:00:24] * drakonis (~drakonis@unaffiliated/drakonis) join
+[2018-04-26 17:00:39] <bipul> And how this jail is different from virtualization?
+[2018-04-26 17:01:03] <bipul> Is there any limitation in creating number of jails?
+[2018-04-26 17:01:15] * VoiceOfReason (~max@162.219.178.66) quit Read error: Connection reset by peer
+[2018-04-26 17:01:23] * VoiceOfReason (~max@162.219.178.66) join
+[2018-04-26 17:02:05] <bipul> s/kernel/buildkernel
+[2018-04-26 17:02:30] <dh> buildkernel compiles kernel and kernel modules
+[2018-04-26 17:02:41] <dh> buildworld compiles everything else
+[2018-04-26 17:03:32] <bipul> okay thank you dh
+[2018-04-26 17:03:32] <qbsd> the first part of a buildworld actually bootstrap builds the system compiler, which then is used to build the rest of the system iirc
+[2018-04-26 17:03:49] <dh> Sure there's a limit on number of jails, but I haven't reached it.. I've ran thousands of jails at the same time
+[2018-04-26 17:04:35] <bipul> dh, and each jail uses there own kernel? right?
+[2018-04-26 17:04:49] <dh> No
+[2018-04-26 17:04:58] <qbsd> jails are a 'super-duper' form ala chroot and run in the same kernel as the OS on the machine; with virtualization each virtual instance each runs its own kernel
+[2018-04-26 17:05:02] <dh> They share the same (host system) kernel
+[2018-04-26 17:05:12] <bipul> Then it's like docker?
+[2018-04-26 17:06:00] <dh> Yes, something like that
+[2018-04-26 17:06:16] <bipul> Aha, i see
+[2018-04-26 17:06:36] * mtemmerm (~mtemmerm@78-21-166-227.access.telenet.be) join
+[2018-04-26 17:06:43] <ptek> dh, I wondered this thing for a long time - freebsd has this awesome thing called jails since such a long time
+[2018-04-26 17:07:02] <ptek> is it possible to declare what jail should be upfront?
+[2018-04-26 17:07:15] <ptek> by declare, I mean define it with code
+[2018-04-26 17:07:35] <dh> I don't understand the question
+[2018-04-26 17:07:42] <ptek> bash script would be fine, but I wonder if there is a better and a more declarative way of doing this
+[2018-04-26 17:08:17] <ptek> Well, with docker, one creates an "Image" that one can run later in a different environment
+[2018-04-26 17:08:25] <dh> Do you want something like Dockerfile (or what was that thing), except for FreeBSD jails?
+[2018-04-26 17:08:30] <ptek> yes
+[2018-04-26 17:08:32] * cur8or (~cur8or@cerberus.courtney.org.za) join
+[2018-04-26 17:09:17] <ptek> the whole benefit of docker, in my opinion, is that you can declare what it is in the development environment, freeze it, test it, and then run in production somewhere else
+[2018-04-26 17:10:10] <ptek> I came across ezjail that says it can work with images, but I could not find out more
+[2018-04-26 17:10:23] <bipul> ptek, Yes the docker creates a container i.e chroot environment.
+[2018-04-26 17:10:31] <dh> There isn't anything that works just like docker, all the tools are there, but you have to do the work yourself
+[2018-04-26 17:10:40] <ptek> dh, I see
+[2018-04-26 17:10:44] <bipul> You can run your specific application into those environment.
+[2018-04-26 17:11:52] <dh> Like you can use iocage to create jails, make them into a template and then re-use that template to create new jails, there's also plugin system and perhaps even way to distribute the templates (I haven't checked)
+[2018-04-26 17:12:16] <ptek> this is interesting, thanks
+[2018-04-26 17:12:21] <ptek> will have to look into that
+[2018-04-26 17:12:22] <dh> I personally haven't had a need for that so I'm not sure
+[2018-04-26 17:12:34] <dh> I do use iocage and jail templates though
+[2018-04-26 17:12:42] * CrtxReavr nick snowcrash
+[2018-04-26 17:13:08] * snowcrash nick CrtxReavr
+[2018-04-26 17:14:26] * most_enter (~most_ente@62-47-212-81.adsl.highway.telekom.at) join
+[2018-04-26 17:14:27] <dh> ezjail image feature means it can create jail on a memory backed disk
+[2018-04-26 17:14:40] <ptek> The other benefit of declaring the image, or in this case a template, using code, is that one can use VCS to collaborate on it
+[2018-04-26 17:14:47] <ptek> oh
+[2018-04-26 17:14:56] <ptek> I understand
+[2018-04-26 17:15:12] <bipul> VCS?
+[2018-04-26 17:15:18] <dh> Version control system
+[2018-04-26 17:15:24] * imode (~imode@unaffiliated/imode) join
+[2018-04-26 17:15:28] <bipul> Oh okay
+[2018-04-26 17:15:51] * mtemmerm (~mtemmerm@78-21-166-227.access.telenet.be) part "Leaving"
+[2018-04-26 17:17:00] <ptek> I am trying to run a server with freebsd after 16 years break, and its so refreshing to be back in the world where things work as specified
+[2018-04-26 17:19:31] * cur8or (~cur8or@cerberus.courtney.org.za) quit Quit: My MacBook has gone to sleep. ZZZzzz…
+[2018-04-26 17:20:24] <dh> Well, it's not all sunshine and rainbows here on FreeBSD land either
+[2018-04-26 17:20:53] <ptek> I have the impression, that a lot of great ideas have been in the freebsd for a long time already, but the original names got lost when interpreted into the linux world
+[2018-04-26 17:21:33] <ptek> so I am sometimes lost in translations
+[2018-04-26 17:21:43] <bipul> Yes freeBSD is versatile OS.
+[2018-04-26 17:22:32] <qbsd> to me freebsd has a 'coherence' that is lost on the linux world, but that's probably from being a Banyan Vines admin (SysV under the hood) so it's more in line with what I already know some of...
+[2018-04-26 17:23:47] * DetectiveTaco nick TacoSquirrel
+[2018-04-26 17:24:27] * lawlesseel (~lawlessee@gateway/tor-sasl/lawlesseel) join
+[2018-04-26 17:25:41] <shbrngdo> banyan vines still being used?  didn't know that
+[2018-04-26 17:26:15] * seventh (seventh@178.208.182.195) join
+[2018-04-26 17:26:19] <bipul> we love to see freeBSD into embedded and smartphone.
+[2018-04-26 17:26:21] <kerio> we should change the init system to launchd :^)
+[2018-04-26 17:26:39] <shbrngdo> let's not mess with init
+[2018-04-26 17:26:47] <shbrngdo> *shudder*
+[2018-04-26 17:27:03] <kerio> don't you like xml?
+[2018-04-26 17:27:11] <dstolfa> shbrngdo: let's do mess with init because rc sucks
+[2018-04-26 17:27:14] <qbsd> shbrngdo: nope - active directory x.500 drove the nail in the coffin for x.400 Streetalk directory services
+[2018-04-26 17:28:11] <shbrngdo> if someone wants to replace rc, he can always fork the distro, heh
+[2018-04-26 17:28:12] * Serpent7776 (~serpent@90-156-31-193.internetia.net.pl) join
+[2018-04-26 17:28:23] <dstolfa> shbrngdo: well, unfortunately for you, there is work in replacing rc :)
+[2018-04-26 17:28:28] * batdog (~batdog@c-73-166-227-96.hsd1.tx.comcast.net) quit Ping timeout: 268 seconds
+[2018-04-26 17:28:37] <dstolfa> and i support that effort because rc really does suck
+[2018-04-26 17:28:52] <dstolfa> the scripts are overly complicated, no notion of dependencies and in complicated environments things go wrong
+[2018-04-26 17:29:01] <dstolfa> difficult to provision netbooted machines...
+[2018-04-26 17:29:15] <ptek> Please just don't make another systemd - I won't have anywhere to run then :)
+[2018-04-26 17:29:23] <shbrngdo> ack
+[2018-04-26 17:29:28] <dstolfa> let alone if you want to automatically generate jails
+[2018-04-26 17:29:30] <shbrngdo> I didn't wanna say the 'S' word
+[2018-04-26 17:29:31] <dstolfa> that becomes so much fun
+[2018-04-26 17:29:32] <dstolfa> NOT.
+[2018-04-26 17:29:57] <bipul> https://en.wikipedia.org/wiki/Banyan_VINES where i can download this?
+[2018-04-26 17:30:05] <shbrngdo> there is nothing that I have not been able to do, including making my own jail startups, that I could not do with relative ease using the existing system
+[2018-04-26 17:31:06] <shbrngdo> this is why I object to 'new, shiny' when it's a solution looking for a problem
+[2018-04-26 17:31:39] <dstolfa> shbrngdo: here's one for you: you have arbitrary versions of FreeBSD machines using both 11 and 12, netbooted across a cluster and you want to minimise the amount of things you generate on a central machine that netboots, and instead install it automatically locally on the disk and generate services on it, such as a preconfigured nginx/database environment in separate jails. i'll be here watching you cry.
+[2018-04-26 17:31:43] <shbrngdo> this goes double when it was apparently written by someone that learned to code in Java first
+[2018-04-26 17:32:30] <dstolfa> the amount of stupid hacks i had to do to get something like this working simply because rc sucks is scary. the hacks are also scary because they don't actually work and can be racy.
+[2018-04-26 17:32:59] <shbrngdo> I have to question why it's not consistent though... everyone on the same platform for example
+[2018-04-26 17:33:17] * batdog (~batdog@162-201-30-101.lightspeed.hstntx.sbcglobal.net) join
+[2018-04-26 17:33:25] <dstolfa> shbrngdo: because, as you might imagine, people have heterogeneous systems
+[2018-04-26 17:33:51] <shbrngdo> when you say 'people' do you actually mean 'a small number of people' ?
+[2018-04-26 17:33:52] * XenophonF (~xenophon@24.123.13.50) quit Quit: leaving
+[2018-04-26 17:34:15] <shbrngdo> and using 12 in a production environment is kinda, bad
+[2018-04-26 17:34:21] <dstolfa> shbrngdo: tell that to netflix
+[2018-04-26 17:34:33] <dstolfa> shbrngdo: i'm sure they'll be very pleased to get your advice
+[2018-04-26 17:34:34] <debdrup> It's doable, you just have to know what you're doing.
+[2018-04-26 17:34:40] <shbrngdo> heh
+[2018-04-26 17:35:02] <dstolfa> but, i digress
+[2018-04-26 17:35:03] <debdrup> (Most people, including me, don't - hence why it's discouraged)
+[2018-04-26 17:35:05] <dstolfa> the point is
+[2018-04-26 17:35:07] <shbrngdo> ok - so now we get "big $ contributor" to force development in a direction that angers at least HALF (if not more) of the existing user base
+[2018-04-26 17:35:18] <shbrngdo> JUST so they can do something that borders on 'insane'
+[2018-04-26 17:35:32] <shbrngdo> sounds like systemd to me
+[2018-04-26 17:35:35] <dstolfa> you don't even notice what init you're running, you notice it's interface and i don't see why it can't be done in a backwards compatible way that works much better under the hood
+[2018-04-26 17:35:55] * Adbray (~Adbray@2001:470:c39c:ffff:7546:ada5:b414:f861) quit Quit: Quit
+[2018-04-26 17:36:03] <dstolfa> i don't see why we couldn't have /etc/rc.conf that looks exactly as it does now, but with the option of specifying additional things such as dependencies between services and their properties
+[2018-04-26 17:36:06] <shbrngdo> so "streamlining" isn't "re-writing".  if you want to streamline it, that'd be different
+[2018-04-26 17:36:20] <dstolfa> shbrngdo: it is re-writing because rc is written in a fundamentally flawed way for modern deployments
+[2018-04-26 17:36:30] <shbrngdo> dstolfa the dependencies are actually there, as comments at the top of the rc script
+[2018-04-26 17:36:38] <dstolfa> shbrngdo: that's not dependencies.
+[2018-04-26 17:36:42] <shbrngdo> sure it is
+[2018-04-26 17:36:53] <dstolfa> no, no it's really not.
+[2018-04-26 17:37:35] <shbrngdo> see 'man rc' and the section "Contents of rc.d" where it goes into the various things like NETWORKING SERVERS etc.
+[2018-04-26 17:37:47] <dstolfa> shbrngdo: please tell me how i can specify a dependency on my service getting *started* only if i have a jail providing a particular functionality?
+[2018-04-26 17:38:52] <shbrngdo> the 'PROVIDE' 'REQUIRE' and 'BEFORE' elements are for that, as far as I know.  But if you need a jail to start up first, that should be doable
+[2018-04-26 17:39:25] <dstolfa> shbrngdo: the bit you're missing is that you have to write a full script that does that, and now if you have a heterogeneous environment for many different functionalities, you have to have a bunch of overly complicated, probably buggy scripts
+[2018-04-26 17:39:34] <dstolfa> that potentially race
+[2018-04-26 17:39:39] <shbrngdo> 'rcorder' - that's what I was looking for
+[2018-04-26 17:39:49] <debdrup> rcorder can't handle jails
+[2018-04-26 17:40:07] <shbrngdo> right but it could handle jail startups
+[2018-04-26 17:40:12] <dstolfa> shbrngdo: and then race.
+[2018-04-26 17:40:14] <debdrup> patch when?
+[2018-04-26 17:40:21] * dreamx1 (~Thunderbi@89.136.51.98) join
+[2018-04-26 17:40:25] * Nimloth (~martin@office.waschbuesch.it) quit Quit: Textual IRC Client: www.textualapp.com
+[2018-04-26 17:40:36] <dstolfa> because you start up a jail and have your service depend on something in that jail being started, and rc decides oh, this is done! let me go off and start the service
+[2018-04-26 17:40:47] <dstolfa> and suddenly you end up with either silent breakage that's a nightmare to debug or it just doesn't work
+[2018-04-26 17:40:47] <shbrngdo> dstolfa - if you make the assumption that a race condition could potentially exist, what I'd do is 'daemon' the process and have it wait before starting the actual functionality
+[2018-04-26 17:41:01] <dstolfa> shbrngdo: in which case you're worse than systemd is
+[2018-04-26 17:41:04] <dstolfa> because this is terrible.
+[2018-04-26 17:41:25] <dstolfa> why would i ever have to do all of this crap to get something as simple as a dependency graph?
+[2018-04-26 17:41:38] <shbrngdo> no, not really.  I suppose I could sound arrogant and say something like 'understanding your system', but it might be simpler to just be 'fault tolerant'
+[2018-04-26 17:41:41] * dreamx (~Thunderbi@89.136.51.98) quit Ping timeout: 255 seconds
+[2018-04-26 17:41:42] * dreamx1 nick dreamx
+[2018-04-26 17:42:11] <debdrup> rcorder exists to test that you're not forming circular dependencies, iirc
+[2018-04-26 17:42:34] * dstolfa action wonders if shbrngdo ever deployed a complex test environment that has to start services in a distributed system
+[2018-04-26 17:42:36] <shbrngdo> well not so much that but if you must wait for networking to be set up before starting your server, that kind of thing.
+[2018-04-26 17:43:19] <shbrngdo> dstolfa probably not with the specifics of what you're doing.  But I would most likely make it fault tolerant, forgiving, and allow things to restart themselves
+[2018-04-26 17:43:31] <dstolfa> shbrngdo: sure you would, see you in a year
+[2018-04-26 17:43:38] <dstolfa> once you've rewritten rc to be more like systemd/launchd
+[2018-04-26 17:43:41] <debdrup> allowing things to restart themselves is a bad idea
+[2018-04-26 17:44:05] <shbrngdo> example:  I set up a simple daemon process that checks to see that my 'ppp' connection is up and running.  If the DNS isn't properly bound to the (fixed) IP address, I restart named
+[2018-04-26 17:44:33] <dstolfa> shbrngdo: please do that for over 100 services on over 300 machines and tell me how well it works :)
+[2018-04-26 17:44:37] <shbrngdo> this is because during server startup ppp may not actually connect.  But when it does, named may already be running [and i need it running whether or not ppp connects]
+[2018-04-26 17:45:06] <shbrngdo> dstolfa - I don't have a need to do that.  In fact, I question having the need to do that.  It sounds like time for a system design review
+[2018-04-26 17:45:15] <debdrup> shbrngdo: if ppp doesn't connect then you need to fix that issue, rather than restarting something else
+[2018-04-26 17:45:30] <debdrup> you're treating the symptom, not the disease
+[2018-04-26 17:45:34] <shbrngdo> debdrup - this is not an option in my case.
+[2018-04-26 17:45:47] <debdrup> shbrngdo: sorry, but I very much doubt that..
+[2018-04-26 17:45:49] <dstolfa> shbrngdo: if you question the need for having to do that, why don't you go and explain that to every big & successful software company ever, and anyone ever doing distributed systems research?
+[2018-04-26 17:46:00] <shbrngdo> the disease is that I have an unreliable connection because I cannot AFFORD a better one.  Give me money, problem solved.
+[2018-04-26 17:46:53] <debdrup> shbrngdo: it can be solved with something as simple as a set of timeouts to ensure that ppp blocks until a connection is guarenteed if time is not of the essense.
+[2018-04-26 17:47:01] <dstolfa> debdrup: or you know, RPC
+[2018-04-26 17:47:02] <shbrngdo> dstolfa - they should all hire me to make their systems robust.  heh.
+[2018-04-26 17:47:11] <debdrup> dstolfa: or that.
+[2018-04-26 17:47:18] * xinobi (59d69d84@gateway/web/freenode/ip.89.214.157.132) join
+[2018-04-26 17:47:23] <shbrngdo> debdrup - time is of the essence.  I hate waiting
+[2018-04-26 17:47:38] <debdrup> shbrngdo: for ppp specifically there's a bunch of ways to check whether it's possible to establish a connection
+[2018-04-26 17:47:42] <dstolfa> debdrup: the only thing that knows if a connection is successful is the thing opening it. it can then issue a message to the other process saying look, i did it, please go off and do the thing you wanted to do
+[2018-04-26 17:47:43] <xinobi> how can I add a network virtual device?
+[2018-04-26 17:48:06] <dstolfa> you can then do this in a distributed system trivially, because RPCs are trivial to scale over a network
+[2018-04-26 17:48:17] <shbrngdo> actually I just check that the tun0 interface is up with the correct IP address assigned
+[2018-04-26 17:48:56] <shbrngdo> ifconfig blah blah | awk blah blah etc.
+[2018-04-26 17:49:00] <debdrup> xinobi: could you elaborate?
+[2018-04-26 17:50:12] <xinobi> yes I need to have a different ip address running only in my machine so that some legacy software can run a server bind to that ip
+[2018-04-26 17:50:50] <shbrngdo> do you need to make routing work?  because I sometimes use an lo0 alias for things like that
+[2018-04-26 17:51:06] <debdrup> xinobi: that should be doable with aliasing
+[2018-04-26 17:51:07] <xinobi> i know that i could bind the server to localhost or 127.0.0.0 but those ip's are not possible to use
+[2018-04-26 17:51:13] <xinobi> no routing etc
+[2018-04-26 17:51:29] <shbrngdo> try 127.0.0.2
+[2018-04-26 17:51:33] <shbrngdo> create an alias for that
+[2018-04-26 17:51:41] * Nimloth (~martin@office.waschbuesch.it) join
+[2018-04-26 17:51:43] * silver (~silver@93.84.21.66) join
+[2018-04-26 17:52:05] <shbrngdo> you can add a 'hosts' entry for it for convenience
+[2018-04-26 17:52:21] <shbrngdo> this works with jails
+[2018-04-26 17:53:45] * dreamx (~Thunderbi@89.136.51.98) quit Ping timeout: 268 seconds
+[2018-04-26 17:53:57] <shbrngdo> FYI - let's say you want to route to something on your system, and you decide that since your LAN is using 192.168.1.1/24 why not use 192.168.2.1/24 for your "special" virtual network?
+[2018-04-26 17:54:45] <xinobi> can i create an alias within hosts file?
+[2018-04-26 17:54:47] <shbrngdo> so you'd configure routing on the box that has the lo0 alias with 192.168.2.1 (for example).  As long as the primary gateway knows about the route, it should send packets to your box when other things on the net need it
+[2018-04-26 17:54:55] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) quit Remote host closed the connection
+[2018-04-26 17:55:23] <shbrngdo> xinobi - you use ifconfig, basically create a 2nd IP address for an existing interface, or create a new 'lo' interface with the IP address+netmask you want
+[2018-04-26 17:55:32] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) join
+[2018-04-26 17:55:52] <shbrngdo> I *think* there are ways to do this in rc.conf too.  it's been a while.
+[2018-04-26 17:56:44] <shbrngdo> but in any case, you need a way for the gateway on your network to know how to route to your router
+[2018-04-26 17:57:07] <shbrngdo> I'm not sure a simple NAT router is capable of doing this out of the box
+[2018-04-26 17:57:20] <shbrngdo> in my case I have a FreeBSD machine as the router, so it's no problem
+[2018-04-26 17:57:51] * fstd_ (~fstd@unaffiliated/fisted) join
+[2018-04-26 17:58:02] <debdrup> if a CPE can't do that, it's basically too dumb to be called CPE
+[2018-04-26 17:58:07] <xinobi> i'm using osx
+[2018-04-26 17:58:11] * shbrngdo action checks - the wifi router I have has a 'routing table' page
+[2018-04-26 17:58:15] * dreamx (~Thunderbi@89.136.51.98) join
+[2018-04-26 17:58:38] <shbrngdo> 'CPE' - like a wifi+router ?
+[2018-04-26 17:59:00] <ruupert> congo priest equipment
+[2018-04-26 17:59:27] * Rollabunna (~Rollabunn@2400:2410:2841:f000:9c24:852:c1fb:c8dd) join
+[2018-04-26 17:59:29] * metavoid (~80blocks@unaffiliated/metavoid) join
+[2018-04-26 17:59:37] <shbrngdo> I would normally assume they can, but who knows, with some el cheapo hunks-o-poo out there made in some foreign sweatshop, designed for el-cheapness...
+[2018-04-26 17:59:37] <debdrup> it's just barely possible that there's CPE out there that doesn't support RIPv1, but most modern CPE supports OSPF too
+[2018-04-26 17:59:40] <debdrup> ruupert: close enough
+[2018-04-26 17:59:47] <ruupert> debdrup: yeah :P
+[2018-04-26 18:00:36] <debdrup> CPE is short for customer premises equipment, and is the name for the device that sits on or right behind the demarcation point
+[2018-04-26 18:00:39] <shbrngdo> well that's the thing.  If the 'primary gateway' thingy, whatever it is, can respond to RIPv1 correctly, and then route the packets without you having to monkey with it, that's what you want
+[2018-04-26 18:01:04] * fstd (~fstd@unaffiliated/fisted) quit Ping timeout: 260 seconds
+[2018-04-26 18:01:04] * fstd_ nick fstd
+[2018-04-26 18:01:12] <shbrngdo> so many TLA's, often with inconsistent definitions
+[2018-04-26 18:01:13] <debdrup> It's usually a collection of hardware which functions as a software router, software bridge, software firewall, access point and sometimes includes basic NAS functionality
+[2018-04-26 18:01:42] <debdrup> _sometimes_ you even get to have an actual switch inside it, although not frequently
+[2018-04-26 18:01:48] <shbrngdo> I'd just never seen that particular TLA used before.  but most people have a NAT router hanging about, connecting them to the internet
+[2018-04-26 18:02:19] * HarveyPwca (~HarveyPwc@ip-64-134-38-52.public.wayport.net) join
+[2018-04-26 18:02:33] <shbrngdo> heh - I've got an ethernet switch on the back of this ancient wifi+NAT router, 5 ports even
+[2018-04-26 18:03:11] <shbrngdo> I just wish it didn't try to take over IPv6 on the LAN.  I had to hack it to prevent its aggressiveness
+[2018-04-26 18:03:24] <shbrngdo> routing for wifi is fine, just not on the LAN part
+[2018-04-26 18:03:35] <debdrup> my LAN is ipv6-only
+[2018-04-26 18:03:52] <shbrngdo> I've got IPv4 + public IPv6 working well enough
+[2018-04-26 18:03:52] <ruupert> I'm lucky that my isp when I got my docsis3.0 modem was handing out the rock solid cisco dpc3010's.. it is doing bridging and talking to the cable modem equivalent "dslam" :)
+[2018-04-26 18:04:19] <ruupert> like nothing else.. its just a bridge
+[2018-04-26 18:04:21] <shbrngdo> bridging is definitely the way to go
+[2018-04-26 18:04:23] * Rollabunna (~Rollabunn@2400:2410:2841:f000:9c24:852:c1fb:c8dd) quit Ping timeout: 265 seconds
+[2018-04-26 18:04:36] <debdrup> my isp won't provide me with ipv6 yet, so i've had a little use for my network admin experience in setting everything up
+[2018-04-26 18:04:38] <shbrngdo> I wouldn't do any service that required me to firewall through their gear
+[2018-04-26 18:04:54] <shbrngdo> debdrup - tunnel?  he.net ?
+[2018-04-26 18:05:07] <shbrngdo> though you'll probably need a fixed IPv4 to make that work
+[2018-04-26 18:05:29] <debdrup> ruupert: CMTS
+[2018-04-26 18:05:56] <ruupert> yea and from the mac addresses I see its from casa systems :P
+[2018-04-26 18:06:08] <ruupert> in my case
+[2018-04-26 18:06:57] <debdrup> shbrngdo: i have a fixed ipv4 address - i do have an ipv6 tunnel, but given that it doesn't really let me satuate 1/1Gbps FTTH, i'd rather wait for my isp to do something
+[2018-04-26 18:07:23] <shbrngdo> eh, you guys and your cadillac intarwebs connections
+[2018-04-26 18:07:43] <shbrngdo> if I had a zillion dollars I could do that, too
+[2018-04-26 18:07:50] <debdrup> best part is, it's not even GPON
+[2018-04-26 18:07:58] <debdrup> it's actually just pure ethernet sent over fber
+[2018-04-26 18:07:59] <debdrup> fiber*
+[2018-04-26 18:08:10] <shbrngdo> in some places the infrastructure doesn't exist to do that.  no fiber to my door, for example
+[2018-04-26 18:08:24] <debdrup> my isp gives me a device which does nothing but translate from light to electric signals
+[2018-04-26 18:08:37] <shbrngdo> that's the ideal way to do it, yeah.
+[2018-04-26 18:09:05] <shbrngdo> with a connection that fast they cuold have you use PPPoE and not really affect your speed
+[2018-04-26 18:09:22] <debdrup> what?
+[2018-04-26 18:09:28] <shbrngdo> it makes routing on their end a little simpler, preserves use of IPv4 addresses (no /30 blocks)
+[2018-04-26 18:09:52] <shbrngdo> and PPPoE apparently has an ipv6 capability, though my ISP doesn't assign anything.
+[2018-04-26 18:10:05] <debdrup> if they did use pppoe it'd be slower unless they had hardware offloading for it
+[2018-04-26 18:10:36] <shbrngdo> well that's my point - PPPoE adds some protocol overhead [of course] but 'hardware offloading' would be the key
+[2018-04-26 18:11:03] <debdrup> why do you think mpd exists on freebsd, to take advantage of netgraph so that it's faster than it would be in userspace
+[2018-04-26 18:11:05] * amarks (~amarks@cpe-76-167-76-96.natsow.res.rr.com) quit Ping timeout: 240 seconds
+[2018-04-26 18:11:07] <shbrngdo> as long as you still get your 1Gbit both directions, the transport layer could [in theory] be sloppy
+[2018-04-26 18:11:09] <debdrup> it's just a pity that i can't make it work :/
+[2018-04-26 18:11:42] <shbrngdo> mpd?  haven't used it... [looking in man page]
+[2018-04-26 18:13:33] <shbrngdo> hmmm... no reference to 'mpd' in 11 or 12, no relevant source file in 12 that has 'mpd' in its name...
+[2018-04-26 18:13:38] <shbrngdo> is it a port?
+[2018-04-26 18:13:44] <debdrup> yup
+[2018-04-26 18:14:17] <debdrup> https://man.freebsd.org/mpd5(8)
+[2018-04-26 18:15:53] <shbrngdo> I was thinking it was in base from what you said.  ok, makes sense
+[2018-04-26 18:16:07] * Nimloth (~martin@office.waschbuesch.it) quit Quit: Textual IRC Client: www.textualapp.com
+[2018-04-26 18:16:29] <debdrup> well, it uses netgraph
+[2018-04-26 18:16:34] <debdrup> which is in base
+[2018-04-26 18:16:47] <debdrup> protip: don't be like me, type out sentences in full.
+[2018-04-26 18:16:47] <shbrngdo> that makes sense, otherwise you'd need a kernel module
+[2018-04-26 18:17:46] <shbrngdo> it's not like a kernel module is that big of a deal, but then it becomes very system-specific so having something in base (netgraph) helps a LOT
+[2018-04-26 18:19:20] <debdrup> there's ng_ipacct which is useful in conjunction with mpd, but that's it
+[2018-04-26 18:19:57] * grobe0ba (~grobe0ba@unaffiliated/grobe0ba) join
+[2018-04-26 18:22:33] * Montecristo94 (~vins@host151-157-dynamic.23-79-r.retail.telecomitalia.it) join
+[2018-04-26 18:24:44] * BillyZane (BillyZane@gateway/vpn/privateinternetaccess/billyzane) quit Remote host closed the connection
+[2018-04-26 18:25:26] <shbrngdo> well if I ever become wealthy enough to afford a Gbit intarwebs connection, I'll try to remember mpd.
+[2018-04-26 18:25:59] <shbrngdo> for now I overpay for a pathetic DSL with a fixed IPv4 and no filtering, for 'reasons'
+[2018-04-26 18:30:14] * most_enter (~most_ente@62-47-212-81.adsl.highway.telekom.at) quit Quit: Leaving
+[2018-04-26 18:30:50] * xinobi (59d69d84@gateway/web/freenode/ip.89.214.157.132) part #freebsd
+[2018-04-26 18:30:52] <grobe0ba> you don't need 1G to stream using mpd
+[2018-04-26 18:30:55] * sauvin (sauvin@about/linux/staff/sauvin) quit Ping timeout: 256 seconds
+[2018-04-26 18:31:05] <grobe0ba> 1.5Mb should do quite nicely, assuming nothing else is bogging it down.
+[2018-04-26 18:36:59] * raichoo (~raichoo@dslb-188-100-009-146.188.100.pools.vodafone-ip.de) join
+[2018-04-26 18:37:21] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) quit Ping timeout: 240 seconds
+[2018-04-26 18:40:02] * HarveyPwca (~HarveyPwc@ip-64-134-38-52.public.wayport.net) quit Read error: Connection reset by peer
+[2018-04-26 18:41:08] * HarveyPwca (~HarveyPwc@ip-64-134-38-52.public.wayport.net) join

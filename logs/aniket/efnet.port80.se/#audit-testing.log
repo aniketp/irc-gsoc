@@ -1,0 +1,53 @@
+[2018-04-24 15:02:14] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-04-24 15:02:14] * efnet.port80.se mode +n
+[2018-04-24 15:02:14] * efnet.port80.se mode +t
+[2018-04-24 15:22:42] * somers_ (~somers@63-224-81-165.hlrn.qwest.net) join
+[2018-04-24 22:58:37] <aniketp41> Hi Alan, am I supposed to get an email with FreeBSD for mailing list communication? The page here mentioned setting up the Project Wiki and Self page along with FreeBSD email address. https://wiki.freebsd.org/SummerOfCodeStudentChecklist
+[2018-04-25 05:26:45] * somers__ (~somers@63-224-81-204.hlrn.qwest.net) join
+[2018-04-25 05:28:39] * somers_ (~somers@63-224-81-165.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-04-25 05:30:06] <aniketp41> Hi Alan, did you see the previous message before ping timeout?
+[2018-04-25 19:22:29] <aniketp41> ping @somers__ 
+[2018-04-25 19:24:26] <somers__> I don't know what you're "supposed" to get
+[2018-04-25 19:24:29] <somers__> what are you expecting?
+[2018-04-25 19:25:09] <somers__> BTW aniketp41, if you want to get my attention on IRC, you should mention my nick.  I sit in some high traffic rooms, so my client doesn't alert me unless my nick gets mentioned
+[2018-04-25 20:25:21] <aniketp41> somers__ The checklist page mentioned about a username for SVN SummerOfCode repository which would also be used as the email, so I wonmdered if is it provided or would I need to create one for myself?
+[2018-04-25 20:25:21] <aniketp41> Also, I have created a WikiPage "AniketPandey" and the page says to ask a FreeBSD developer to include my account in the Contributer's Group. So I was wondering if you could do that..
+[2018-04-25 21:48:42] <aniketp41> ping somers__
+[2018-04-25 22:02:48] <somers__> Ahh, to get your SVN account you'll have to email soc-admins@freebsd.org, as detailed at https://wiki.freebsd.org/SummerOfCodeSubversion
+[2018-04-25 22:03:21] <somers__> Tell them you'll need a branch of the src tree
+[2018-04-25 22:05:07] <somers__> Where is your "AniketPandey" wiki page?  I can't find it.
+[2018-04-25 22:06:20] <aniketp41> Oh, guess it isn't created yet. I created my account but I can't create my page as I don't have the edit access.
+[2018-04-25 22:08:40] <somers__> Ok, try again
+[2018-04-25 22:32:33] <aniketp41> Thanks somers__ ! I created a basic page and would keep it updated throughout the project
+[2018-04-25 22:32:33] <aniketp41> https://wiki.freebsd.org/AniketPandey
+[2018-04-25 22:43:28] <aniketp41> Btw @somers__ , Would you advise on testing auditdistd(8) as well? A contributer Mateusz Piotrowski emailed me asking about it.
+[2018-04-26 03:11:32] <somers__> aniketp41 I would consider auditdistd to be a stretch goal.  Testing the auditing itself is more important.
+[2018-04-26 15:14:58] * somers__ (~somers@63-224-81-204.hlrn.qwest.net) quit Remote host closed the connection
+[2018-04-26 16:07:57] * somers (~somers@2602:3f:e051:cc00:e23f:49ff:fe44:d7b6) join
+[2018-04-26 23:07:07] * somers_ (~somers@63-224-81-240.hlrn.qwest.net) join
+[2018-04-26 23:08:35] * somers (~somers@2602:3f:e051:cc00:e23f:49ff:fe44:d7b6) quit Ping timeout: 252 seconds
+[2018-04-27 00:40:28] <aniketp41> Hi @somers_, Does your work at Spectra involve FreeBSD? I was just curious. As I've noticed that quite a few FreeBSD devs contribute to it as a part-time hobby, while others use it at work. 
+[2018-04-27 13:08:39] * somers__ (~somers@63-224-80-23.hlrn.qwest.net) join
+[2018-04-27 13:09:14] <somers__> Yeah, Spectra's products run on FreeBSD
+[2018-04-27 13:10:49] * somers_ (~somers@63-224-81-240.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-04-27 16:15:36] * somers_ (~somers@63-224-80-107.hlrn.qwest.net) join
+[2018-04-27 16:17:49] * somers__ (~somers@63-224-80-23.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-04-29 13:36:29] <aniketp41> Hi @somers_, I mailed the soc-admins about getting a subversion account and a branch in socsvn repository. Also, my semester exams ended today so I'll regularly update you on my work from now on
+[2018-04-29 13:39:32] * rwatson (robert@fledge.watson.org) join
+[2018-04-29 14:04:21] <somers_> cool
+[2018-04-29 14:47:36] <aniketp41> Btw @somers_, how much time does it take to "buildworld" the freebsd kernel by a single job? I was trying to build my tests by compiling the "/usr/src" and its been running for the last 10 minutes..
+[2018-04-29 14:48:25] <aniketp41> Although I later realized that the guide here https://www.freebsd.org/doc/handbook/makeworld.html recommended four jobs (-j4)
+[2018-04-29 14:48:38] <somers_> Depends on what kind of machine you have.  "buildworld" can take anywhere from 10 minutes to 2.5 hours on typical hardware
+[2018-04-29 14:49:00] <somers_> But once you've built it once, you can do "make -DNO_CLEAN buildworld" on subsequent invocations
+[2018-04-29 14:51:30] <somers_> The number of jobs should be at least equal to the number of CPU cores.  If you're I/O is slow, then use up to 2x number of cores for your job number
+[2018-04-29 14:51:33] <aniketp41> I created a separate VM for specifically this task and it does not have very good specs. so by what you said it might take a long time
+[2018-04-29 14:51:39] <somers_> Is your source directory mounted over NFS?
+[2018-04-29 14:52:46] <aniketp41> No it is simple UFS
+[2018-04-29 14:53:24] <somers_> Ok, that's fine then.  Just give your VM as much CPU and RAM as you can, set the jobs number appropriately, and wait.
+[2018-04-29 15:04:37] <aniketp41> Wow, it's building quite fast, my main machine had 8 cores and 16 gigs of ram which allowed me to allocate 4 cores and about 10 gigs to my VM. With 8 jobs it's doing well!
+[2018-04-29 15:05:04] <somers_> cool!  What kind of storage does it have?
+[2018-04-29 15:09:43] <aniketp41> I think its HDD, although the Virtualbox showed an option to have an SSD partition
+[2018-04-29 15:10:07] <somers_> What's important is the physical device, not how VirtualBox displays it
+[2018-04-29 15:10:20] <aniketp41> Though my main machine has 256 gigs SSD
+[2018-04-29 15:10:52] <somers_> If you have SSD storage and 4 cores, then 8 build jobs is too many.  Just use 5-6
+[2018-04-29 15:15:56] <aniketp41> Okay, I'll keep it in mind the next time I try building the kernel

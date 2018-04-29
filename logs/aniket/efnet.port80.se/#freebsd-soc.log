@@ -1,0 +1,215 @@
+[2018-04-24 15:01:41] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-04-24 15:01:41] * undefined topic FreeBSD is in GSoC2018! Accepted projects will be announced 23rd April
+[2018-04-24 15:01:41] * gavin topic_set_by
+[2018-04-24 15:32:38] * bsdimp (~bsdimp@50-253-99-174-static.hfc.comcastbusiness.net) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-24 15:36:08] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-24 16:13:41] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-24 16:26:46] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-24 18:27:02] * return0e (~return0e@5-198-102-244.static.kc.net.uk) join
+[2018-04-24 19:07:17] * pleb (~luserx0@81.92.48.95) join
+[2018-04-24 19:07:55] * pleb (~luserx0@81.92.48.95) quit Client Quit
+[2018-04-24 19:09:08] * pleb (~luserx0@81.92.48.95) join
+[2018-04-24 19:10:45] * luserx0 (~luserx0@adsl-90.79.107.49.tellas.gr) quit Read error: Operation timed out
+[2018-04-24 19:24:49] * pleb (~luserx0@81.92.48.95) quit Remote host closed the connection
+[2018-04-24 19:37:15] <bsdimp> is anybody home?
+[2018-04-24 19:39:03] * luserx0 (~luserx0@81.92.48.95) join
+[2018-04-24 21:28:11] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) join
+[2018-04-24 21:57:42] * kristaps (~kristaps@80.89.72.60) join
+[2018-04-24 22:03:39] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-24 22:30:45] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) quit Read error: Operation timed out
+[2018-04-24 23:00:40] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-24 23:31:26] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-25 00:18:00] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-25 02:32:11] * imm__ (~imm_@dh207-32-19.xnet.hr) join
+[2018-04-25 02:33:45] * imm_ (~imm_@dh207-9-184.xnet.hr) quit Ping timeout: 252 seconds
+[2018-04-25 04:09:22] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-25 04:37:28] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-25 04:48:44] * imm__ (~imm_@dh207-32-19.xnet.hr) quit leaving
+[2018-04-25 04:50:54] * imm_ (~imm_@dh207-32-19.xnet.hr) join
+[2018-04-25 05:39:23] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-25 07:57:08] * capreyon (~capreyon@14.139.221.19) join
+[2018-04-25 07:58:37] <capreyon> hello everyone :)
+[2018-04-25 07:59:17] <capreyon> Anish gupta -> Sir, may I get your email-id?
+[2018-04-25 08:14:04] * brooks (~brooks@bounce.one-eyed-alien.net) quit Read error: Operation timed out
+[2018-04-25 09:26:33] * capreyon (~capreyon@14.139.221.19) quit Read error: Operation timed out
+[2018-04-25 09:36:02] * brooks (~brooks@bounce.one-eyed-alien.net) join
+[2018-04-25 09:46:49] * Alvo (~Alvo@58.235.190.35.bc.googleusercontent.com) part #freebsd-soc
+[2018-04-25 09:56:56] * capreyon (~capreyon@14.139.221.19) join
+[2018-04-25 10:54:53] * hrs (sid125333@id-125333.brockwell.irccloud.com) quit
+[2018-04-25 10:55:07] * hrs (sid125333@id-125333.hathersage.irccloud.com) join
+[2018-04-25 11:24:09] * capreyon (~capreyon@14.139.221.19) quit Ping timeout: 600 seconds
+[2018-04-25 11:51:35] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-25 11:52:57] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Client Quit
+[2018-04-25 12:41:01] * capreyon (~capreyon@14.139.221.19) join
+[2018-04-25 13:19:49] * capreyon (~capreyon@14.139.221.19) quit Ping timeout: 252 seconds
+[2018-04-25 14:01:24] * capreyon (~capreyon@14.139.221.19) join
+[2018-04-25 14:03:12] <capreyon> Someone please give me the email id of Anish Gupta who is mentor of verification of bhyve Instructions emulation
+[2018-04-25 14:38:03] * capreyon (~capreyon@14.139.221.19) quit Ping timeout: 633 seconds
+[2018-04-25 15:01:00] * tomoyat1 (~tomoyat1@133.130.119.65) quit Quit: ZNC 1.6.5 - http://znc.in
+[2018-04-25 15:01:20] * tomoyat1 (~tomoyat1@tomoyat1.com) join
+[2018-04-25 15:18:09] <chrkr> capreyon: see https://www.freebsd.org/doc/en/articles/contributors/staff-committers.html
+[2018-04-25 15:43:15] * capreyon (~capreyon@117.211.86.108) join
+[2018-04-25 16:31:35] * capreyon (~capreyon@117.211.86.108) quit Ping timeout: 252 seconds
+[2018-04-25 17:34:52] * bsdimp (~bsdimp@wsip-184-177-160-243.ph.ph.cox.net) join
+[2018-04-25 17:40:19] * bsdimp (~bsdimp@wsip-184-177-160-243.ph.ph.cox.net) quit My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-25 17:44:50] * imm_ (~imm_@dh207-32-19.xnet.hr) quit Read error: Operation timed out
+[2018-04-25 17:52:45] * imm_ (~imm_@dh207-10-6.xnet.hr) join
+[2018-04-25 17:55:58] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) join
+[2018-04-25 18:06:03] * bsdimp (~bsdimp@wsip-184-177-160-243.ph.ph.cox.net) join
+[2018-04-25 18:45:42] * bsdimp (~bsdimp@wsip-184-177-160-243.ph.ph.cox.net) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-25 20:02:20] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) quit Remote host closed the connection
+[2018-04-25 20:39:10] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) join
+[2018-04-25 21:52:05] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) quit Read error: Operation timed out
+[2018-04-26 01:12:16] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit /dev/null is full
+[2018-04-26 03:14:41] * eadler (~user@2601:645:8100:1ae4:8082:6ffd:4a41:978f) join
+[2018-04-26 03:15:24] * eadler (~user@2601:645:8100:1ae4:8082:6ffd:4a41:978f) quit Client Quit
+[2018-04-26 03:17:28] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-26 03:18:44] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit Client Quit
+[2018-04-26 03:20:10] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-26 03:21:06] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit Client Quit
+[2018-04-26 03:22:33] * eadler (~user@2601:645:8100:1ae4:2469:84d:8309:26ad) join
+[2018-04-26 03:23:13] * eadler (~user@2601:645:8100:1ae4:2469:84d:8309:26ad) quit Client Quit
+[2018-04-26 03:25:08] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-26 03:25:20] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit Client Quit
+[2018-04-26 03:26:22] * eadler (~user@2601:645:8100:1ae4:4d90:4ff7:d39a:817c) join
+[2018-04-26 03:28:28] * eadler (~user@2601:645:8100:1ae4:4d90:4ff7:d39a:817c) quit Client Quit
+[2018-04-26 03:30:34] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-26 04:00:45] * capreyon (~Sudhanshu@185.178.50.117) join
+[2018-04-26 04:00:45] * capreyon (~Sudhanshu@185.178.50.117) quit Connection closed
+[2018-04-26 04:51:53] * bsdimp (~bsdimp@wsip-184-177-160-243.ph.ph.cox.net) join
+[2018-04-26 05:12:16] * kristaps (~kristaps@80.89.72.60) quit Read error: Connection reset by peer
+[2018-04-26 06:03:28] * ygy (~ygy@108.61.155.229) quit Ping timeout: 312 seconds
+[2018-04-26 06:04:12] * AllanJude (ajude@allanjude.bsdbasement.com) quit Ping timeout: 260 seconds
+[2018-04-26 06:04:13] * AllanJude (ajude@allanjude.bsdbasement.com) join
+[2018-04-26 06:05:20] * ygy (~ygy@108.61.155.229) join
+[2018-04-26 06:06:30] * bsdimp (~bsdimp@wsip-184-177-160-243.ph.ph.cox.net) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-26 06:26:06] * capreyon (~Sudhanshu@185.178.50.121) join
+[2018-04-26 06:38:14] <capreyon> someone please tell me from where I get the email id of my mentor because the mentor assign to me bhyve instructions emulation is changed
+[2018-04-26 06:39:18] <capreyon> Anish Gupta please give me your email id
+[2018-04-26 06:43:25] * capreyon (~Sudhanshu@185.178.50.121) quit Remote host closed the connection
+[2018-04-26 06:54:27] * capreyon (~Sudhanshu@14.139.221.19) join
+[2018-04-26 06:55:17] <capreyon> Anish Gupta-> Sir, please give me your email-id
+[2018-04-26 07:12:50] <eadler> capreyon: see https://www.freebsd.org/doc/en/articles/contributors/staff-committers.html
+[2018-04-26 07:23:29] * capreyon (~Sudhanshu@14.139.221.19) quit Ping timeout: 600 seconds
+[2018-04-26 07:32:57] * capreyon (~Sudhanshu@14.139.221.19) join
+[2018-04-26 07:36:06] <capreyon> I got it...Thanks eadler
+[2018-04-26 08:10:37] * capreyon (~Sudhanshu@14.139.221.19) quit Ping timeout: 252 seconds
+[2018-04-26 09:44:06] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit /dev/null is full
+[2018-04-26 11:25:30] * eadler (~user@2601:645:8100:1ae4:fd23:b693:eb93:c484) join
+[2018-04-26 11:27:49] * eadler (~user@2601:645:8100:1ae4:fd23:b693:eb93:c484) quit Client Quit
+[2018-04-26 13:42:55] * eadler (~user@2601:645:8100:1ae4:e4a8:9a98:1a0c:213e) join
+[2018-04-26 13:52:03] * eadler (~user@2601:645:8100:1ae4:e4a8:9a98:1a0c:213e) quit Ping timeout: 506 seconds
+[2018-04-26 14:20:53] * bsdimp (~bsdimp@wsip-184-177-160-243.ph.ph.cox.net) join
+[2018-04-26 14:25:49] * bsdimp (~bsdimp@wsip-184-177-160-243.ph.ph.cox.net) quit Client Quit
+[2018-04-26 14:34:54] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-26 14:39:19] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit Read error: Operation timed out
+[2018-04-26 14:40:28] * eadler (~user@2601:645:8100:1ae4:a1d0:fac7:59ed:ad1a) join
+[2018-04-26 14:48:31] * eax (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-26 14:49:41] * eadler (~user@2601:645:8100:1ae4:a1d0:fac7:59ed:ad1a) quit Ping timeout: 506 seconds
+[2018-04-26 14:50:50] * eax (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit Client Quit
+[2018-04-26 14:53:10] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-26 14:57:35] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit Client Quit
+[2018-04-26 14:59:48] * eadler (~user@2601:645:8100:1ae4:1966:2f36:50c0:1640) join
+[2018-04-26 15:01:00] * tomoyat1 (~tomoyat1@tomoyat1.com) quit Quit: ZNC 1.6.5 - http://znc.in
+[2018-04-26 15:01:19] * tomoyat1 (~tomoyat1@tomoyat1.com) join
+[2018-04-26 16:28:40] * eadler (~user@2601:645:8100:1ae4:1966:2f36:50c0:1640) quit Quit: /dev/null is full
+[2018-04-26 18:10:38] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) join
+[2018-04-26 18:17:06] <aniketp41> Hello! I wanted to create a page for my project "Regression Test Suite for Audit Framework" within https://wiki.freebsd.org/SummerOfCode2018/ . Can somebody give me few pointers on how to create a new page?
+[2018-04-26 18:17:06] <aniketp41> I have the edit access already and have created my page https://wiki.freebsd.org/AniketPandey . Thanks!
+[2018-04-26 21:05:52] * beat (~beat@fenchurch.chruetertee.ch) join
+[2018-04-26 21:05:52] * beat_ (~beat@fenchurch.chruetertee.ch) quit Read error: Connection reset by peer
+[2018-04-26 21:11:26] * beat (~beat@fenchurch.chruetertee.ch) quit Read error: Connection reset by peer
+[2018-04-26 21:11:37] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) quit Read error: Operation timed out
+[2018-04-26 21:11:41] * beat (~beat@fenchurch.chruetertee.ch) join
+[2018-04-26 21:14:56] * gavin (~ga9@buffy.york.ac.uk) quit Ping timeout: 319 seconds
+[2018-04-26 21:16:32] * AllanJude (ajude@allanjude.bsdbasement.com) quit No Ping reply in 180 seconds.
+[2018-04-26 21:18:58] * AllanJude (~allan@allanjude.bsdbasement.com) join
+[2018-04-26 21:24:11] * gavin (~ga9@buffy.york.ac.uk) join
+[2018-04-26 21:44:59] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-27 00:11:47] * bsdimp (~bsdimp@ip67-155-240-118.z240-155-67.customer.algx.net) join
+[2018-04-27 00:14:34] * bsdimp_ (~bsdimp@ip67-155-240-118.z240-155-67.customer.algx.net) join
+[2018-04-27 00:16:25] * bsdimp (~bsdimp@ip67-155-240-118.z240-155-67.customer.algx.net) quit Ping timeout: 252 seconds
+[2018-04-27 00:51:50] * bsdimp_ (~bsdimp@ip67-155-240-118.z240-155-67.customer.algx.net) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-27 02:29:13] * bsdimp (~bsdimp@75.104.69.30) join
+[2018-04-27 02:40:40] * bsdimp (~bsdimp@75.104.69.30) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-27 02:45:09] * bsdimp (~bsdimp@75.104.69.30) join
+[2018-04-27 02:51:54] * bsdimp (~bsdimp@75.104.69.30) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-27 04:04:57] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-27 04:31:45] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-27 04:49:12] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-27 05:18:39] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-27 05:20:01] * bsdimp (~bsdimp@50-253-99-174-static.hfc.comcastbusiness.net) join
+[2018-04-27 05:26:34] * bsdimp (~bsdimp@50-253-99-174-static.hfc.comcastbusiness.net) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-27 06:02:19] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit /dev/null is full
+[2018-04-27 06:16:42] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-27 07:07:16] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit Quit: /dev/null is full
+[2018-04-27 07:11:23] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-27 08:12:34] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit /dev/null is full
+[2018-04-27 13:00:49] * eadler (~user@2601:645:8100:1ae4:88de:2d87:f162:83ef) join
+[2018-04-27 13:01:18] * eadler (~user@2601:645:8100:1ae4:88de:2d87:f162:83ef) quit Client Quit
+[2018-04-27 13:04:35] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-27 13:31:21] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-27 13:42:49] * return0e_ (~return0e@150.237.126.166) join
+[2018-04-27 13:47:55] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit /dev/null is full
+[2018-04-27 14:22:51] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Textual IRC Client: www.textualapp.com
+[2018-04-27 14:25:11] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-27 14:39:41] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-27 15:01:00] * tomoyat1 (~tomoyat1@tomoyat1.com) quit Quit: ZNC 1.6.5 - http://znc.in
+[2018-04-27 15:01:20] * tomoyat1 (~tomoyat1@tomoyat1.com) join
+[2018-04-27 16:10:23] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-27 17:07:04] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) join
+[2018-04-27 17:33:16] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) quit Read error: Operation timed out
+[2018-04-27 17:53:56] * lakhan (webchat@223.237.2.107) join
+[2018-04-27 18:14:58] * lakhan (webchat@223.237.2.107) quit Quit: Page closed
+[2018-04-27 19:07:06] * pleb (~luserx0@adsl-223.79.107.76.tellas.gr) join
+[2018-04-27 19:08:00] * pleb (~luserx0@adsl-223.79.107.76.tellas.gr) quit Client Quit
+[2018-04-27 19:08:30] * pleb (~luserx0@adsl-223.79.107.76.tellas.gr) join
+[2018-04-27 19:10:02] * luserx0 (~luserx0@81.92.48.95) quit Read error: Operation timed out
+[2018-04-27 19:17:12] * imm_ (~imm_@dh207-10-6.xnet.hr) quit Quit: leaving
+[2018-04-27 19:50:58] * pleb (~luserx0@adsl-223.79.107.76.tellas.gr) quit Remote host closed the connection
+[2018-04-27 19:51:20] * pleb (~luserx0@adsl-223.79.107.76.tellas.gr) join
+[2018-04-27 20:17:03] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-27 20:19:26] * return0e_ (~return0e@150.237.126.166) quit Quit: Leaving...
+[2018-04-27 20:58:37] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-27 21:23:00] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) join
+[2018-04-27 22:31:06] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) quit Read error: Operation timed out
+[2018-04-28 00:33:47] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-28 00:44:43] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-28 01:01:23] * eadler (~user@67.188.9.244) join
+[2018-04-28 02:25:46] * AllanJude (~allan@allanjude.bsdbasement.com) quit Ping timeout: 241 seconds
+[2018-04-28 02:27:23] * gavin (~ga9@buffy.york.ac.uk) quit Ping timeout: 319 seconds
+[2018-04-28 02:29:02] * AllanJude (~allan@allanjude.bsdbasement.com) join
+[2018-04-28 02:34:53] * gavin (~ga9@buffy.york.ac.uk) join
+[2018-04-28 03:19:32] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-28 03:25:06] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-28 03:29:40] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Client Quit
+[2018-04-28 03:37:39] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-28 03:44:35] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-28 07:11:38] * ygy (~ygy@108.61.155.229) quit Ping timeout: 244 seconds
+[2018-04-28 07:14:15] * ygy (~ygy@108.61.155.229) join
+[2018-04-28 14:20:19] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-28 14:43:26] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-28 15:01:00] * tomoyat1 (~tomoyat1@tomoyat1.com) quit Quit: ZNC 1.6.5 - http://znc.in
+[2018-04-28 15:01:18] * tomoyat1 (~tomoyat1@133.130.119.65) join
+[2018-04-28 15:10:51] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-28 15:54:32] * eadler (~user@67.188.9.244) quit /dev/null is full
+[2018-04-28 16:01:23] * eadler (~user@73.93.143.139) join
+[2018-04-28 16:57:13] * eadler (~user@73.93.143.139) quit Quit: /dev/null is full
+[2018-04-28 17:03:40] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-28 17:49:48] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Read error: Connection reset by peer
+[2018-04-28 17:50:26] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-29 03:14:44] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) quit /dev/null is full
+[2018-04-29 04:00:41] * eadler (~user@c-67-188-9-244.hsd1.ca.comcast.net) join
+[2018-04-29 04:27:25] * pleb (~luserx0@adsl-223.79.107.76.tellas.gr) quit Quit: Leaving
+[2018-04-29 05:03:06] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-29 06:08:20] * beat (~beat@fenchurch.chruetertee.ch) quit Remote host closed the connection
+[2018-04-29 06:50:05] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-29 06:54:06] * beat (~beat@fenchurch.chruetertee.ch) join
+[2018-04-29 07:57:28] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit Quit: My MacBook Pro has gone to sleep. ZZZzzz…
+[2018-04-29 09:32:44] * luserx0 (~luserx0@adsl-156.91.140.36.tellas.gr) join
+[2018-04-29 12:25:10] * return0e (~return0e@5-198-102-244.static.kc.net.uk) quit Quit: Leaving...
+[2018-04-29 14:17:48] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-04-29 14:20:31] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) join
+[2018-04-29 14:53:25] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) quit Read error: Operation timed out
+[2018-04-29 15:01:00] * tomoyat1 (~tomoyat1@133.130.119.65) quit Quit: ZNC 1.6.5 - http://znc.in
+[2018-04-29 15:01:18] * tomoyat1 (~tomoyat1@133.130.119.65) join

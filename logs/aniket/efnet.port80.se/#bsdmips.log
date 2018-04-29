@@ -1,0 +1,41 @@
+[2018-04-26 18:46:39] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-04-26 18:46:39] * undefined topic FreeBSD on ARM{,64}, PPC, MIPS | 11-STABLE/-HEAD on RPi | Tyan OpenPower WIP | Ask us about plumbing
+[2018-04-26 18:46:39] * _andy_t_ topic_set_by
+[2018-04-26 18:46:40] <trasz> [tj]: not sure about isa, but they do it from userspace anyway; i remember working around some iopl(2) calls.
+[2018-04-26 18:46:47] <manu_> pc104 ftw !!! :)
+[2018-04-26 18:46:49] <DamnHippi> and precision timing.  ironically, our most advanced and most expensive system at $work is based on isa bus hardware.
+[2018-04-26 18:47:25] <trasz> [tj]: if you look at src/hal/drivers/ in linuxcnc drivers, that's where they live.
+[2018-04-26 18:48:05] <linimon_> gonzo-: well I will be happy to say, if it is operator error here.
+[2018-04-26 18:48:53] <gonzo-> linimon_: Could you share you r whole scripte that fails?
+[2018-04-26 18:48:58] <linimon_> hmm.  were you building from 12 or 11?  I was building for 11.
+[2018-04-26 18:49:00] <gonzo-> linimon_: what is the host version?
+[2018-04-26 18:49:01] <trasz> [tj]: this seems popular: http://www.mesanet.com/fpgacardinfo.html
+[2018-04-26 18:49:05] <gonzo-> I used 12
+[2018-04-26 18:49:09] <linimon_> it's just something that invokes release.sh
+[2018-04-26 18:49:11] <linimon_> ah :-(
+[2018-04-26 18:49:15] <trasz> there's even pcie version.
+[2018-04-26 18:49:33] <[tj]> trasz: for driving a cnc machine?
+[2018-04-26 18:49:39] <[tj]> that makes sense to be
+[2018-04-26 18:49:43] <[tj]> bit banging a gpio doesn't
+[2018-04-26 18:49:48] <linimon_> the only changes in my tree should be the ones in phab
+[2018-04-26 18:50:03] <linimon_> FreeBSD crud 11.2-PRERELEASE FreeBSD 11.2-PRERELEASE #0 r332843M: Mon Apr 23 19:51:52 UTC 2018
+[2018-04-26 18:50:47] <linimon_> I really think one of us has to have a clean build from 11 to 11 before committing :-(
+[2018-04-26 18:50:48] <trasz> [tj]: i'm not saying they use bit banging, it's just that they _can_.  i mean, linuxcnc contains support for it, iirc.
+[2018-04-26 18:51:03] <gonzo-> linimon_: I don't think it's related to your changes. That failure seems to be more global than just ARM. I'll re-run my build on clean 11 VM
+[2018-04-26 18:51:08] <[tj]> I guess if you have a good solid wall to hide behind it would be okay
+[2018-04-26 18:51:25] <trasz> 'Driver for the BeagleBone GPIO pins'
+[2018-04-26 18:51:30] <trasz> it definitely does.
+[2018-04-26 18:51:43] <linimon_> gonzo-: ok thanks.
+[2018-04-26 19:00:21] <andreast> linimon_, thx, but I need hw which supports 15Mb. My BusPirate only goes to 115200. I expect tomorrow a delivery.
+[2018-04-26 19:00:33] <andreast> s/15Mb/1.5Mb
+[2018-04-26 19:00:59] <manu_> andreast: which one did you bought ?
+[2018-04-26 19:01:12] <andreast> manu_, the 4G
+[2018-04-26 19:01:21] <manu_> ?
+[2018-04-26 19:01:25] <manu_> oh buspirate too ?
+[2018-04-26 19:02:24] <linimon_> andreast: well I've talked to my pine64.  I thought the rock64 as well (but with linux bits)
+[2018-04-26 19:02:49] <manu_> linimon_: pine uart is 115200 bauds
+[2018-04-26 19:02:59] <andreast> manu_, the 4GByte Rock64 :) And the BusPirate is a BPv3a and a V3.6a
+[2018-04-26 19:02:59] <manu_> rockchip default to 1.5Mbps
+[2018-04-26 19:03:13] <manu_> andreast: ah ok :)
+[2018-04-26 19:03:31] <manu_> andreast: but which uart adapter did you bought ?
+[2018-04-26 19:04:15] <manu_> ftdi and latest silabs (CP210X) works at 1.5Mbps
