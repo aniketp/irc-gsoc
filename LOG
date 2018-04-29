@@ -1,0 +1,2 @@
+[21:28 29-April]: make buildworld took around 46 minutes with max possible specs and 8 jobs
+[21:28 29-April]: do make "-DNO_CLEAN buildworld" on subsequent invocations
