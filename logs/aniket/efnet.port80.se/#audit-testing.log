@@ -79,3 +79,8 @@
 [2018-04-30 16:26:53] <aniketp41> Also, @somers_, @rwatson,  I was testing unlink(2) and unlinkat(2) system call which is under "ad": administrative audit_class but the audit was unsuccessful on setting "ad" as the audit flag while on setting the flag as "all", it was successful  
 [2018-04-30 16:27:12] <aniketp41> Is "ad" really the audit_class for unlink(at)(2)?
 [2018-04-30 16:27:49] <aniketp41> Oh sorry its fd, my mistake!
+[2018-04-30 18:13:46] <aniketp41> ping @somers_
+[2018-04-30 18:27:30] <somers_> Yes?
+[2018-04-30 18:31:56] <somers_> @aniketp41 in your connect test, it looks like the client is trying to connect to 0.0.0.0:9000.  I'm not even sure what it means to connect to 0.0.0.0.  Your results might be more portable if it connects to 127.0.0.1
+[2018-04-30 18:35:36] <somers_> But the error on Linux probably means that the connection attempt is in progress, and you should use select(2) to know when it's complete
+[2018-04-30 18:57:13] <aniketp41> Yes @somers_, I think I'll have to change this "server.sin_addr.s_addr = "INADDR_ANY" to "inet_addr("127.0.0.1")"
