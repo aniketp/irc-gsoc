@@ -70,3 +70,8 @@
 [2018-04-30 14:13:08] <aniketp41> So like if I have a server with non-blocking socket, how would I connect(2) using the client? I'm not sure how I would put the client within the same program.
 [2018-04-30 14:15:18] <somers_> The "server" would set its socket to be nonblocking, and call listen.  Then the "client" would set its end to nonblocking, and call connect.  Finally, the "server" would call accept.
 [2018-04-30 14:16:09] <somers_> I'm not sure if the connect call would succeed, or return EINPROGRESS.  I think it would succeed as long as the socket is listening.
+[2018-04-30 15:26:14] <aniketp41> Hi @somers_, The method you suggested worked. I followed the same pattern, server->listen, client->connect, server->accept and all the basic network APIs were audited
+[2018-04-30 15:26:16] <aniketp41> https://pastebin.com/Pp3wBMCV
+[2018-04-30 15:26:45] <aniketp41> Please ignore the formatting as I'll improve it in the formal program!
+[2018-04-30 15:28:31] <aniketp41> Audit result: https://pastebin.com/g15LQ9gM
+[2018-04-30 15:31:03] <aniketp41> But on my Linux main machine it returns EINPROGRESS: Connect error: Operation now in progress
