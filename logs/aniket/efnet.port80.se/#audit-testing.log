@@ -64,3 +64,9 @@
 [2018-04-30 07:37:37] * somers_ (~somers@63-224-81-79.hlrn.qwest.net) join
 [2018-04-30 07:39:47] * somers__ (~somers@63-224-80-93.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-04-30 13:47:25] <aniketp41> ping @somers_
+[2018-04-30 14:08:34] <somers_> I don't think you should use external helper programs
+[2018-04-30 14:09:25] <somers_> All of the networking syscalls should be testable using a single thread, with nonblocking sockets
+[2018-04-30 14:09:35] <somers_> Is there one in particular that you're having trouble with?
+[2018-04-30 14:13:08] <aniketp41> So like if I have a server with non-blocking socket, how would I connect(2) using the client? I'm not sure how I would put the client within the same program.
+[2018-04-30 14:15:18] <somers_> The "server" would set its socket to be nonblocking, and call listen.  Then the "client" would set its end to nonblocking, and call connect.  Finally, the "server" would call accept.
+[2018-04-30 14:16:09] <somers_> I'm not sure if the connect call would succeed, or return EINPROGRESS.  I think it would succeed as long as the socket is listening.
