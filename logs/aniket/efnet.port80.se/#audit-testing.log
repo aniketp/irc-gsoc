@@ -84,3 +84,4 @@
 [2018-04-30 18:31:56] <somers_> @aniketp41 in your connect test, it looks like the client is trying to connect to 0.0.0.0:9000.  I'm not even sure what it means to connect to 0.0.0.0.  Your results might be more portable if it connects to 127.0.0.1
 [2018-04-30 18:35:36] <somers_> But the error on Linux probably means that the connection attempt is in progress, and you should use select(2) to know when it's complete
 [2018-04-30 18:57:13] <aniketp41> Yes @somers_, I think I'll have to change this "server.sin_addr.s_addr = "INADDR_ANY" to "inet_addr("127.0.0.1")"
+[2018-04-30 19:03:15] <aniketp41> It might have been trying to connect to all available interfaces (i.e 0.0.0.0)
