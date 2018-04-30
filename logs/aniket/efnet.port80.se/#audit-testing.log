@@ -75,3 +75,7 @@
 [2018-04-30 15:26:45] <aniketp41> Please ignore the formatting as I'll improve it in the formal program!
 [2018-04-30 15:28:31] <aniketp41> Audit result: https://pastebin.com/g15LQ9gM
 [2018-04-30 15:31:03] <aniketp41> But on my Linux main machine it returns EINPROGRESS: Connect error: Operation now in progress
+[2018-04-30 16:20:18] <aniketp41> @somers_, would polling be a solution for EINPROGRESS issue here? Although this this did not happen in my FreeBSD machine, but it did in Linux 
+[2018-04-30 16:26:53] <aniketp41> Also, @somers_, @rwatson,  I was testing unlink(2) and unlinkat(2) system call which is under "ad": administrative audit_class but the audit was unsuccessful on setting "ad" as the audit flag while on setting the flag as "all", it was successful  
+[2018-04-30 16:27:12] <aniketp41> Is "ad" really the audit_class for unlink(at)(2)?
+[2018-04-30 16:27:49] <aniketp41> Oh sorry its fd, my mistake!
