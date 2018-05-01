@@ -90,3 +90,22 @@
 [2018-05-01 08:28:56] <aniketp41> Hello @gnn, thanks for joining the channel!
 [2018-05-01 10:37:03] * aniketp41 (~aniketp41@159.65.149.37) join
 [2018-05-01 16:18:52] <aniketp41> Hi @gnn, I'm working in the organization of files in the test-suite as I arranged it as such before I started creating Kyua test-cases. 
+[2018-05-01 21:38:02] <aniketp41> Hi @somers_, how did you compile the Kyua test-program that I shared with you once? 
+[2018-05-01 21:38:02] <aniketp41> I'm currently having a trouble with linking the <atf-c.h> header with the main program
+[2018-05-01 21:38:22] <aniketp41> Here is the link to the error produced https://pastebin.com/La8Wvexh
+[2018-05-01 21:39:16] <aniketp41> I tried compiling with the example shown here https://github.com/jmmv/kyua/wiki/Quickstart-atf-c-test#atf_tests2c---test-program-with-multiple-test-cases but it doesn't seem to work
+[2018-05-01 21:41:28] <somers_> @aniketp41 I put the program in tests/sys/audit and wrote this to tests/sys/audit/Makefile:
+[2018-05-01 21:41:45] <somers_> ESTSDIR=       ${TESTSBASE}/sys/audit
+[2018-05-01 21:41:45] <somers_> ATF_TESTS_C+=   mkdir-atf0
+[2018-05-01 21:41:45] <somers_> TEST_METADATA.mkdir-atf0+= timeout="30"
+[2018-05-01 21:41:45] <somers_> CFLAGS+=        -I${.CURDIR:H:H}
+[2018-05-01 21:41:45] <somers_> WARNS?= 6
+[2018-05-01 21:41:46] <somers_> .include <bsd.test.mk>
+[2018-05-01 21:46:00] <aniketp41> Yes I followed a similar makeshift procedure of putting the tests in /usr/src/sbin/devd/tests and replaced the content of its Makefile to test mkdir-atf0.c instead of client-test.c and it worked.
+[2018-05-01 21:46:00] <aniketp41> But now that I'm trying to separate the setup functions in a separate C file so that I can share it with multiple test programs but I'm unable to link it properly. Can you suggest me a way to do so?
+[2018-05-01 21:46:20] <aniketp41> Possibly making some modifications to the Makefile?
+[2018-05-01 21:48:49] <somers_> So you want to build a single binary from two .c files?  Then you need to specify the SRCS variable.  Take a look at sys/geom/class/eli/Makefile
+[2018-05-01 21:49:03] <somers_> err, tests/sys/geom/class/eli/Makefile
+[2018-05-01 21:55:24] <aniketp41> @somers_, is there supposed to be a Makefile in the test-suite? I only found a bunch of tests and a Kyuafile.. 
+[2018-05-01 21:55:39] <aniketp41> at /usr/tests/sys/geom/class/eli
+[2018-05-01 21:55:49] <somers_> I'm talking about the source directory
