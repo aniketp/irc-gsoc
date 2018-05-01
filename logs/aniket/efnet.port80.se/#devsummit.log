@@ -20,3 +20,21 @@
 [2018-05-01 15:43:12] * wblock (~wblock@72.21.225.66) join
 [2018-05-01 15:43:28] * wblock (~wblock@72.21.225.66) quit Remote host closed the connection
 [2018-05-01 16:49:36] * Ori (~ori@mimir.eigenstate.org) join
+[2018-05-01 20:35:17] <debdrup> I hope that the devsummit venue is not too small, or that freebsd developers and guests are stackable - because it seems like there's gonna be a lot of people there.
+[2018-05-01 20:45:31] <AllanJude> well, it will be split into a number of rooms
+[2018-05-01 20:45:39] <AllanJude> but, the main one is usually a large lecture hall
+[2018-05-01 20:45:52] <debdrup> ah, okay
+[2018-05-01 20:45:52] <AllanJude> over 100 people is totally normal
+[2018-05-01 20:46:29] <debdrup> someone pointed this out elsewhere; i guess i've just been comparing it with non-bsdcan devsummits
+[2018-05-01 20:46:55] <bsdimp> we'll be good unless we have 200 people show up
+[2018-05-01 20:47:13] <debdrup> at which point you'll begin stacking?
+[2018-05-01 20:47:43] * wca action stacks debdrup on top of dvl
+[2018-05-01 20:47:48] <mhka> debdrup: Let's discuss whether stacking or folding is better
+[2018-05-01 20:52:13] <benno> Why stop there? Can we discuss spindling and mutilating too?
+[2018-05-01 20:52:27] <debdrup> mhka: doesn't this quickly devolve into a conversation about interlocking then?
+[2018-05-01 20:52:36] <fbsdslack> <ler> <snark>Reminds me of Punch Cards…..</snark>
+[2018-05-01 20:52:55] <mhka> debdrup: And how to thread limbs correctly
+[2018-05-01 20:54:29] <debdrup> mhka: aren't you using the wrong tool for the job, with that hammer?
+[2018-05-01 20:54:43] <mhka> debdrup: but it's a rubber hammer, so it'll be okay.
+[2018-05-01 20:56:10] <debdrup> mhka: that's a good foundation, but i kinda saw it coming
+[2018-05-01 20:57:17] <mhka> If you saw it coming, at least it's not a reinvented wheel. OR IS IT :D
