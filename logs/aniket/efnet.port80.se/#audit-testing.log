@@ -109,3 +109,4 @@
 [2018-05-01 21:55:24] <aniketp41> @somers_, is there supposed to be a Makefile in the test-suite? I only found a bunch of tests and a Kyuafile.. 
 [2018-05-01 21:55:39] <aniketp41> at /usr/tests/sys/geom/class/eli
 [2018-05-01 21:55:49] <somers_> I'm talking about the source directory
+[2018-05-02 01:51:16] <aniketp41> @somers_, using the Makefile you provided was giving quite a lot of errors which I didn't get before, some of them referenced no extern declaration for non-static global variables, which made sense. But a lot of the other errors should've been a warning (shadowing global scope) unless its too strict. Here is the list: https://pastebin.com/wPAxNJat
