@@ -137,3 +137,6 @@
 [2018-05-02 14:31:39] <aniketp41> Here is the Makefile: https://github.com/aniketp/AuditTestSuite/blob/restructure/src/Makefile
 [2018-05-02 14:31:39] <aniketp41> And the error message after modifying the Makefile: https://pastebin.com/XNABQ9V0
 [2018-05-02 14:33:33] <somers_> then try explicitly setting all of SRCS.  "SRCS.file-create=file-create.c setup.c"
+[2018-05-02 15:38:45] <gnn> aniketp41: Should be a day or so.
+[2018-05-02 15:38:55] <gnn> If more than that email again and cc me again and I'll talk to them.
+[2018-05-02 15:39:02] <gnn> They are, as most of us, overworked.
