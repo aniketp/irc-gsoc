@@ -120,3 +120,5 @@
 [2018-05-02 03:40:01] <aniketp41> Btw @somers_, adding SRCS+=filename.c to the above Makefile do the job?
 [2018-05-02 03:40:13] <aniketp41> *will adding
 [2018-05-02 03:41:45] <somers_> try it and see
+[2018-05-02 09:04:11] * somers_ (~somers@63-224-81-79.hlrn.qwest.net) quit Remote host closed the connection
+[2018-05-02 09:05:40] * somers_ (~somers@63-224-81-79.hlrn.qwest.net) join
