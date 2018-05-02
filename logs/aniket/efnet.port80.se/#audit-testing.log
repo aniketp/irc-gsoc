@@ -123,3 +123,17 @@
 [2018-05-02 09:04:11] * somers_ (~somers@63-224-81-79.hlrn.qwest.net) quit Remote host closed the connection
 [2018-05-02 09:05:40] * somers_ (~somers@63-224-81-79.hlrn.qwest.net) join
 [2018-05-02 12:21:20] <aniketp41> @somers_, @gnn Generally how long does it take to get a reply back from soc-admins@ ? I'm unable to setup my svn work-area as I don't have an account yet!
+[2018-05-02 14:08:10] <aniketp41> Hi @somers_, I've been trying to separate the setup functions from main test program and tried to modify the Makefile to include "SRCS+=setup". But from the errors it seems that the test-program is not able to identify the function declaration in setup.h https://pastebin.com/1CyZii70
+[2018-05-02 14:08:46] <aniketp41> Here is the directory organisation within usr/src/tests/sys/audit: https://github.com/aniketp/AuditTestSuite/tree/restructure/src
+[2018-05-02 14:16:49] <somers_> you simply forgot to include setup.h in setup.c
+[2018-05-02 14:18:48] <aniketp41> Oops, right! Correcting it now
+[2018-05-02 14:21:22] <aniketp41> Now it's giving me a bunch of linker errors (same as what I got when I tried independently compiling the tests). Maybe there is an issue with my Makefile, I guess?
+[2018-05-02 14:21:22] <aniketp41> Most of the linker error is like this: "undefined reference to `atf_tc_<some-api>"
+[2018-05-02 14:22:08] <aniketp41> https://pastebin.com/R7t1JXJw
+[2018-05-02 14:23:06] <somers_> Try "SRCS.file-create+=setup" in your Makefile
+[2018-05-02 14:26:08] <aniketp41> @somers_, similar error again :/
+[2018-05-02 14:26:39] <aniketp41> Is it not able to link to atf-c.h?
+[2018-05-02 14:27:06] <somers_> You don't link to header files.  Show me your Makefile and error message
+[2018-05-02 14:31:39] <aniketp41> Here is the Makefile: https://github.com/aniketp/AuditTestSuite/blob/restructure/src/Makefile
+[2018-05-02 14:31:39] <aniketp41> And the error message after modifying the Makefile: https://pastebin.com/XNABQ9V0
+[2018-05-02 14:33:33] <somers_> then try explicitly setting all of SRCS.  "SRCS.file-create=file-create.c setup.c"
