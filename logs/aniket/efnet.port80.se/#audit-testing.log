@@ -140,3 +140,12 @@
 [2018-05-02 15:38:45] <gnn> aniketp41: Should be a day or so.
 [2018-05-02 15:38:55] <gnn> If more than that email again and cc me again and I'll talk to them.
 [2018-05-02 15:39:02] <gnn> They are, as most of us, overworked.
+[2018-05-02 16:38:04] <aniketp41> Hi @somers_, I made the change in Makefile, "SRCS.file-create=file-create.c setup.c". The linker issue was gone but it also generated a bunch of new errors. Some of them weirdly pointing to implicit declaration of ATF_TC_* functions. 
+[2018-05-02 16:38:04] <aniketp41> Here is the error log: https://pastebin.com/FVBZq4vn
+[2018-05-02 16:38:04] <aniketp41> And the code: https://github.com/aniketp/AuditTestSuite/tree/restructure/src
+[2018-05-02 16:39:11] <somers_> You forgot to include atf.h
+[2018-05-02 16:41:05] <aniketp41> Ohh, I included it in the wrong file again. It should be in file-create.c instead of setup.c. Thanks!
+[2018-05-02 16:47:48] <aniketp41> @somers_, Is it alright that I move all includes in setup.h seeing all the fuss which is being created?
+[2018-05-02 16:47:48] <aniketp41> Btw the tests are passing again!
+[2018-05-02 16:48:37] <somers_> Header bloat is frowned upon.  In FreeBSD, the convention is for file to #include only what it needs.
+[2018-05-02 16:50:23] <aniketp41> Okay then I'll have a careful look at what is needed where and move the includes appropriately..
