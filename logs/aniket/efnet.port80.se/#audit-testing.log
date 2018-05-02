@@ -110,3 +110,9 @@
 [2018-05-01 21:55:39] <aniketp41> at /usr/tests/sys/geom/class/eli
 [2018-05-01 21:55:49] <somers_> I'm talking about the source directory
 [2018-05-02 01:51:16] <aniketp41> @somers_, using the Makefile you provided was giving quite a lot of errors which I didn't get before, some of them referenced no extern declaration for non-static global variables, which made sense. But a lot of the other errors should've been a warning (shadowing global scope) unless its too strict. Here is the list: https://pastebin.com/wPAxNJat
+[2018-05-02 02:37:41] <aniketp41> Hi @somers_, I made a few changes to remove all the errors, please have a look at the changes and suggest any improvements https://github.com/aniketp/AuditTestSuite/commit/b456c15c7dc2a8728b764f49d8429fbee8fb37f9
+[2018-05-02 02:37:46] <somers_> Yeah, those are all errors in your code.
+[2018-05-02 02:38:36] <somers_> We should switch from reviewing on Github to using Phabricator, now that you've got a full src tree setup
+[2018-05-02 02:38:59] <somers_> https://wiki.freebsd.org/Phabricator
+[2018-05-02 02:42:33] <aniketp41> src tree setup in socsvn repository branch? I didn't receive any notification about it..
+[2018-05-02 02:43:22] <somers_> Do you have an svn account yet?  You can create the branch yourself if so
