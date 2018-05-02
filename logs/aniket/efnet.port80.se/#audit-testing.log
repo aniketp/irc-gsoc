@@ -116,3 +116,7 @@
 [2018-05-02 02:38:59] <somers_> https://wiki.freebsd.org/Phabricator
 [2018-05-02 02:42:33] <aniketp41> src tree setup in socsvn repository branch? I didn't receive any notification about it..
 [2018-05-02 02:43:22] <somers_> Do you have an svn account yet?  You can create the branch yourself if so
+[2018-05-02 03:00:22] <aniketp41> I don't think I have an SVN account yet, was waiting for confirmation from the soc-admins. But I had created an account earlier in FreeBSD's Phabricator. i.e https://reviews.freebsd.org/
+[2018-05-02 03:40:01] <aniketp41> Btw @somers_, adding SRCS+=filename.c to the above Makefile do the job?
+[2018-05-02 03:40:13] <aniketp41> *will adding
+[2018-05-02 03:41:45] <somers_> try it and see
