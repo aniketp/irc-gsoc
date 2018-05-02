@@ -149,3 +149,8 @@
 [2018-05-02 16:47:48] <aniketp41> Btw the tests are passing again!
 [2018-05-02 16:48:37] <somers_> Header bloat is frowned upon.  In FreeBSD, the convention is for file to #include only what it needs.
 [2018-05-02 16:50:23] <aniketp41> Okay then I'll have a careful look at what is needed where and move the includes appropriately..
+[2018-05-02 17:07:04] <aniketp41> @somers_, I made the appropriate changes in inclusions: Please have a look the current code: https://github.com/aniketp/AuditTestSuite/tree/restructure/src
+[2018-05-02 17:09:15] <aniketp41> Also, according to the list of audit_events corresponding to audit_class (fc: file-create), I've made basic test-cases for all 12 syscalls in both failure mode. Shall I create a differential once I get my svn account?
+[2018-05-02 17:09:15] <aniketp41> Unless you want me to test some other functionalities of "fc" audit_class before I move on to other classes?
+[2018-05-02 17:09:36] <aniketp41> *in both failure and success mode
+[2018-05-02 17:09:58] <somers_> please do
