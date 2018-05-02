@@ -2,3 +2,4 @@
 [21:28 29-April]: do make "-DNO_CLEAN buildworld" on subsequent invocations
 [23:35 29-April]: Created a basic page for my project at freebsd wiki. Need to update it continuously
 [02:44 02-May]: Had a brief look at the FreeBSD style(9) guide. Nothing of much importance there.
+[15:46 02-May]: Compiled the atf-c tests at /tests/sys/audit. Fixed all compile time errors
