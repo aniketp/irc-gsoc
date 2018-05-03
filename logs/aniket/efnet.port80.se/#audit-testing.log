@@ -158,3 +158,4 @@
 [2018-05-02 18:21:59] * somers_ (~somers@63-224-81-79.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-05-02 19:44:46] * somers_ (~somers@63-224-81-246.hlrn.qwest.net) join
 [2018-05-02 19:51:12] * somers (~somers@63-224-80-52.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-03 17:59:47] <aniketp41> Hi @somers_, shall I simply add these files to tests/sys/audit (including the Makefile) while creating a differential? I'm working with a fork of https://github.com/freebsd/freebsd
