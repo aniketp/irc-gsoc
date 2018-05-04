@@ -163,3 +163,13 @@
 [2018-05-03 19:39:35] <aniketp41> Ping @somers_
 [2018-05-03 20:12:42] <somers_> Yeah, you can add files in a differential revision
 [2018-05-03 22:09:30] <aniketp41> Hi @somers_, I created a diff here: https://reviews.freebsd.org/D15286. Please have look. And since this is my first review, please do point out if I messed up somewhere!  
+[2018-05-04 15:22:40] <aniketp41> @somers_, what should we do about the non-root issue, since auditpipe does not seem to work here?
+[2018-05-04 15:23:35] <somers_> Have you seen anything in the docs about auditing as a non-root user?  Presumably you would be restricted to auditing your own events only.
+[2018-05-04 15:30:30] <aniketp41> The doc here https://www.freebsd.org/doc/handbook/audit-administration.html#idp69949288 mentions that the audit trails and the auditpipe(4) is available to the group "audit". I was able to pass the tests when I added myself to that group. Apart from that, I couldn't find any way to access audit facility as a normal user..
+[2018-05-04 15:37:06] <somers_> Well, you can certainly skip the tests on the basis of group membership
+[2018-05-04 15:37:53] <somers_> Actually, the stuff in /var/audit looks like it's available to group audit, but /dev/auditpipe is only available to root
+[2018-05-04 15:43:28] <aniketp41> Oh apologies, the tests produced the same results (bad file descriptor) from audit group too, I guess I must've run the tests as root user, that's how it must have passed (I have SSHd into my VM from two windows, one as root, other as a normal user, so might have inverted the test windows :D )
+[2018-05-04 15:43:28] <aniketp41> So, for now, shall I skip the tests for non-root users?
+[2018-05-04 15:43:55] <aniketp41> Since no group can actually access /dev/auditpipe..
+[2018-05-04 15:44:14] <somers_> Yeah.  Just like you do for the mknod test
+[2018-05-04 16:27:24] <aniketp41> Hi @somers_, please have a look at the changes, https://reviews.freebsd.org/D15286
