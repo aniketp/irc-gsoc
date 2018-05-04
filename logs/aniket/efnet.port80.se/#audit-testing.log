@@ -159,3 +159,7 @@
 [2018-05-02 19:44:46] * somers_ (~somers@63-224-81-246.hlrn.qwest.net) join
 [2018-05-02 19:51:12] * somers (~somers@63-224-80-52.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-05-03 17:59:47] <aniketp41> Hi @somers_, shall I simply add these files to tests/sys/audit (including the Makefile) while creating a differential? I'm working with a fork of https://github.com/freebsd/freebsd
+[2018-05-03 18:00:16] <aniketp41> https://github.com/aniketp/AuditTestSuite/tree/master/src
+[2018-05-03 19:39:35] <aniketp41> Ping @somers_
+[2018-05-03 20:12:42] <somers_> Yeah, you can add files in a differential revision
+[2018-05-03 22:09:30] <aniketp41> Hi @somers_, I created a diff here: https://reviews.freebsd.org/D15286. Please have look. And since this is my first review, please do point out if I messed up somewhere!  
