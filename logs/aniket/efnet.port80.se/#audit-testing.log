@@ -179,3 +179,6 @@
 [2018-05-05 13:59:58] * somers__ (~somers@63-224-81-22.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-05-05 20:11:29] <aniketp41> ping @somers_.
 [2018-05-05 22:48:39] <somers_> Hello @aniketp41.  I haven't forgotten about the review
+[2018-05-06 23:36:15] <aniketp41> Hi @somers_, I too had the issue of auditpipe(4) not giving any output which resulted in this : "Auditpipe did not return anything within the time limit"
+[2018-05-06 23:36:15] <aniketp41> But on doing it again it seemed to work. I figured that was due to auditd(8) not initializing properly
+[2018-05-06 23:36:30] <aniketp41> Currently the tests are working on my machine
