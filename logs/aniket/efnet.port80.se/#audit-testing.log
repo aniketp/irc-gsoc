@@ -200,3 +200,24 @@
 [2018-05-07 11:05:41] <aniketp41> Yes @rwatson, I'm setting both success and failure bits as the required audit_mask
 [2018-05-07 11:05:41] <aniketp41> Here is the snippet: https://github.com/aniketp/AuditTestSuite/blob/master/src/utils.c#L145
 [2018-05-07 11:06:42] <aniketp41> I used getauclassman(3) as @somers_, suggested, to fetch the audit class mask
+[2018-05-07 14:04:14] * somers__ (~somers@63-224-81-231.hlrn.qwest.net) join
+[2018-05-07 14:10:32] * somers_ (~somers@63-224-81-175.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-07 14:12:44] <somers__> @aniketp41 I blew away my tests/sys/audit directory, then recreated it with "arc patch D15286".  So I'm using the same code as what's in the review
+[2018-05-07 14:16:29] <aniketp41> Its weird, it passes for me no matter how I test it. I remember the only time it misbehaved was when my audit system spewed non-stop audit records in live-auditing mode (I guess that was because of recursive auditing as I has SSHd)
+[2018-05-07 14:25:32] <somers__> It doesn't fail for me 100%.  Last night it was failing.  Today it's passing.  That's why I suspect a race somewhere
+[2018-05-07 14:27:26] <aniketp41> @somers__, did the tests fail for both cases, i.e auditd(8) already running and not running?
+[2018-05-07 14:27:26] <aniketp41> Cause for me the first test-case failed and by the error message it seemed auditd(8) startup was not poll(2)ed at auditpipe.
+[2018-05-07 14:27:26] <aniketp41> But then rest 23 test-cases passed without any issue
+[2018-05-07 14:28:12] <aniketp41> *The time I had this issue, everything works fine as of now (hopefully)
+[2018-05-07 14:42:56] <somers__> I think there's a bug in the audit filtering mechanism.
+[2018-05-07 14:43:28] <somers__> If I remove an audit class from `flags` and `naaflags` in /etc/security/auditcontrol, then do `audit -s`, those events still turn up in the audit log
+[2018-05-07 14:43:39] <somers__> (Adding classes seems to work; only removing classes does not)
+[2018-05-07 15:20:02] <aniketp41> @somers__, I tried doing the same, but for me "audit -s" does not update the flags whether I remove an audit_class or add it. The changes only take effect when I logout of my SSH session and log back in.
+[2018-05-07 15:20:02] <aniketp41>  
+[2018-05-07 15:23:12] <somers__> weird; it did the same for me.
+[2018-05-07 15:25:37] <aniketp41> @rwatson might have an idea about this issue?
+[2018-05-07 15:27:38] <aniketp41> Btw @somers__, I added 24 more test cases (open(2) and openat(2) for various combination of O_RDONLY, O_WRONLY, O_RDWR, O_TRUNC) along with O_CREAT (for "fc": audit class) in both success and failure mode: https://pastebin.com/qP5GR4Pj
+[2018-05-07 15:27:53] <aniketp41> Code: https://github.com/aniketp/AuditTestSuite/blob/master/src/file-create.c
+[2018-05-07 15:27:59] <somers__> cool
+[2018-05-07 15:38:22] <aniketp41> Also, @somers__, since various modes of open(2) are categorized within multiple audit_classes , e.g "74:AUE_OPEN_RT:open(2) - read,trunc:fd,fr,fa,fm", would you suggest I test this particular case for all fd, fr, fa, fm classes or just any random audit_class would do?
+[2018-05-07 15:39:23] <somers__> I suppose we probably ought to test them all
