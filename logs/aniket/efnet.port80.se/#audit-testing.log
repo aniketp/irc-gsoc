@@ -182,3 +182,9 @@
 [2018-05-06 23:36:15] <aniketp41> Hi @somers_, I too had the issue of auditpipe(4) not giving any output which resulted in this : "Auditpipe did not return anything within the time limit"
 [2018-05-06 23:36:15] <aniketp41> But on doing it again it seemed to work. I figured that was due to auditd(8) not initializing properly
 [2018-05-06 23:36:30] <aniketp41> Currently the tests are working on my machine
+[2018-05-07 00:31:53] <aniketp41> @somers_, I made the formatting corrections: https://github.com/aniketp/AuditTestSuite/commit/e03991b8d18011615d7c3038926cce86d28dbda4
+[2018-05-07 00:31:53] <aniketp41> If these are alright then I'll update the revision?
+[2018-05-07 00:32:33] <somers_> auditd doesn't really have anything to do with auditpipe
+[2018-05-07 00:33:07] <somers_> maybe there's a race or something
+[2018-05-07 00:43:35] <aniketp41> Hmm, weird, the tests were passing for me. The function check_audit() is the heart of this approach and it is called right after triggering the system call we want to audit (as it should be). And since we've already opened "/dev/auditpipe" before the system call, I can't think of a reason auditpipe(4) should miss the syscall trigger. And since we have ATF_REQUIRE check in place, that means the system call was successfully triggered
+[2018-05-07 00:43:43] <aniketp41> Unless I'm missing something
