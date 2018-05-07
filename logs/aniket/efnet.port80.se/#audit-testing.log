@@ -188,3 +188,15 @@
 [2018-05-07 00:33:07] <somers_> maybe there's a race or something
 [2018-05-07 00:43:35] <aniketp41> Hmm, weird, the tests were passing for me. The function check_audit() is the heart of this approach and it is called right after triggering the system call we want to audit (as it should be). And since we've already opened "/dev/auditpipe" before the system call, I can't think of a reason auditpipe(4) should miss the syscall trigger. And since we have ATF_REQUIRE check in place, that means the system call was successfully triggered
 [2018-05-07 00:43:43] <aniketp41> Unless I'm missing something
+[2018-05-07 06:59:23] <rwatson> aniketp41: there's no synchronicity requirement that a syscall only return after the record goes out of the audit pipe, so you might need to insert a short delay after the system call before expecting a record to be emitted from /dev/auditpipe
+[2018-05-07 06:59:51] <rwatson> aniketp41: what approach are you using to narrow down the events returned on the audit pipe to try to select only those of interest for capture?
+[2018-05-07 09:26:33] <aniketp41> Hi @rwatson, during the initial setup, we've set the local mode preselection parameters to override the system-wide audit mask setting (using this function: https://github.com/aniketp/AuditTestSuite/blob/master/src/utils.c#L91) , i.e "file-create (fc)" in our case. That narrows down to the system call of interest.
+[2018-05-07 09:26:33] <aniketp41> Next, we ppoll(2) onto the auditpipe(4) with an infinite loop and set the timeout as 5 seconds. Since, it's highly possible that the first audit_event to be emitted from /dev/auditpipe might not be what we want, so for that we have a check in place which passes the test if we get the desired system call else continue the loop, i.e here: https://github.com/aniketp/AuditTestSuite/blob/master/src/utils.c#L164
+[2018-05-07 09:32:15] <aniketp41> Hello @somers_, is it possible that the code which led to the failure of tests in your case might not be the same as mine? Like, an issue while applying the patch.
+[2018-05-07 09:32:15] <aniketp41> Cause I've tried many different situations to run the tests, i.e auditd(8) running, not running, root, not root, various combinations of auditd(8) startup right before starting the tests, SSH into VM, directly from VM. All these scenarios produced expected results.
+[2018-05-07 09:32:15] <aniketp41> Also, we eliminated the race condition by the infinite loop so theoretically this should work, right?
+[2018-05-07 11:00:18] <rwatson> aniketp41: Are you definitely setting it to audit both successful and failed events?
+[2018-05-07 11:00:30] <rwatson> it's been quite a long time since I wrote the audit-pipe code. I might need to refresh my memory.
+[2018-05-07 11:05:41] <aniketp41> Yes @rwatson, I'm setting both success and failure bits as the required audit_mask
+[2018-05-07 11:05:41] <aniketp41> Here is the snippet: https://github.com/aniketp/AuditTestSuite/blob/master/src/utils.c#L145
+[2018-05-07 11:06:42] <aniketp41> I used getauclassman(3) as @somers_, suggested, to fetch the audit class mask
