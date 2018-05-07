@@ -5,3 +5,4 @@
 [15:46 02-May]: Compiled the atf-c tests at /tests/sys/audit. Fixed all compile time errors
 [16:48 02-May]: Setup arcanist certificate and default uri to freebsd. It works from Linux but there seems to be an issue of 
                 self-signed certificate from FreeBSD.
+[17:02 07-May]: How to test the failure mode of open(2) when O_CREAT is XORd with other modes?
