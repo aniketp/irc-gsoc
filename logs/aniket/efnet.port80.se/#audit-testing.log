@@ -221,3 +221,27 @@
 [2018-05-07 15:27:59] <somers__> cool
 [2018-05-07 15:38:22] <aniketp41> Also, @somers__, since various modes of open(2) are categorized within multiple audit_classes , e.g "74:AUE_OPEN_RT:open(2) - read,trunc:fd,fr,fa,fm", would you suggest I test this particular case for all fd, fr, fa, fm classes or just any random audit_class would do?
 [2018-05-07 15:39:23] <somers__> I suppose we probably ought to test them all
+[2018-05-09 12:33:32] <aniketp41> Hi @somers__, @rwatson, is there any variant of "copyfile(2)" system call? It was mentioned in the audit_event list but i couldn't find any man-page or info about it..
+[2018-05-09 12:33:32] <aniketp41> https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L411
+[2018-05-09 13:12:30] <somers__> copyfile is only for OSX.  And it's not a syscall really, just a library function
+[2018-05-09 13:15:12] <aniketp41> Okay, so are the man-page sections different for OSX? Cause afaiu, (2) is only for syscalls in FreeBSD.. 
+[2018-05-09 13:15:40] <somers__> I don't know how OSX man pages are organized
+[2018-05-09 14:21:07] <rwatson> somers__: there is a copyfile(2) system call in XNU
+[2018-05-09 14:21:13] <rwatson> somers__: But there is also a library call
+[2018-05-09 14:21:31] <rwatson> somers__: the reason for the system call is server-side copy in some distributed filesystems
+[2018-05-09 14:21:37] <rwatson> somers__: e.g., AFP and maybe CIFS?
+[2018-05-09 14:22:00] <somers__> I see.  But the library call does the work for local filesystems?
+[2018-05-09 14:22:15] <rwatson> somers__: I can never remember. :-) I think so, and also for inter-filesystem copies
+[2018-05-09 14:22:26] <rwatson> somers__: it's very .. layered
+[2018-05-09 14:22:56] <somers__> In any case, it isn't relevant for Aniket's project
+[2018-05-09 14:23:01] <rwatson> indeed.
+[2018-05-09 14:23:16] <rwatson> I'd focus on freebsd system calls and freebsd userspace parts such as authentication
+[2018-05-09 14:23:25] <rwatson> and, of course, on mechanisms such as audit pipes, preselection, etc.
+[2018-05-09 14:23:37] <rwatson> but simply iterating over system calls seems a good and productive activity.
+[2018-05-09 14:23:46] <somers__> I agree
+[2018-05-09 16:12:34] <aniketp41> Hi @somers__, I created 32 more test cases for "file-read" audit class, (mostly "readlink" and "open") :https://github.com/aniketp/AuditTestSuite/blob/master/src/file-read.c
+[2018-05-09 16:12:34] <aniketp41> Also would it be right do define those "fileforaudit" strings in "utils.h" since I'll using them in multiple files? Or shall I leave them as it is?
+[2018-05-09 16:13:24] <aniketp41> Quite a lot of test-cases already! https://pastebin.com/014VkGG9
+[2018-05-09 17:09:17] <somers__> Isn't "fileforaudit" restricted to utils.c?
+[2018-05-09 17:16:24] <aniketp41> Nope it's used in test-cases as the "path" 
+[2018-05-09 17:16:49] <aniketp41> So it's used in almost every test-case I've developed till now
