@@ -267,3 +267,12 @@
 [2018-05-09 19:51:43] <somers__> What's weird about it?  That just means that get_records returned false
 [2018-05-09 19:54:07] <aniketp41> That means "audit startup" string was not found in the memstream, so audit startup was not logged right? Or does it signify something else? 
 [2018-05-09 19:55:08] <aniketp41> Cause the one time I had an issue was that I got "Poll: auditpipe did not return anything within the time limit" for every system call. 
+[2018-05-09 20:26:19] <somers__> Yep
+[2018-05-09 20:46:33] <aniketp41> So @somers__, are such kind of errors (which I just got, but it seems to have gone away again) allowed with Kyua philosophy?
+[2018-05-09 20:46:33] <aniketp41> Also, I updated the differential: https://reviews.freebsd.org/D15286
+[2018-05-09 21:11:30] <somers__> What "Kyua philosophy"?
+[2018-05-09 21:15:29] <aniketp41> As in, is the error acceptable?
+[2018-05-09 21:35:21] <somers__> It's not ok for a test to intermittenly fail, if that's what you're asking
+[2018-05-09 21:38:25] <somers__> I think the NAFLAGS change fixed the tests's intermittency
+[2018-05-09 21:48:28] <aniketp41> Quite cool! I'll remove the curly braces and update the diff
+[2018-05-09 21:58:20] <aniketp41> @somers__ updated, https://reviews.freebsd.org/D15286
