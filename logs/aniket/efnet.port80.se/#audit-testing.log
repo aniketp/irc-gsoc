@@ -352,3 +352,23 @@
 [2018-05-10 17:56:33] <aniketp41> I guess it's just breaking out of the switch statement
 [2018-05-10 17:56:51] <aniketp41> I guess it's just breaking out of the switch statement
 [2018-05-10 17:57:16] <somers__> If so, you can break out of the loop with a goto
+[2018-05-10 18:02:19] <aniketp41> Isn't goto discouraged? I mean, also there isn't any specific location where I can make it jump. And if I make it jump at the end, then there isn't any code there too.
+[2018-05-10 18:05:30] <aniketp41> ping @somers__, I thought that checkpoint method looked fine
+[2018-05-10 18:06:43] <somers__> goto is allowed when it's better than any alternative.  This is the kind of place where it gets used in FreeBSD.  Other languages allow you to break out of nested loops, but not C.  So C programmers use goto in this place
+[2018-05-10 18:06:54] <somers__> And if you just need to go to the end, then you can simply use return
+[2018-05-10 18:10:43] <aniketp41> Okay @somers__, so I was for some reason not able to get goto to work hence I simply put a "return" there, as you suggested. (Since we don't need anything else from that function anymore)
+[2018-05-10 18:11:01] <aniketp41> *(after we've reached that point)
+[2018-05-10 18:11:17] <somers__> that's fine
+[2018-05-10 19:14:28] <somers__> @aniketp41 none of the tests pass in your latest version
+[2018-05-10 19:16:00] <aniketp41> Yes the tests fail for me when auditd is already running. But when I placed "set_preselect_mode" after auditd startup, they did pass however
+[2018-05-10 19:16:12] <aniketp41> @somers__ 
+[2018-05-10 19:16:52] <somers__> And you knew this?  Why did you upload a new revision to Phabricator if the tests don't pass?
+[2018-05-10 19:18:44] <aniketp41> No I just checked. I hadn't confirmed the tests in the case when auditd(8) was already running. 
+[2018-05-10 19:19:10] <aniketp41> As earlier we only had issues with tests for audit startup
+[2018-05-10 19:21:44] <aniketp41> @somers__ 
+[2018-05-10 19:22:00] <somers__> yes?
+[2018-05-10 19:38:46] <aniketp41> @somers__, I placed "set_preselect_mode" after auditd(8) startup and now the tests are passing in both scenarios. I'll update the diff accordingly.
+[2018-05-10 19:38:46] <aniketp41> Although what should we do about the race condition as you mentioned in the diff, as resolving that makes the test cases fail
+[2018-05-10 19:44:27] <somers__> Why do they fail when set_preselect_mode is early?
+[2018-05-10 19:56:20] <aniketp41> @somers__, The error is: "Auditpipe did not return anything within the time limit" when auditd(8) is already running. But everything works fine when we have to start it from our program. I guess, maybe "service auditd onestatus" has something to do with it. 
+[2018-05-10 19:56:58] <somers__> It shouldn't.  You should try to figure out what's going on.
