@@ -310,3 +310,8 @@
 [2018-05-09 23:17:17] <aniketp41> *ad
 [2018-05-09 23:17:40] <somers__> No, because if auditd(8) is already running, then we don't need to check for auditd startup
 [2018-05-09 23:17:47] <somers__> But it won't hurt.
+[2018-05-10 12:31:23] <aniketp41> @somers__, I tried what you suggested, taking a bitwise OR of "class" and "ad" and then calling the function "set_preselect_mode" before audit_startup, so that we've basically converted the audit_startup_check to local mode with "fc | ad" flags. 
+[2018-05-10 12:31:23] <aniketp41> But it looks like audit of audit_startup doesn't work in local mode. 
+[2018-05-10 12:31:23] <aniketp41> i.e here are the changes in two functions: https://pastebin.com/usn7R72U  
+[2018-05-10 12:32:46] <aniketp41> This time, the tests pass when auditd(8) is already running but get this: "get_records(auditstring, pipestream) not met" when it needs to be started from out program
+[2018-05-10 12:32:55] <aniketp41> *our
