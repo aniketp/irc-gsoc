@@ -276,3 +276,37 @@
 [2018-05-09 21:38:25] <somers__> I think the NAFLAGS change fixed the tests's intermittency
 [2018-05-09 21:48:28] <aniketp41> Quite cool! I'll remove the curly braces and update the diff
 [2018-05-09 21:58:20] <aniketp41> @somers__ updated, https://reviews.freebsd.org/D15286
+[2018-05-09 22:13:24] <aniketp41> @somers__ how are you able to segregate the tabs and spaces? I have set 8 hard width tab in my IDE but sometimes when I'm editing it on the fly with some other editors I miss the tab requirement..
+[2018-05-09 22:13:35] <aniketp41> *between
+[2018-05-09 22:13:59] <aniketp41> It's also hard to notice the difference and spot the mistake
+[2018-05-09 22:14:33] <somers__> In vim, I used this search string to find errant space indentation: "^\t*  "
+[2018-05-09 22:46:40] <aniketp41> @somers__, the tests seemed to work without this line: "SRCS.file-create+= file-create.c"
+[2018-05-09 22:47:00] <aniketp41> i.e, it worked with simply: SRCS.file-create+= utils.c
+[2018-05-09 22:51:48] <somers__> Makes sense
+[2018-05-09 22:57:41] <aniketp41>  Okay I'll update the differential
+[2018-05-09 23:00:19] <somers__> I think I figured out why you were getting the errors in check_audit_startup
+[2018-05-09 23:00:36] <somers__> It's because the preselect mask wasn't set to include class "ad", which is the class for the "audit startup" messages.
+[2018-05-09 23:05:04] <aniketp41> Oh, right! this one -> https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L674
+[2018-05-09 23:05:15] <somers__> Unfortunately, when I try to include it, I get a reproducible panic:
+[2018-05-09 23:05:21] <somers__> panic: Bad tailq NEXT(0xfffff80047450ec8->tqh_last) != NULL
+[2018-05-09 23:05:22] <somers__> cpuid = 1
+[2018-05-09 23:05:22] <somers__> time = 1525906488
+[2018-05-09 23:05:22] <somers__> KDB: stack backtrace:
+[2018-05-09 23:05:22] <somers__> db_trace_self_wrapper() at db_trace_self_wrapper+0x2b/frame 0xfffffe00264488a0
+[2018-05-09 23:05:22] <somers__> vpanic() at vpanic+0x18d/frame 0xfffffe0026448900
+[2018-05-09 23:05:24] <somers__> panic() at panic+0x43/frame 0xfffffe0026448960
+[2018-05-09 23:05:26] <somers__> kaudit_to_bsm() at kaudit_to_bsm+0x5265/frame 0xfffffe0026448a10
+[2018-05-09 23:05:28] <somers__> audit_worker() at audit_worker+0x30d/frame 0xfffffe0026448a70
+[2018-05-09 23:05:30] <somers__> fork_exit() at fork_exit+0x84/frame 0xfffffe0026448ab0
+[2018-05-09 23:05:32] <somers__> fork_trampoline() at fork_trampoline+0xe/frame 0xfffffe0026448ab0
+[2018-05-09 23:05:42] <somers__> I'll update my VM and try to figure out what's going on.
+[2018-05-09 23:06:20] <aniketp41> Are these kernel errors? I haven't seen them before..
+[2018-05-09 23:06:31] <aniketp41> Oh I understand now, kernel panic
+[2018-05-09 23:08:31] <aniketp41> @somers__, do I need to to add preselection flag as "ad" for audit startup. I guess I can "OR" it with the audit mask I'm passing as the argument
+[2018-05-09 23:10:44] <somers__> Yes, that's what I think you should do.
+[2018-05-09 23:11:48] <aniketp41> Okay on it! I guess I'll need to tweak the order of the code of "utils.c"
+[2018-05-09 23:17:01] <aniketp41> Btw, @somers__, is it allowed to set the local preselection flags once then change them later on in the same program?
+[2018-05-09 23:17:01] <aniketp41> Cause I was wondering that if we really need to set "fd" when auditd(8) was already running.. 
+[2018-05-09 23:17:17] <aniketp41> *ad
+[2018-05-09 23:17:40] <somers__> No, because if auditd(8) is already running, then we don't need to check for auditd startup
+[2018-05-09 23:17:47] <somers__> But it won't hurt.
