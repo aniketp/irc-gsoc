@@ -372,3 +372,25 @@
 [2018-05-10 19:44:27] <somers__> Why do they fail when set_preselect_mode is early?
 [2018-05-10 19:56:20] <aniketp41> @somers__, The error is: "Auditpipe did not return anything within the time limit" when auditd(8) is already running. But everything works fine when we have to start it from our program. I guess, maybe "service auditd onestatus" has something to do with it. 
 [2018-05-10 19:56:58] <somers__> It shouldn't.  You should try to figure out what's going on.
+[2018-05-10 20:04:31] <aniketp41> Okay @somers__, BTW do they fail for you?
+[2018-05-10 20:07:32] <somers__> The revision you posted at 12:15 PM MDT fails for me, whether or not auditd is started
+[2018-05-10 20:14:38] <aniketp41> Okay @somers__., so I had updated the revision about 1.5 hours after that. Can you please check if that fails for you as well?  
+[2018-05-10 20:14:38] <aniketp41> Current revision passes for me in both scenarios. But I also had to place "set_preselect_mode" after auditd startup.
+[2018-05-10 20:14:38] <aniketp41> If the current revision passes for you then we can be sure that the placement of that function caused the issue
+[2018-05-10 20:16:54] <somers__> When I move it as you suggest, all the tests pass if auditd is already running.  If it isn't, then most (but not all) tests fail.
+[2018-05-10 20:26:04] <aniketp41> Hmm, I tried out the tests multiple times, it looks the only problem I'm having is when auditd(8) is running and "set_preselect_mode" is placed before audit startup. In all other cases, all tests pass for me. Not sure why some of them fail for you.
+[2018-05-10 20:26:04] <aniketp41> But the placement of the function is causing an issue. Would it be alright if I place it after the audit startup? As I can't seem to understand any race condition here. On the contrary, fixing the race condition causes the issue for sure..
+[2018-05-10 20:27:40] <somers__> There's a difference between fixing a race and winning a race.  With set_preselect_mode after auditd startup, you're winning the race.  That's bad.
+[2018-05-10 20:28:06] <somers__> We can't commit this until the race is eliminated, and that means you need to understand why the tests fail when you do set_preselect_mode early.
+[2018-05-10 21:05:47] <aniketp41> Hi @somers__, I found out the issue. "system("service auditd onestatus");" was causing the problem. When I inserted AUDITPIPE_FLUSH after the auditd startup, the tests passed. 
+[2018-05-10 21:05:47] <aniketp41> Have a look at this code: https://pastebin.com/GgnNpkd1
+[2018-05-10 21:10:26] <somers__> so what was going on?
+[2018-05-10 21:13:23] <somers__> "service auditd onestatus" basically just does "ps -ww".  It doesn't do anything particular to audit(4)
+[2018-05-10 21:13:27] <aniketp41> I'm not sure, I thought that maybe inclusion of "ad" had to do with this but even after I removed it from au_mask, it still did not pass the test. The only conclusion I have is that "system()" call changes some properties of auditon(2) which renders our local mode auditing useless 
+[2018-05-10 21:16:22] <somers__> From the description of AUDITPIPE_FLUSH, it doesn't sound like it would be relevant
+[2018-05-10 21:28:44] <aniketp41> @somers__, does it have to do anything with AUDITPIPE_QLIMIT? I know it doesn't make any sense but this is the most probable explanation I could come up with: Since moving "set_preselect_mask" about "system("service auditd onestatus")" made the tests to pass/fail, and since the system call we desired wasn't coming out of auditpipe, it could mean that auditpipe's maximum limit was reached, and that using "AUDITPIPE_FLUSH" cleaned it up. 
+[2018-05-10 21:28:44] <aniketp41> I found this in the man-page of auditpipe(4): "In particular, when an audit pipe queue fills, records will be dropped."
+[2018-05-10 21:46:48] <somers__> that would make sense
+[2018-05-10 21:46:59] <somers__> You can prove it by checking AUDITPIPE_GET_QLEN
+[2018-05-10 21:48:39] * somers_ (~somers@63-224-80-166.hlrn.qwest.net) join
+[2018-05-10 21:55:24] * somers__ (~somers@63-224-81-231.hlrn.qwest.net) quit Read error: Operation timed out
