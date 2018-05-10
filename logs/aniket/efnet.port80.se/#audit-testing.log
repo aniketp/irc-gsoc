@@ -315,3 +315,13 @@
 [2018-05-10 12:31:23] <aniketp41> i.e here are the changes in two functions: https://pastebin.com/usn7R72U  
 [2018-05-10 12:32:46] <aniketp41> This time, the tests pass when auditd(8) is already running but get this: "get_records(auditstring, pipestream) not met" when it needs to be started from out program
 [2018-05-10 12:32:55] <aniketp41> *our
+[2018-05-10 15:25:35] <somers__> Hey Aniket.  What FreeBSD release are you using?
+[2018-05-10 15:25:45] <somers__> ping @aniketp41
+[2018-05-10 15:47:01] <aniketp41> uname -a gives: "11.1-RELEASE-p4"
+[2018-05-10 15:47:31] <aniketp41> I got the latest VM image that @gnn had given me initially
+[2018-05-10 15:48:21] <somers__> That's why you didn't see the panic that I did
+[2018-05-10 15:48:37] <somers__> I'm using 12.0-CURRENT, which has extra sanity checks enabled
+[2018-05-10 15:53:48] <aniketp41> Oh I see, I'm using the same VM image since the time I started using FreeBSD, so never had to update it
+[2018-05-10 15:53:48] <aniketp41> Btw does it fix the issue of non-emitting of "audit_startup" in auditpipe(4)?
+[2018-05-10 15:54:06] <somers__> nope.  I'm looking at that one now
+[2018-05-10 15:54:42] <somers__> And BTW, 12.0-CURRENT isn't on the upgrade path from 11.1-RELEASE.  12.0-CURRENT is the bleeding edge image built from SVN head.  It's never officially released
