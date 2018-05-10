@@ -325,3 +325,30 @@
 [2018-05-10 15:53:48] <aniketp41> Btw does it fix the issue of non-emitting of "audit_startup" in auditpipe(4)?
 [2018-05-10 15:54:06] <somers__> nope.  I'm looking at that one now
 [2018-05-10 15:54:42] <somers__> And BTW, 12.0-CURRENT isn't on the upgrade path from 11.1-RELEASE.  12.0-CURRENT is the bleeding edge image built from SVN head.  It's never officially released
+[2018-05-10 16:03:37] <somers__> Uh, it looks like the preselect filters are working fine, but you get a few extra events before "audit startup"
+[2018-05-10 16:05:13] <somers__> So I think you just need to loop in check_audit_startup
+[2018-05-10 16:08:28] <aniketp41> Okay, so I essentially need to do the similar stuff as in "check_audit" function, right? somers__
+[2018-05-10 16:08:37] <somers__> yep
+[2018-05-10 16:08:55] <aniketp41> Okay, on it!
+[2018-05-10 16:36:34] <aniketp41> Yes @somers__, the looping worked! So basically I reused "check_audit" in case of changing the "check_audit_startup" (as the code is same in both) and changed a bit of logic. Instead of while(true), I'm doing while("a variable") which is initialized by 1. When get_records() returns true, I'm changing the variable to 0, to end the while loop. (As I can't do "atf_tc_pass()" for audit checkup)
+[2018-05-10 16:36:51] <aniketp41> *in case -> instead
+[2018-05-10 16:41:14] <somers__> makes sense.  Is it ready for review?
+[2018-05-10 17:00:00] <aniketp41> Just a sec. Making some final changes
+[2018-05-10 17:03:54] <aniketp41> @somers__, there was one small issue. Since I'm doing two rounds of "check_audit" now, I can't close the file descriptors in that function as doing that after first round would fail the tests. Is there any work-around this?
+[2018-05-10 17:04:20] <aniketp41> Like passing another boolean argument to "check_audit"
+[2018-05-10 17:05:36] <somers__> How about check_audit and check_startup are both wrappers around a static function that has such as boolean argument.  That way you won't be exposing an argument to the test cases that they'll never use.
+[2018-05-10 17:09:41] <aniketp41> So do you mean having three functions, where check_audit and check_startup would call another function while passing them a boolean argument?
+[2018-05-10 17:16:19] <aniketp41> ping @somers__ 
+[2018-05-10 17:16:44] <somers__> yeah.  Makes the API cleaner
+[2018-05-10 17:35:56] <aniketp41> Hi @somers__, updated the diff!
+[2018-05-10 17:35:56] <aniketp41> Also, had to add back the line "SRCS.file-create+= file-create.c" as apparently the linker issue persists without it. (Earlier I overlooked this somehow)
+[2018-05-10 17:49:08] <aniketp41> @somers__, Isn't "am_failure" required as I'm also testing the failure mode of every syscall? 
+[2018-05-10 17:49:52] <aniketp41> Oh, not for auditd(8), I see
+[2018-05-10 17:49:57] <somers__> am_failure is required for the fc class, but not for ad
+[2018-05-10 17:52:41] <aniketp41> Also, @somers__, since I'll move the cleanup part into "check_audit", I can remove the boolean arguments, right? As I don't need them anymore 
+[2018-05-10 17:52:59] <somers__> yeah
+[2018-05-10 17:56:18] <aniketp41> @somers__, would replacing checkpoint variable with break, break out of the loop? As it now produces a new error for every test-case:
+[2018-05-10 17:56:18] <aniketp41> "failed: Incomplete audit record"
+[2018-05-10 17:56:33] <aniketp41> I guess it's just breaking out of the switch statement
+[2018-05-10 17:56:51] <aniketp41> I guess it's just breaking out of the switch statement
+[2018-05-10 17:57:16] <somers__> If so, you can break out of the loop with a goto
