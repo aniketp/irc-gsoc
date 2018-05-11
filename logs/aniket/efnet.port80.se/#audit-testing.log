@@ -452,3 +452,5 @@
 [2018-05-11 16:27:39] <somers_> But at least 1 is intermittent
 [2018-05-11 19:40:38] <aniketp41> Hello @somers_, can you please run the tests again? I've updated the revision. This time, it looks as if the intermittent issue is (hopefully) gone. I also might have found a similar problem in bsmtrace code
 [2018-05-11 19:41:08] <somers_> will do
+[2018-05-11 20:11:14] <somers_> Now, when audit isn't already running, about 25% of the tests pass and the rest timeout.  But it's a different 25% each time.
+[2018-05-11 20:21:21] <aniketp41> @somers_, Not sure why the tests fail for you. I did have a few intermittent audit incomplete errors earlier but now I've tried various things, i.e rebooting my VM and quickly running the tests again but they never seem to fail. I also pushed the limits by running three instances of tests but it passed even then.
