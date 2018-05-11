@@ -412,3 +412,8 @@
 [2018-05-11 08:53:45] <rwatson> aniketp41: Note that FLUSH only flushes the current audit pipe's buffer, not the audit event queue from system-call commit
 [2018-05-11 08:54:12] <rwatson> aniketp41: I believe if you update selection rules, and flush, you should then only see records after the flush returns that conform to the rules
 [2018-05-11 08:54:16] <rwatson> aniketp41: if this is not the case, we may have a bug
+[2018-05-11 11:51:43] <aniketp41> Yes @rwatson, flush worked as it is supposed to, we were only getting the audit_events corresponding to the flag & naflag we had set earlier, after flush returns. The issue was that what Q_LEN returned is way less than Q_LIMIT (contrary to what we expected)
+[2018-05-11 11:53:22] <aniketp41> Hi @somers_, I placed a ioctl function to return Q_LEN and Q_LIMIT right before we call check_audit(): https://pastebin.com/nEsVnLju
+[2018-05-11 11:53:45] <aniketp41> But even now Q_LEN returns 2, (I had removed the flush part earlier)
+[2018-05-11 11:54:55] <aniketp41> Note: I couldn't get printf() to show anything on stdout so instead I set the breakpoint as atf_tc_fail() which returned the value of "apple"
+[2018-05-11 11:59:07] <aniketp41> My take here is: we've used clock_gettime() a lot of times and it's complement : clock_settime(2) was listed as "ad". So is it possible that clock_gettime fills up the queue?
