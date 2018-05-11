@@ -409,3 +409,6 @@
 [2018-05-10 22:49:01] <somers_> We still aren't 100% sure that this FLUSH fixes the real problem.  I think you need to disable the flush, then check the QLEN after generating all auditable events but before reading from the auditpipe in check_audit
 [2018-05-10 22:55:04] <aniketp41> @somers_, But does Kyua let me print values to STDOUT? Or should I just compare QLEN with QLIMIT?
 [2018-05-10 22:55:28] <somers_> Sure.  You can printf to your heart's content
+[2018-05-11 08:53:45] <rwatson> aniketp41: Note that FLUSH only flushes the current audit pipe's buffer, not the audit event queue from system-call commit
+[2018-05-11 08:54:12] <rwatson> aniketp41: I believe if you update selection rules, and flush, you should then only see records after the flush returns that conform to the rules
+[2018-05-11 08:54:16] <rwatson> aniketp41: if this is not the case, we may have a bug
