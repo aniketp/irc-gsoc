@@ -394,3 +394,18 @@
 [2018-05-10 21:46:59] <somers__> You can prove it by checking AUDITPIPE_GET_QLEN
 [2018-05-10 21:48:39] * somers_ (~somers@63-224-80-166.hlrn.qwest.net) join
 [2018-05-10 21:55:24] * somers__ (~somers@63-224-81-231.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-10 22:28:43] <aniketp41> I did an independent experiment for this. AUDITPIPE_GET_QLEN returned "1" when auditd was already running and "3" when it had to be started?
+[2018-05-10 22:29:02] <aniketp41> So is this fix legitimate? As in, shall I update the differential?
+[2018-05-10 22:29:12] <aniketp41> ping @somers_ 
+[2018-05-10 22:30:24] <somers_> Only 3?  It would be very surprising if the limit were that low.
+[2018-05-10 22:34:20] <aniketp41> @somers_, here is the makeshift code I used: https://pastebin.com/akTduSVk
+[2018-05-10 22:37:05] <somers_> I think you're checking the qlen in the wrong place.  The hypothetical failure condition is that the queue fills up before the test calls check_audit.  So you should check the queue depth at that point, and compare it to the limit
+[2018-05-10 22:43:40] <aniketp41> @somers_, so I included random "fc" system calls before checking QLEN, it seems as if each event increases QLEN by 1. While QLIMIT was 128
+[2018-05-10 22:43:40] <aniketp41> Have a look at this code and its output: https://pastebin.com/AtVHit1w
+[2018-05-10 22:44:04] <aniketp41> QLIMIT seems to be much more than the number of queued events
+[2018-05-10 22:45:00] <somers_> But this is just a toy program.  In your real test case, Kyua also creates a bunch of auditable events
+[2018-05-10 22:46:08] <aniketp41> Yes, that makes sense. I was monitoring "praudit /dev/auditpipe" from another window while running the test cases, there were huge number of "openat(2)" system calls alongwith the main syscall
+[2018-05-10 22:47:48] <aniketp41> So @somers_, will this fix do? Or is there something else that I need to take care of?
+[2018-05-10 22:49:01] <somers_> We still aren't 100% sure that this FLUSH fixes the real problem.  I think you need to disable the flush, then check the QLEN after generating all auditable events but before reading from the auditpipe in check_audit
+[2018-05-10 22:55:04] <aniketp41> @somers_, But does Kyua let me print values to STDOUT? Or should I just compare QLEN with QLIMIT?
+[2018-05-10 22:55:28] <somers_> Sure.  You can printf to your heart's content
