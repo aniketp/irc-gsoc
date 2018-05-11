@@ -417,3 +417,33 @@
 [2018-05-11 11:53:45] <aniketp41> But even now Q_LEN returns 2, (I had removed the flush part earlier)
 [2018-05-11 11:54:55] <aniketp41> Note: I couldn't get printf() to show anything on stdout so instead I set the breakpoint as atf_tc_fail() which returned the value of "apple"
 [2018-05-11 11:59:07] <aniketp41> My take here is: we've used clock_gettime() a lot of times and it's complement : clock_settime(2) was listed as "ad". So is it possible that clock_gettime fills up the queue?
+[2018-05-11 14:24:35] <somers_> @aniketp41 Kyua suppresses stdout from passing test cases.  If you want to see stdout, you can do "kyua debug test_program:test_case"
+[2018-05-11 14:38:09] <somers_> Just add this code to check_audit and you will see that the queue does indeed fill up when set_preselect_mode comes before starting auditd:
+[2018-05-11 14:38:16] <somers_> void
+[2018-05-11 14:38:16] <somers_> check_audit(struct pollfd fd[], const char *auditrgx, FILE *pipestream) {
+[2018-05-11 14:38:16] <somers_> 	int qlimit, qlen;
+[2018-05-11 14:38:16] <somers_> 	ioctl(fd[0].fd, AUDITPIPE_GET_QLIMIT, &qlimit);
+[2018-05-11 14:38:16] <somers_> 	ioctl(fd[0].fd, AUDITPIPE_GET_QLEN, &qlen);
+[2018-05-11 14:38:16] <somers_> 	printf("qlen=%d qlimit=%d\n", qlen, qlimit);
+[2018-05-11 14:38:18] <somers_> 	check_auditpipe(fd, auditrgx, pipestream);
+[2018-05-11 14:38:20] <somers_> 	/* Cleanup */
+[2018-05-11 14:38:22] <somers_> 	fclose(pipestream);
+[2018-05-11 14:38:24] <somers_> 	close(fd[0].fd);
+[2018-05-11 14:38:26] <somers_> }
+[2018-05-11 14:38:43] <somers_> Adding the AUDITPIPE_FLUSH at the end of setup fixes the queue length issue, but reveals another problem
+[2018-05-11 15:00:01] <aniketp41> @somers_, I added this code snippet to check_audit() and kyua debug provided a good insight into what was actually going on. However, qlen still returns 2 to me. https://pastebin.com/7dkRXnFh
+[2018-05-11 15:03:25] <somers_> Did you put set_preselect_mode *before* starting auditd?
+[2018-05-11 15:05:14] <aniketp41> Yes @somers_, here is my setup function: https://pastebin.com/W9YnbqCr
+[2018-05-11 15:15:56] <aniketp41> Also @somers_, the part where test fails: "when auditd is already running and we don't have any AUDITPIPE_FLUSH", I was also checking the /dev/auditpipe from another window and it seems that "kyua debug" only checks till an openat(2) function which occurs right before "mkdir(2)". 
+[2018-05-11 15:16:55] <somers_> You can't check "the auditpipe" from another window.  Every time you open /dev/auditpipe, you're getting a unique device with potentially different configuration
+[2018-05-11 15:17:31] <somers_> Kyua will keep reading from auditpipe until your test case either passes or fails; you're in total control of that
+[2018-05-11 15:18:39] <aniketp41> Yes so my global config is flag:"fc" and mkdir(2) was being audited there. Not sure why the auditpipe opened from program failed. It's like it was stuck right before mkdir(2) call.  
+[2018-05-11 15:20:32] <somers_> The default audit_control configuration is to have both flags and naflags set to "lo,aa".  That's how the test will most often be run, and that's where you should be focusing your efforts too
+[2018-05-11 15:22:05] <aniketp41> Okay @somers_, btw was "qlen" equal to "qlimit" in your case? 
+[2018-05-11 15:22:31] <somers_> Yes, at 128
+[2018-05-11 15:50:15] <aniketp41> @somers_ It still shows qlen=2 for me everytime, and I added few miscellaneous events just to confirm if qlen returns anything other than 2, and it was showing certain increase in its value. However, it never reaches 128.
+[2018-05-11 15:50:15] <aniketp41> Is it possible that our code utils.c is different?
+[2018-05-11 15:50:15] <aniketp41> Although, I'm also using a variant of the one which is in the current diff
+[2018-05-11 15:57:16] <aniketp41> Btw @somers_, you mentioned that this fix reveals another problem. What was it?
+[2018-05-11 15:57:48] <somers_> When I add the flush, the test fails with this error, whether or not auditd is already running:
+[2018-05-11 15:57:56] <somers_> file-create:symlinkat_success  ->  failed: Incomplete audit record
