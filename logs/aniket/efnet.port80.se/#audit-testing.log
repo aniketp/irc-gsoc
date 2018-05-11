@@ -447,3 +447,6 @@
 [2018-05-11 15:57:16] <aniketp41> Btw @somers_, you mentioned that this fix reveals another problem. What was it?
 [2018-05-11 15:57:48] <somers_> When I add the flush, the test fails with this error, whether or not auditd is already running:
 [2018-05-11 15:57:56] <somers_> file-create:symlinkat_success  ->  failed: Incomplete audit record
+[2018-05-11 16:00:46] <aniketp41> Was it for this particular case or did all tests fail?
+[2018-05-11 16:19:01] <somers_> With auditd stopped, all test cases fail
+[2018-05-11 16:27:39] <somers_> But at least 1 is intermittent
