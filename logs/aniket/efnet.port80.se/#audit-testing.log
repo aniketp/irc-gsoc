@@ -454,3 +454,10 @@
 [2018-05-11 19:41:08] <somers_> will do
 [2018-05-11 20:11:14] <somers_> Now, when audit isn't already running, about 25% of the tests pass and the rest timeout.  But it's a different 25% each time.
 [2018-05-11 20:21:21] <aniketp41> @somers_, Not sure why the tests fail for you. I did have a few intermittent audit incomplete errors earlier but now I've tried various things, i.e rebooting my VM and quickly running the tests again but they never seem to fail. I also pushed the limits by running three instances of tests but it passed even then.
+[2018-05-11 23:05:35] <aniketp41> Hi @somers_, what should be the course of action now, since we've got conflict in test results?
+[2018-05-11 23:06:02] <somers_> You need to figure out why they sometimes time out
+[2018-05-11 23:06:27] <somers_> And why you get the "incomplete record" errors
+[2018-05-11 23:12:40] <aniketp41> @somers, I haven't been getting any timeout errors recently. I'm not sure how I'd reproduce those errors back. And the "incomplete audit records" errors occur when au_fetch_tok returns "-1". One issue I could come up with was the "reclen-bytes" might be less than "token.len" but you said that it was not possible. So I'm  kind of stuck here..
+[2018-05-11 23:12:58] <aniketp41> @somers_ 
+[2018-05-11 23:14:07] <somers_> You can look at the implementation of au_fetch_tok and au_read_rec to gain insights about the "incomplete audit record" error.
+[2018-05-11 23:14:11] <somers_> It's in contrib/openbsm
