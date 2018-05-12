@@ -461,3 +461,9 @@
 [2018-05-11 23:12:58] <aniketp41> @somers_ 
 [2018-05-11 23:14:07] <somers_> You can look at the implementation of au_fetch_tok and au_read_rec to gain insights about the "incomplete audit record" error.
 [2018-05-11 23:14:11] <somers_> It's in contrib/openbsm
+[2018-05-12 14:27:15] <aniketp41> Hello @somers_, I had been looking at the code of "au_fetch_tok" and all the subsequent "fetch_header**tok" functions it calls and it looks like the only time it returns (-1) is when the length of a given token (tok->len) along with sizeof(u_int**_t) is more than the third argument of au_fetch_tok(), i.e "reclen  - bytesread". 
+[2018-05-12 14:27:15] <aniketp41> Which probably should be the case with the "incomplete audit record" errors you've been getting. 
+[2018-05-12 14:31:24] <aniketp41> When I replaced "reclen - bytesread" with "reclen" it seemed to fix the issue since we're never reducing the "len" argument and that length of the entire audit record will obviously be more than any particular token. So the error condition never happened then
+[2018-05-12 14:33:27] <aniketp41> I'm not getting timeout errors anymore, but it looks like this might again be similar to what we were getting initially, and that introduction of "AUDITPIPE_FLUSH" seemed to correct it. This time I think maybe placing AUDITPIPE_FLUSH right before calling "check_audit" might help?
+[2018-05-12 15:34:04] <aniketp41> ping @somers_ 
+[2018-05-12 15:53:06] <somers_> You may not increase the length of au_fetch_tok's third argument beyond the size of the buffer you supply to it.  Buffer overflows are not ok.
