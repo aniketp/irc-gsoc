@@ -467,3 +467,203 @@
 [2018-05-12 14:33:27] <aniketp41> I'm not getting timeout errors anymore, but it looks like this might again be similar to what we were getting initially, and that introduction of "AUDITPIPE_FLUSH" seemed to correct it. This time I think maybe placing AUDITPIPE_FLUSH right before calling "check_audit" might help?
 [2018-05-12 15:34:04] <aniketp41> ping @somers_ 
 [2018-05-12 15:53:06] <somers_> You may not increase the length of au_fetch_tok's third argument beyond the size of the buffer you supply to it.  Buffer overflows are not ok.
+[2018-05-12 16:14:01] <aniketp41> Then @somers_, is it possible that au_read_rec might not return the exact length of audit record? That might explain why sometimes "reclen - bytesread" is not greater than or equal to "tok.len"
+[2018-05-12 16:14:12] <aniketp41> As in, a bug in that function?
+[2018-05-12 16:15:01] <aniketp41> I found this comment by @rwatson here: /*-
+[2018-05-12 16:15:01] <aniketp41>  * Copyright 2018 Aniket Pandey
+[2018-05-12 16:15:01] <aniketp41>  * All rights reserved.
+[2018-05-12 16:15:01] <aniketp41>  *
+[2018-05-12 16:15:01] <aniketp41>  * Redistribution and use in source and binary forms, with or without
+[2018-05-12 16:15:01] <aniketp41>  * modification, are permitted provided that the following conditions
+[2018-05-12 16:15:01] <aniketp41>  * are met:
+[2018-05-12 16:15:01] <aniketp41>  * 1. Redistributions of source code must retain the above copyright
+[2018-05-12 16:15:01] <aniketp41>  *    notice, this list of conditions and the following disclaimer.
+[2018-05-12 16:15:01] <aniketp41>  * 2. Redistributions in binary form must reproduce the above copyright
+[2018-05-12 16:15:01] <aniketp41>  *    notice, this list of conditions and the following disclaimer in the
+[2018-05-12 16:15:01] <aniketp41>  *    documentation and/or other materials provided with the distribution.
+[2018-05-12 16:15:01] <aniketp41>  *
+[2018-05-12 16:15:01] <aniketp41>  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+[2018-05-12 16:15:01] <aniketp41>  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+[2018-05-12 16:15:01] <aniketp41>  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+[2018-05-12 16:15:01] <aniketp41>  * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+[2018-05-12 16:15:01] <aniketp41>  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+[2018-05-12 16:15:01] <aniketp41>  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+[2018-05-12 16:15:01] <aniketp41>  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+[2018-05-12 16:15:01] <aniketp41>  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+[2018-05-12 16:15:01] <aniketp41>  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+[2018-05-12 16:15:01] <aniketp41>  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+[2018-05-12 16:15:01] <aniketp41>  * SUCH DAMAGE.
+[2018-05-12 16:15:01] <aniketp41>  *
+[2018-05-12 16:15:01] <aniketp41>  * $FreeBSD$
+[2018-05-12 16:15:01] <aniketp41>  */
+[2018-05-12 16:15:01] <aniketp41> #include <sys/ioctl.h>
+[2018-05-12 16:15:01] <aniketp41> #include <time.h>
+[2018-05-12 16:15:01] <aniketp41> #include <errno.h>
+[2018-05-12 16:15:01] <aniketp41> #include <fcntl.h>
+[2018-05-12 16:15:01] <aniketp41> #include <atf-c.h>
+[2018-05-12 16:15:01] <aniketp41> #include <string.h>
+[2018-05-12 16:15:01] <aniketp41> #include <stdlib.h>
+[2018-05-12 16:15:01] <aniketp41> #include <unistd.h>
+[2018-05-12 16:15:01] <aniketp41> #include <bsm/libbsm.h>
+[2018-05-12 16:15:01] <aniketp41> #include <security/audit/audit_ioctl.h>
+[2018-05-12 16:15:01] <aniketp41> #include "utils.h"
+[2018-05-12 16:15:01] <aniketp41>  * Checks the presence of "auditregex" in auditpipe(4) after the
+[2018-05-12 16:15:01] <aniketp41>  * corresponding system call has been triggered.
+[2018-05-12 16:15:01] <aniketp41>  */
+[2018-05-12 16:15:01] <aniketp41> static bool
+[2018-05-12 16:15:01] <aniketp41> get_records(const char *auditregex, FILE *pipestream)
+[2018-05-12 16:15:01] <aniketp41> {
+[2018-05-12 16:15:01] <aniketp41> 	uint8_t *buff;
+[2018-05-12 16:15:01] <aniketp41> 	tokenstr_t token;
+[2018-05-12 16:15:01] <aniketp41> 	ssize_t size = 1024;
+[2018-05-12 16:15:01] <aniketp41> 	char membuff[size];
+[2018-05-12 16:15:01] <aniketp41> 	char del[] = ",";
+[2018-05-12 16:15:01] <aniketp41> 	int reclen, bytes = 0;
+[2018-05-12 16:15:01] <aniketp41> 	FILE *memstream;
+[2018-05-12 16:15:01] <aniketp41> 	/*
+[2018-05-12 16:15:01] <aniketp41> 	 * Open a stream on 'membuff' (address to memory buffer) for storing
+[2018-05-12 16:15:01] <aniketp41> 	 * the audit records in the default mode.'reclen' is the length of the
+[2018-05-12 16:15:01] <aniketp41> 	 * available records from auditpipe which is passed to the functions
+[2018-05-12 16:15:01] <aniketp41> 	 * au_fetch_tok(3) and au_print_flags_tok(3) for further use.
+[2018-05-12 16:15:01] <aniketp41> 	 */
+[2018-05-12 16:15:01] <aniketp41> 	memstream = fmemopen(membuff, size, "w");
+[2018-05-12 16:15:01] <aniketp41> 	reclen = au_read_rec(pipestream, &buff);
+[2018-05-12 16:15:01] <aniketp41> 	/*
+[2018-05-12 16:15:01] <aniketp41> 	 * Iterate through each BSM token, extracting the bits that are
+[2018-05-12 16:15:01] <aniketp41> 	 * required to start processing the token sequences.
+[2018-05-12 16:15:01] <aniketp41> 	 */
+[2018-05-12 16:15:01] <aniketp41> 	while (bytes < reclen) {
+[2018-05-12 16:15:01] <aniketp41> 		if (au_fetch_tok(&token, buff + bytes, reclen) == -1)
+[2018-05-12 16:15:01] <aniketp41> 			atf_tc_fail("Incomplete audit record");
+[2018-05-12 16:15:01] <aniketp41> 		/* Print the tokens as they are obtained, in the default form */
+[2018-05-12 16:15:01] <aniketp41> 		au_print_flags_tok(memstream, &token, (char *)del, AU_OFLAG_NONE);
+[2018-05-12 16:15:01] <aniketp41> 		bytes += token.len;
+[2018-05-12 16:15:01] <aniketp41> 	}
+[2018-05-12 16:15:01] <aniketp41> 	free(buff);
+[2018-05-12 16:15:01] <aniketp41> 	fclose(memstream);
+[2018-05-12 16:15:01] <aniketp41> 	return (atf_utils_grep_string("%s", membuff, auditregex));
+[2018-05-12 16:15:01] <aniketp41> }
+[2018-05-12 16:15:01] <aniketp41>  * Override the system-wide audit mask settings in /etc/security/audit_control
+[2018-05-12 16:15:01] <aniketp41>  */
+[2018-05-12 16:15:01] <aniketp41> static void
+[2018-05-12 16:15:01] <aniketp41> set_preselect_mode(int filedesc, au_mask_t *fmask)
+[2018-05-12 16:15:01] <aniketp41> {
+[2018-05-12 16:15:01] <aniketp41> 	int fmode = AUDITPIPE_PRESELECT_MODE_LOCAL;
+[2018-05-12 16:15:01] <aniketp41> 	/* Set local preselection mode for auditing */
+[2018-05-12 16:15:01] <aniketp41> 	if (ioctl(filedesc, AUDITPIPE_SET_PRESELECT_MODE, &fmode) < 0)
+[2018-05-12 16:15:01] <aniketp41> 		atf_tc_fail("Preselection mode: %s", strerror(errno));
+[2018-05-12 16:15:01] <aniketp41> 	/* Set local preselection flag corresponding to the audit_event */
+[2018-05-12 16:15:01] <aniketp41> 	if (ioctl(filedesc, AUDITPIPE_SET_PRESELECT_FLAGS, fmask) < 0)
+[2018-05-12 16:15:01] <aniketp41> 		atf_tc_fail("Preselection flag: %s", strerror(errno));
+[2018-05-12 16:15:01] <aniketp41> 	/* Set local preselection flag for non-attributable audit_events */
+[2018-05-12 16:15:01] <aniketp41> 	if (ioctl(filedesc, AUDITPIPE_SET_PRESELECT_NAFLAGS, fmask) < 0)
+[2018-05-12 16:15:01] <aniketp41> 		atf_tc_fail("Preselection flag: %s", strerror(errno));
+[2018-05-12 16:15:01] <aniketp41> }
+[2018-05-12 16:15:01] <aniketp41>  * Get the corresponding audit_mask for class-name "name" then set the
+[2018-05-12 16:15:01] <aniketp41>  * success and failure bits for fmask to be used as the ioctl argument
+[2018-05-12 16:15:01] <aniketp41>  */
+[2018-05-12 16:15:01] <aniketp41> static au_mask_t
+[2018-05-12 16:15:01] <aniketp41> get_audit_mask(const char *name)
+[2018-05-12 16:15:01] <aniketp41> {
+[2018-05-12 16:15:01] <aniketp41> 	au_mask_t fmask;
+[2018-05-12 16:15:01] <aniketp41> 	au_class_ent_t *class;
+[2018-05-12 16:15:01] <aniketp41> 	ATF_REQUIRE((class = getauclassnam(name)) != NULL);
+[2018-05-12 16:15:01] <aniketp41> 	fmask.am_success = class->ac_class;
+[2018-05-12 16:15:01] <aniketp41> 	fmask.am_failure = class->ac_class;
+[2018-05-12 16:15:01] <aniketp41> 	ATF_REQUIRE((class = getauclassnam("ad")) != NULL);
+[2018-05-12 16:15:01] <aniketp41> 	fmask.am_success |= class->ac_class;
+[2018-05-12 16:15:01] <aniketp41> 	return (fmask);
+[2018-05-12 16:15:01] <aniketp41> }
+[2018-05-12 16:15:01] <aniketp41>  * Loop until the auditpipe returns something, check if it is what
+[2018-05-12 16:15:01] <aniketp41>  * we want, else repeat the procedure until ppoll(2) times out.
+[2018-05-12 16:15:01] <aniketp41>  */
+[2018-05-12 16:15:01] <aniketp41> static void
+[2018-05-12 16:15:01] <aniketp41> check_auditpipe(struct pollfd fd[], const char *auditregex, FILE *pipestream)
+[2018-05-12 16:15:01] <aniketp41> {
+[2018-05-12 16:15:01] <aniketp41> 	struct timespec currtime, endtime, timeout;
+[2018-05-12 16:15:01] <aniketp41> 	/* Set the expire time for poll(2) while waiting for syscall audit */
+[2018-05-12 16:15:01] <aniketp41> 	ATF_REQUIRE_EQ(0, clock_gettime(CLOCK_MONOTONIC, &endtime));
+[2018-05-12 16:15:01] <aniketp41> 	endtime.tv_sec += 5;
+[2018-05-12 16:15:01] <aniketp41> 	timeout.tv_nsec = endtime.tv_nsec;
+[2018-05-12 16:15:01] <aniketp41> 	for (;;) {
+[2018-05-12 16:15:01] <aniketp41> 		/* Update the time left for auditpipe to return any event */
+[2018-05-12 16:15:01] <aniketp41> 		ATF_REQUIRE_EQ(0, clock_gettime(CLOCK_MONOTONIC, &currtime));
+[2018-05-12 16:15:01] <aniketp41> 		timeout.tv_sec = endtime.tv_sec - currtime.tv_sec;
+[2018-05-12 16:15:01] <aniketp41> 		switch (ppoll(fd, 1, &timeout, NULL)) {
+[2018-05-12 16:15:01] <aniketp41> 		/* ppoll(2) returns, check if it's what we want */
+[2018-05-12 16:15:01] <aniketp41> 		case 1:
+[2018-05-12 16:15:01] <aniketp41> 			if (fd[0].revents & POLLIN) {
+[2018-05-12 16:15:01] <aniketp41> 				if (get_records(auditregex, pipestream))
+[2018-05-12 16:15:01] <aniketp41> 					return;
+[2018-05-12 16:15:01] <aniketp41> 			} else {
+[2018-05-12 16:15:01] <aniketp41> 				atf_tc_fail("Auditpipe returned an "
+[2018-05-12 16:15:01] <aniketp41> 				"unknown event %#x", fd[0].revents);
+[2018-05-12 16:15:01] <aniketp41> 			}
+[2018-05-12 16:15:01] <aniketp41> 			break;
+[2018-05-12 16:15:01] <aniketp41> 		/* poll(2) timed out */
+[2018-05-12 16:15:01] <aniketp41> 		case 0:
+[2018-05-12 16:15:01] <aniketp41> 			atf_tc_fail("Auditpipe did not return anything "
+[2018-05-12 16:15:01] <aniketp41> 					"within the time limit");
+[2018-05-12 16:15:01] <aniketp41> 			break;
+[2018-05-12 16:15:01] <aniketp41> 		/* poll(2) standard error */
+[2018-05-12 16:15:01] <aniketp41> 		case -1:
+[2018-05-12 16:15:01] <aniketp41> 			atf_tc_fail("Poll: %s", strerror(errno));
+[2018-05-12 16:15:01] <aniketp41> 			break;
+[2018-05-12 16:15:01] <aniketp41> 		default:
+[2018-05-12 16:15:01] <aniketp41> 			atf_tc_fail("Poll returned an unknown event");
+[2018-05-12 16:15:01] <aniketp41> 		}
+[2018-05-12 16:15:01] <aniketp41> 	}
+[2018-05-12 16:15:01] <aniketp41> }
+[2018-05-12 16:15:01] <aniketp41>  * Wrapper functions around static "check_auditpipe"
+[2018-05-12 16:15:01] <aniketp41>  */
+[2018-05-12 16:15:01] <aniketp41> static void
+[2018-05-12 16:15:01] <aniketp41> check_audit_startup(struct pollfd fd[], const char *auditrgx, FILE *pipestream) {
+[2018-05-12 16:15:01] <aniketp41> 	check_auditpipe(fd, auditrgx, pipestream);
+[2018-05-12 16:15:01] <aniketp41> }
+[2018-05-12 16:15:01] <aniketp41> void
+[2018-05-12 16:15:01] <aniketp41> check_audit(struct pollfd fd[], const char *auditrgx, FILE *pipestream) {
+[2018-05-12 16:15:01] <aniketp41> 	check_auditpipe(fd, auditrgx, pipestream);
+[2018-05-12 16:15:01] <aniketp41> 	/* Cleanup */
+[2018-05-12 16:15:01] <aniketp41> 	fclose(pipestream);
+[2018-05-12 16:15:01] <aniketp41> 	close(fd[0].fd);
+[2018-05-12 16:15:01] <aniketp41> }
+[2018-05-12 16:15:01] <aniketp41> FILE
+[2018-05-12 16:15:01] <aniketp41> *setup(struct pollfd fd[], const char *name)
+[2018-05-12 16:15:01] <aniketp41> {
+[2018-05-12 16:15:01] <aniketp41> 	au_mask_t fmask;
+[2018-05-12 16:15:01] <aniketp41> 	fmask = get_audit_mask(name);
+[2018-05-12 16:15:01] <aniketp41> 	FILE *pipestream;
+[2018-05-12 16:15:01] <aniketp41> 	fd[0].fd = open("/dev/auditpipe", O_RDONLY);
+[2018-05-12 16:15:01] <aniketp41> 	fd[0].events = POLLIN;
+[2018-05-12 16:15:01] <aniketp41> 	pipestream = fdopen(fd[0].fd, "r");
+[2018-05-12 16:15:01] <aniketp41> 	set_preselect_mode(fd[0].fd, &fmask);
+[2018-05-12 16:15:01] <aniketp41> 	ATF_REQUIRE_EQ(0, system("service auditd onestatus || \
+[2018-05-12 16:15:01] <aniketp41> 	{ service auditd onestart && touch started_auditd ; }"));
+[2018-05-12 16:15:01] <aniketp41> 	/* This removes any outstanding record on the auditpipe */
+[2018-05-12 16:15:01] <aniketp41> 	if (ioctl(fd[0].fd, AUDITPIPE_FLUSH) < 0)
+[2018-05-12 16:15:01] <aniketp41> 		atf_tc_fail("Auditpipe flush: %s", strerror(errno));
+[2018-05-12 16:15:01] <aniketp41> 	/* If 'started_auditd' exists, that means we started auditd(8) */
+[2018-05-12 16:15:01] <aniketp41> 	if (atf_utils_file_exists("started_auditd"))
+[2018-05-12 16:15:01] <aniketp41> 		check_audit_startup(fd, "audit startup", pipestream);
+[2018-05-12 16:15:01] <aniketp41> 	return (pipestream);
+[2018-05-12 16:15:01] <aniketp41> }
+[2018-05-12 16:15:01] <aniketp41> void
+[2018-05-12 16:15:01] <aniketp41> cleanup(void)
+[2018-05-12 16:15:01] <aniketp41> {
+[2018-05-12 16:15:01] <aniketp41> 	system("[ -f started_auditd ] && service auditd onestop > \
+[2018-05-12 16:15:01] <aniketp41> 		/dev/null 2>&1");
+[2018-05-12 16:15:01] <aniketp41> }
+[2018-05-12 16:15:02] * aniketp41 (~aniketp41@159.65.149.37) quit Excess Flood
+[2018-05-12 16:15:17] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-05-12 16:15:35] <aniketp41> Oh sorry that was the wrong paste 
+[2018-05-12 16:15:49] <aniketp41> Here: https://github.com/openbsm/openbsm/blob/master/libbsm/bsm_io.c#L4669
+[2018-05-12 16:43:55] <aniketp41> Hi @rwatson, is it possible that audit records might not have complete audit tokens or contain few erroneous data?
+[2018-05-12 16:45:54] <aniketp41> I had a look at the source code of "au_read_rec" and I couldn't find any anomaly, however if for some reason the audit record is corrupted even before au_read_rec reads it into a buffer, we might not be able to get complete and santized tokens..
+[2018-05-12 17:24:40] <somers_> Does your program actually check that au_read_rec doesn't return an error?
+[2018-05-12 17:39:00] <aniketp41> Not until now, I've added an ATF_REQUIRE check on au_read_rec function. But my tests aren't failing so I can't see if there is any difference.. @somers_, can you add that check and see if the result is any different?
+[2018-05-12 17:39:19] <somers_> Sure
+[2018-05-12 17:44:48] <somers_> are you going to send me the code?
+[2018-05-12 17:46:41] <aniketp41> Oh, sorry. Yes here is my utils.c : https://pastebin.com/2byYdEJ2
+[2018-05-12 17:46:41] <aniketp41> somers_
+[2018-05-12 17:48:36] <somers_> It's hard to tell what the difference is.  Can you upload it to Phabricator, or at least send me a diff vs what's in Phabricator?
+[2018-05-12 17:54:09] <aniketp41> Okay, @somers_. I've updated the review. Please have a look
