@@ -667,3 +667,33 @@
 [2018-05-12 17:46:41] <aniketp41> somers_
 [2018-05-12 17:48:36] <somers_> It's hard to tell what the difference is.  Can you upload it to Phabricator, or at least send me a diff vs what's in Phabricator?
 [2018-05-12 17:54:09] <aniketp41> Okay, @somers_. I've updated the review. Please have a look
+[2018-05-12 18:00:54] <somers_> Same as before.  Most tests timed out if auditd wasn't already running.
+[2018-05-12 18:03:42] <aniketp41> So there wasn't any "incomplete audit record" error? @somers_ 
+[2018-05-12 18:03:42] <aniketp41> Also, about timeout errors, what if we move the flush part right before infinite for loop? Cause if the tests timeout just in case auditd(8) isn't already running, that means we have issue in auditing "audit startup"
+[2018-05-12 18:04:24] <aniketp41> And that audit record isn't incomplete since tests pass for "auditd" already running scenario
+[2018-05-12 18:05:34] <somers_> I think you're probably still overflowing the queue length.  One thing you could do would be to increase the queue length.  Another would be to flush the queue after the "audit startup" message.  Another would be to deselect the "ad" class after the auditd startup
+[2018-05-12 18:05:35] <aniketp41> Though is it possible that even though I update the diff, our "utils.c" is not exactly same? In that case please check the tests by using the utils.c from pastebin
+[2018-05-12 18:08:06] <aniketp41> @somers_, tests aren't failing for me so I'll not be able to check any difference. Can you please try these changes on your machine and see if it works. Queue overflow might be an explanation in your case cause when your Q_LEN showed 128, mine was only 2..
+[2018-05-12 18:08:08] <somers_> I used exactly what you posted to Phabricator
+[2018-05-12 18:09:20] <somers_> Do you run your tests with sudo, or do you login as root?
+[2018-05-12 18:09:53] <aniketp41> Yes I'm working as a root. I removed my user as I didn't need it
+[2018-05-12 18:14:05] <somers_> It's possible that sudo produces extra auditable events, making it more likely for the queue to overflow
+[2018-05-12 18:14:59] <aniketp41> Okay I'll try to run these tests as a user with sudo
+[2018-05-12 18:15:05] <aniketp41> @somers_ 
+[2018-05-12 18:17:45] <aniketp41> @somers_, they passed as sudo too: https://pastebin.com/eWqHnSDn
+[2018-05-12 18:22:12] <aniketp41> @somers_, can we try setting Q_LIMIT to see if it works? or maybe calling AUDITPIPE_FLUSH both before and after "audit_check"
+[2018-05-12 18:23:29] <somers_> yeah, I'm trying that now
+[2018-05-12 18:33:20] <somers_> Flushing the pipe before and after "audit startup" increases the pass rate.  Raising the queue size has about the same effect.  Doing both results in a really annoying pass rate of 99% or so.
+[2018-05-12 18:35:37] <aniketp41> Looks like there are a hell lot events being generated on your machine? Maybe a lot of administrative "ad" events are also getting audited..
+[2018-05-12 18:37:26] <aniketp41> BTW @somers_, Is there a limit on how much we can raise Q_LIMIT? maybe we can make it the maximum it can be
+[2018-05-12 18:38:00] <somers_> Yeah, there's an ioctl that will tell you what the max is.  That's what I'm using, and it's 1024
+[2018-05-12 18:49:39] <aniketp41> @somers_, I think my placement of AUDITPIPE_FLUSH was wrong earlier, I should've placed it once before "audit startup" and another after "check_audit_startup". I placed it between them
+[2018-05-12 18:50:45] <aniketp41> I think that might have erased "audit startup" event from your auditpipe in case it was not already running. That might explain why they failed for you?
+[2018-05-12 18:50:45] <aniketp41> But if that is the case, then they should've failed for me too?
+[2018-05-12 18:51:54] <aniketp41> Or maybe my system wasn't fast enough to remove the trail from auditpipe before auditd started? 
+[2018-05-12 18:51:54] <aniketp41> Here is my modifed setup function: https://pastebin.com/BtqiSmwY
+[2018-05-12 19:05:49] <aniketp41> ping @somers_ 
+[2018-05-12 19:08:20] <somers_> When I move the AUDITPIPE_FLUSH as you suggest, most tests fail with "Incomplete audit record"
+[2018-05-12 19:33:08] <aniketp41> That's strange, we had a check in place for au_read_rec(3) to return -1. Not sure why au_fetch_tok(3) is giving an error.
+[2018-05-12 19:33:08] <aniketp41> Btw @somers_, can you try replacing "reclen - bytes" with "reclen"? Although that's wrong, but "incomplete audit record" doesn't make any sense now ... 
+[2018-05-12 19:34:12] <aniketp41> Btw @somers_, do the tests fail in both scenario? i.e auditd(8) running or not
