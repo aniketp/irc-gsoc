@@ -713,3 +713,6 @@
 [2018-05-13 17:23:58] <somers_> I gtg.  I'll look in a couple of hours
 [2018-05-13 17:25:01] <aniketp41> Sure
 [2018-05-13 18:30:35] <aniketp41> @rwatson, @somers_ what should I do about the syscalls which don't have any manpage? Like for instance I'm having a look at the "file-attribute-access" system calls and quite a lot a them don't have manual pages.
+[2018-05-13 21:20:01] <somers_> most of them probably have man pages under a slightly different name, because there's a wrapper in libc.
+[2018-05-13 21:21:20] <somers_> You can grep for the syscall's name under lib/libc/gen
+[2018-05-13 21:21:40] <somers_> Or just under lib.  Some of them, like the pthreads-related stuff, aren't technically in libc.
