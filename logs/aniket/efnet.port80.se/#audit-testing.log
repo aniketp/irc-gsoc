@@ -697,3 +697,4 @@
 [2018-05-12 19:33:08] <aniketp41> That's strange, we had a check in place for au_read_rec(3) to return -1. Not sure why au_fetch_tok(3) is giving an error.
 [2018-05-12 19:33:08] <aniketp41> Btw @somers_, can you try replacing "reclen - bytes" with "reclen"? Although that's wrong, but "incomplete audit record" doesn't make any sense now ... 
 [2018-05-12 19:34:12] <aniketp41> Btw @somers_, do the tests fail in both scenario? i.e auditd(8) running or not
+[2018-05-13 13:56:50] <aniketp41> Hello @somers_, I had been thinking, do we really need that check for "au_fetch_tok" to not be equal to "-1" in every iteration? Cause I've developed about 144 test-cases and for tests of "file-read" audit_class, I was getting a similar "incomplete audit record" error but when I removed that condition all tests passed
