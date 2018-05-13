@@ -698,3 +698,9 @@
 [2018-05-12 19:33:08] <aniketp41> Btw @somers_, can you try replacing "reclen - bytes" with "reclen"? Although that's wrong, but "incomplete audit record" doesn't make any sense now ... 
 [2018-05-12 19:34:12] <aniketp41> Btw @somers_, do the tests fail in both scenario? i.e auditd(8) running or not
 [2018-05-13 13:56:50] <aniketp41> Hello @somers_, I had been thinking, do we really need that check for "au_fetch_tok" to not be equal to "-1" in every iteration? Cause I've developed about 144 test-cases and for tests of "file-read" audit_class, I was getting a similar "incomplete audit record" error but when I removed that condition all tests passed
+[2018-05-13 14:01:37] <aniketp41> Please have a look at the difference in result before and after the if-condition change: https://pastebin.com/ddZ88RAd
+[2018-05-13 14:02:55] <aniketp41> @somers_, Please remove the if condition and then run your tests again! 
+[2018-05-13 15:23:17] <aniketp41> ping @somers_ 
+[2018-05-13 15:32:01] <somers_> It's possible that the only records getting corrupted are extraneous records, like from the "ad" class.  But it would be good to know which.  Could you at least try printing the incomplete record as a warning?  Then we might be able to tell.
+[2018-05-13 15:32:24] <somers_> Another thing you could do would be to deselect the "ad" class after auditd startup is complete.
+[2018-05-13 15:39:34] <somers_> @aniketp41 with your latest changes, most testcases fail with this error: "failed: /usr/home/somers/freebsd/base/head/tests/sys/audit/utils.c:65: (reclen = au_read_rec(pipestream, &buff)) != -1 not met"
