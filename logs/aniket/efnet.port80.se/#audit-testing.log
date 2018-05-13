@@ -704,3 +704,11 @@
 [2018-05-13 15:32:01] <somers_> It's possible that the only records getting corrupted are extraneous records, like from the "ad" class.  But it would be good to know which.  Could you at least try printing the incomplete record as a warning?  Then we might be able to tell.
 [2018-05-13 15:32:24] <somers_> Another thing you could do would be to deselect the "ad" class after auditd startup is complete.
 [2018-05-13 15:39:34] <somers_> @aniketp41 with your latest changes, most testcases fail with this error: "failed: /usr/home/somers/freebsd/base/head/tests/sys/audit/utils.c:65: (reclen = au_read_rec(pipestream, &buff)) != -1 not met"
+[2018-05-13 16:47:32] <aniketp41> @somers_, is this the right way to remove a flag?: am_success = am_sucess & ~class->ac_class
+[2018-05-13 16:48:24] <somers_> Sure.  Though in your case, it would probably be equally easy to simply start from scratch
+[2018-05-13 16:48:50] <somers_> Actually, your snippet would be wrong if the syscall under test _is_ in class "ad".
+[2018-05-13 16:50:00] <aniketp41> I think @somers_, going by that logic (corrupted extraneous) wouldn't it be right to replace ATF_REQUIRE in au_read_rec with a warn statement? cause I guess those corrupted records might be failing the tests again?
+[2018-05-13 16:50:20] <aniketp41> Oops, true! Didn't think of "ad" syscall :D
+[2018-05-13 17:13:19] <aniketp41> @somers_, I made few more changes, please have a look at the revision
+[2018-05-13 17:23:58] <somers_> I gtg.  I'll look in a couple of hours
+[2018-05-13 17:25:01] <aniketp41> Sure
