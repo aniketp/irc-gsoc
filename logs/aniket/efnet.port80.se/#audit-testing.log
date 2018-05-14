@@ -724,3 +724,6 @@
 [2018-05-14 15:26:19] <somers_> Occasional failures due to not noticing auditd startup.  The detailed output shows some "incomplete audit record" messages.  I'm going to dig deeper into libbsm now to see if I can figure out what's going on.
 [2018-05-14 16:37:21] <aniketp41> @somers_, for the error message? Would something like this work?: "%s not found in auditpipe within the time limit", auditregex. Since we're essentially looking for the regex corresponding to the event we have anticipated. Also, auditregex would be "audit startup" in case of auditd startup..
 [2018-05-14 16:48:41] <somers_> Yeah, that sounds great
+[2018-05-14 18:51:34] <aniketp41> Hi @somers_, for syscalls like stat(2), I essentially need to declare and allocate memory to a struct stat pointer. So freeing up of the buffer would be done within the test-case body, right? rather than ATF_TC_CLEANUP
+[2018-05-14 19:02:05] <aniketp41> Oh, I think pointer would not be required, a simple buffer also worked
+[2018-05-14 19:15:31] <somers_> Yeah, struct stat should fit on the stack
