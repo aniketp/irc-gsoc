@@ -716,3 +716,5 @@
 [2018-05-13 21:20:01] <somers_> most of them probably have man pages under a slightly different name, because there's a wrapper in libc.
 [2018-05-13 21:21:20] <somers_> You can grep for the syscall's name under lib/libc/gen
 [2018-05-13 21:21:40] <somers_> Or just under lib.  Some of them, like the pthreads-related stuff, aren't technically in libc.
+[2018-05-14 00:54:46] <aniketp41> Sure @somers_, I'll have a look at the  location for the syscalls. Btw did you have a look at the recent changes?
+[2018-05-14 00:55:43] <aniketp41> I've called "set_preselect_mode" twice,. as you suggested for both audit startup abs syscall audit
