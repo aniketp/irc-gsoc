@@ -325,3 +325,9 @@
 [2018-05-14 17:49:45] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) quit My MacBook Pro has gone to sleep. ZZZzzz…
 [2018-05-14 17:51:20] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
 [2018-05-14 19:42:59] * a3f (~a3f@HSI-KBW-046-005-002-076.hsi8.kabel-badenwuerttemberg.de) join
+[2018-05-14 20:22:19] * a3f (~a3f@HSI-KBW-046-005-002-076.hsi8.kabel-badenwuerttemberg.de) quit Read error: Connection reset by peer
+[2018-05-14 20:44:28] * maxfx (~maxfx@ip-78-45-218-123.net.upcbroadband.cz) join
+[2018-05-14 21:28:28] <gavin> aniketp41: Hey
+[2018-05-14 21:28:49] <gavin> aniketp41: Let me take a look at that.  Did it ask you for your password?
+[2018-05-14 21:30:28] <gavin> aniketp41: Seen your email too, I'll update the alias
+[2018-05-14 21:39:33] <aniketp41> Yes @gavin, initially it asked for "root" password for which I simply hit "Enter", as you had mentioned in the Wiki. After that it asks for my username and password following which, the access is denied
