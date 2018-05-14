@@ -307,3 +307,10 @@
 [2018-05-13 17:50:35] * eadler (~user@2601:645:8100:1ae4:6535:2ace:7d9f:5050) quit Quit: /dev/null is full
 [2018-05-13 17:54:20] * imm__ (~imm_@dh207-95-82.xnet.hr) join
 [2018-05-13 17:54:59] * imm_ (~imm_@dh207-34-192.xnet.hr) quit Read error: Operation timed out
+[2018-05-14 11:17:06] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-05-14 11:17:06] * undefined topic FreeBSD is in GSoC2018! Accepted projects will be announced 23rd April
+[2018-05-14 11:17:06] * gavin topic_set_by
+[2018-05-14 11:19:22] <aniketp41> Hi, my svn account was created and I tried to make my user directory within https://socsvn.freebsd.org/socsvn/soc2018/ but instead I was denied access:
+[2018-05-14 11:19:22] <aniketp41> svn: E175013: Access to '/socsvn/!svn/txr/337226-78a9/soc2018/aniketp' forbidden
+[2018-05-14 11:19:22] <aniketp41> svn: E175013: Your commit message was left in a temporary file:
+[2018-05-14 11:19:39] <aniketp41> Can somebody help me in this regard?
