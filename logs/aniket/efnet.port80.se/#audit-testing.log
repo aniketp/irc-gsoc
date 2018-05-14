@@ -719,3 +719,6 @@
 [2018-05-14 00:54:46] <aniketp41> Sure @somers_, I'll have a look at the  location for the syscalls. Btw did you have a look at the recent changes?
 [2018-05-14 00:55:43] <aniketp41> I've called "set_preselect_mode" twice,. as you suggested for both audit startup abs syscall audit
 [2018-05-14 10:23:14] <aniketp41> Hello @somers_, I've created a new revision D15423 as my socsvn account was just configured and I created my new phabricator account with freebsd alias
+[2018-05-14 14:04:27] <somers_> I haven't had a chance to review the latest changes yet
+[2018-05-14 15:25:28] <aniketp41> Sure I'll update the atf_tc_fail messages. Btw what was the status of the tests ?@somers_
+[2018-05-14 15:26:19] <somers_> Occasional failures due to not noticing auditd startup.  The detailed output shows some "incomplete audit record" messages.  I'm going to dig deeper into libbsm now to see if I can figure out what's going on.
