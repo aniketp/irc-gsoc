@@ -727,3 +727,6 @@
 [2018-05-14 18:51:34] <aniketp41> Hi @somers_, for syscalls like stat(2), I essentially need to declare and allocate memory to a struct stat pointer. So freeing up of the buffer would be done within the test-case body, right? rather than ATF_TC_CLEANUP
 [2018-05-14 19:02:05] <aniketp41> Oh, I think pointer would not be required, a simple buffer also worked
 [2018-05-14 19:15:31] <somers_> Yeah, struct stat should fit on the stack
+[2018-05-15 13:32:17] <aniketp41> Hi @somers_, were you able to identify the cause of occasional test failures?
+[2018-05-15 13:32:50] <aniketp41> I have about 252 tests waiting for their own revision :D
+[2018-05-15 13:32:50] <aniketp41> after this one is commited

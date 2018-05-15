@@ -368,3 +368,28 @@
 [2018-05-15 10:07:32] * pleb (~luserx0@2a02:582:1085:e900:618d:93ef:5a36:aadd) join
 [2018-05-15 10:11:38] * luserx0 (~luserx0@athedsl-4495658.home.otenet.gr) quit Ping timeout: 360 seconds
 [2018-05-15 10:33:39] <aniketp41> ping @gavin 
+[2018-05-15 12:06:11] <gavin> aniketp41: Hey
+[2018-05-15 12:06:19] * pleb (~luserx0@2a02:582:1085:e900:618d:93ef:5a36:aadd) quit Ping timeout: 252 seconds
+[2018-05-15 12:07:03] <aniketp41> Hello @gavin, I had earlier mentioned the command I used for creating my directory within /soc2018
+[2018-05-15 12:07:21] <aniketp41> Command: "svn mkdir https://socsvn.freebsd.org/socsvn/soc2018/aniketp"
+[2018-05-15 12:17:23] <gavin> aniketp41: Thanks.  I can't see anything wrong with the config, so I'm not quite sure what's wrong.  I'm going to look in more depth in the next hour hopefully
+[2018-05-15 12:17:28] <gavin> aniketp41: Sorry about this
+[2018-05-15 12:39:21] <gavin> aniketp41: I'm really confused by this
+[2018-05-15 12:39:38] <gavin> aniketp41: Could you test something for me please?  "svn mkdir https://socsvn.freebsd.org/socsvn/soc2014/aniketp"
+[2018-05-15 12:40:17] <gavin> aniketp41: I know you're not in 2014, I'm just trying to figure out what's happening (we used to do authentication and permissions in a different way in 2014 so it will rule something out)
+[2018-05-15 13:14:32] <aniketp41> Hi @gavin, 2014 worked! Here is the directory: https://svnweb.freebsd.org/socsvn/soc2014/aniketp/
+[2018-05-15 13:20:06] * bsdimp (~bsdimp@2603:300b:6:5100:1052:acc7:f9de:2b6d) join
+[2018-05-15 13:20:57] <gavin> aniketp41: OK, thank you for testing.  Are you able to test another thing for me?
+[2018-05-15 13:22:43] <aniketp41> @gavin, sure. Please tell me what to test 
+[2018-05-15 13:25:07] <gavin> aniketp41: Could you try with soc2018 again please?
+[2018-05-15 13:26:29] <aniketp41> Hello @gavin, this time I couldn't access the repository:
+[2018-05-15 13:26:29] <aniketp41> svn: E170013: Unable to connect to a repository at URL 'https://socsvn.freebsd.org/socsvn/soc2018'
+[2018-05-15 13:26:29] <aniketp41> svn: E175013: Access to '/socsvn/soc2018' forbidden
+[2018-05-15 13:26:29] <aniketp41> svn: E170013: Your commit message was left in a temporary file:
+[2018-05-15 13:27:51] <gavin> aniketp41: Thanks.
+[2018-05-15 13:29:16] <gavin> aniketp41: How about not?
+[2018-05-15 13:29:18] <gavin> aniketp41: How about now?
+[2018-05-15 13:30:02] <aniketp41> Thanks for the help @gavin, I could create my user directory now! https://svnweb.freebsd.org/socsvn/soc2018/aniketp/
+[2018-05-15 13:31:44] <gavin> aniketp41: Interesting.  I really don't understand this, but I think I'll leave it like that for now
+[2018-05-15 13:31:57] <gavin> aniketp41: And figure this out after GSoC has finished
+[2018-05-15 13:32:11] <gavin> aniketp41: Thank you for your help, and sorry it took so long
