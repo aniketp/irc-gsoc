@@ -739,3 +739,28 @@
 [2018-05-15 14:17:01] <somers_> You already handle that delay with the loop in check_audit
 [2018-05-15 14:32:33] <aniketp41> So if au_read_rec() returns incomplete records in case of "auditd startup" but not in case of "syscall audit check" then it looks to me that this might be an issue with audit startup in the system and not with libbsm, unless au_read_rec() is baised against auditd startup.(which should not be!)   
 [2018-05-15 14:33:56] <somers_> Not exactly.  There are just a whole lot more messages that get generated during audit startup
+[2018-05-15 17:17:01] <aniketp41> Hi @somers_,I was getting an unexpected error on trying to test fstat(2) "fa" system call. Please have a look at my implementation and the error produced: https://pastebin.com/Q7XXRG9d
+[2018-05-15 17:18:15] <somers_> what's the problem?  The EINVAL for poll?
+[2018-05-15 17:18:24] <somers_> The man page will list the reasons why you might get EINVAL
+[2018-05-15 17:19:24] <aniketp41> Yes. Oh I actually understood. The regex I'm comparing is not found in the audit trail. As it takes file descriptor as the input and searching against "fileforaudit"
+[2018-05-15 17:23:49] <aniketp41> Btw, what would be the best regex in this case? As there isn't much info produced in the audit trail. I can search against "fstat(2).*return,success" but a lot of successful instances of fstat(2) might be found
+[2018-05-15 17:23:52] <aniketp41> @somers_ 
+[2018-05-15 17:24:19] <somers_> what are you trying to match?
+[2018-05-15 17:25:00] <aniketp41> "fileforaudit.*return,success" but this is wrong
+[2018-05-15 17:26:30] <somers_> No, that's the regex.  I mean what text do you want to match?
+[2018-05-15 17:29:28] <aniketp41> @somer_ this text: 'header,108,11,fstat(2),0,Tue May 15 22:58:36 2018, + 49 msecargument,1,0x3,fdattribute,755,root,wheel,79,96867,0subject,root,root,wheel,root,wheel,7306,726,52932,10.0.2.2return,success,0trailer,108'
+[2018-05-15 17:29:28] <aniketp41> Although I got it to work now, the regex was wrong.
+[2018-05-15 17:29:42] <aniketp41> ▶ kyua debug file-attribute-access:fstat_success                                       ✔    04:28:34 
+[2018-05-15 17:29:42] <aniketp41> auditd is running as pid 562.
+[2018-05-15 17:29:42] <aniketp41> Looking for 'fstat.*return,success' in 'header,108,11,fstat(2),0,Tue May 15 22:58:36 2018, + 49 msecargument,1,0x3,fdattribute,755,root,wheel,79,96867,0subject,root,root,wheel,root,wheel,7306,726,52932,10.0.2.2return,success,0trailer,108'
+[2018-05-15 17:29:42] <aniketp41> file-attribute-access:fstat_success  ->  passed
+[2018-05-15 17:30:27] <aniketp41> But @somers_ probably this is a wrong method as we're not sure that this record was produced by our code
+[2018-05-15 17:31:36] <somers_> Is there an inode number in there somewhere?
+[2018-05-15 17:33:22] <aniketp41> No I guess there are just a bunch of user/process IDs and some time reference
+[2018-05-15 17:33:22] <aniketp41> And also in the attribute part, it says file descriptor is "fd" whereas I passed in "filedesc"
+[2018-05-15 17:33:53] <aniketp41> @somers_ 
+[2018-05-15 17:34:31] <somers_> where is the format of that record documented?
+[2018-05-15 17:37:02] <aniketp41> @somers_ I've been using this doc as the reference: https://www.freebsd.org/doc/handbook/audit-administration.html
+[2018-05-15 17:38:12] <somers_> This would be easier if you put a delimiter between tokens
+[2018-05-15 17:40:27] <somers_> You need to figure out what the argument and attribute tokens mean
+[2018-05-15 17:42:03] <aniketp41> Sorry, I meant argument earlier:
