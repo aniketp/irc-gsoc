@@ -764,3 +764,6 @@
 [2018-05-15 17:38:12] <somers_> This would be easier if you put a delimiter between tokens
 [2018-05-15 17:40:27] <somers_> You need to figure out what the argument and attribute tokens mean
 [2018-05-15 17:42:03] <aniketp41> Sorry, I meant argument earlier:
+[2018-05-15 19:41:20] <aniketp41> Hi @somers_, Yes there was inode number in the attribute of audit record. I created a sample program which printed the "inode" of a file which was returned by "stat.st_ino" when used with fstat(2). I guess now I can use the inode in the regex! 
+[2018-05-15 19:41:41] <somers_> yes, that would be great
+[2018-05-15 19:42:05] <aniketp41> Thanks for pointing that out!
