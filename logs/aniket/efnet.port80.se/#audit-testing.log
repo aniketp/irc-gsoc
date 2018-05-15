@@ -730,3 +730,12 @@
 [2018-05-15 13:32:17] <aniketp41> Hi @somers_, were you able to identify the cause of occasional test failures?
 [2018-05-15 13:32:50] <aniketp41> I have about 252 tests waiting for their own revision :D
 [2018-05-15 13:32:50] <aniketp41> after this one is commited
+[2018-05-15 14:02:21] <somers_> The occasional failures are due to failure to notice that auditd started up, not due to failure to audit the syscall under test
+[2018-05-15 14:03:36] <somers_> I'm 90% sure that it happens when you get an incomplete audit record, and that happened to be the "audit startup" record.  But I don't know why au_read_rec is returning incomplete records
+[2018-05-15 14:15:45] <aniketp41> @somers_, although you were against this method and this is essentially a race condition, I feel like maybe delaying the syscall check for a certain amount of time  (which is more than sufficient for auditd startup) would pass the tests in case auditd(8) is not already running. 
+[2018-05-15 14:15:45] <aniketp41>  @rwatson had said something like this earlier: "there's no synchronicity requirement that a syscall only return after the record goes out of the audit pipe, so you might need to insert a short delay after the system call before expecting a record to be emitted from /dev/auditpipe"
+[2018-05-15 14:15:45] <aniketp41> Maybe that's what is happening in case of auditd startup?
+[2018-05-15 14:16:38] <somers_> No, the delay rwatson was talking about is something different
+[2018-05-15 14:17:01] <somers_> You already handle that delay with the loop in check_audit
+[2018-05-15 14:32:33] <aniketp41> So if au_read_rec() returns incomplete records in case of "auditd startup" but not in case of "syscall audit check" then it looks to me that this might be an issue with audit startup in the system and not with libbsm, unless au_read_rec() is baised against auditd startup.(which should not be!)   
+[2018-05-15 14:33:56] <somers_> Not exactly.  There are just a whole lot more messages that get generated during audit startup
