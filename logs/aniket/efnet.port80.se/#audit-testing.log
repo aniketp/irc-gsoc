@@ -767,3 +767,37 @@
 [2018-05-15 19:41:20] <aniketp41> Hi @somers_, Yes there was inode number in the attribute of audit record. I created a sample program which printed the "inode" of a file which was returned by "stat.st_ino" when used with fstat(2). I guess now I can use the inode in the regex! 
 [2018-05-15 19:41:41] <somers_> yes, that would be great
 [2018-05-15 19:42:05] <aniketp41> Thanks for pointing that out!
+[2018-05-15 20:16:06] <aniketp41> Hello @somers_ I was having a slight issue. The regex I'm supposed to pass to check_audit() should be of type "const char *" but when I'm converting the obtained Inode to a string using "snprintf" it essentially only needs "char *". So while to cast regex to (const char*) so that I can pass it to check_audit. The compiler doesn't let me do it:  error: initializing 'char *' with an expression of type 'const char [22]'
+[2018-05-15 20:16:06] <aniketp41>       discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+[2018-05-15 20:16:06] <aniketp41>  
+[2018-05-15 20:16:28] <aniketp41> *trying
+[2018-05-15 20:17:33] <somers_> Yep.  If you're dynamically composing the regex, then it's not a "const char*"
+[2018-05-15 20:17:59] <somers_> But, the callee doesn't care.  So check_audit's prototype needn't change.
+[2018-05-15 20:20:37] <aniketp41> But @somers_, it doesn't let me pass "regex" to check_audit since the types don't exactly match. How should I handle this case?
+[2018-05-15 20:21:40] <somers_> You should be able to pass a "char*" to a function that expects "const char*"
+[2018-05-15 20:21:48] <somers_> Are you trying to explicitly cast it?  Don't do that.
+[2018-05-15 20:43:15] <aniketp41> @somers_ I'm kinda stuck here.. This code gave me the least error: https://pastebin.com/QH1bU6Q1 
+[2018-05-15 20:43:15] <aniketp41> I think the string "return.*inode.*return,success" is being recognized as a const char, but since the argument expects "char", this causes error.. 
+[2018-05-15 20:44:37] <somers_> Why is it static?
+[2018-05-15 20:45:38] <somers_> The error is coming from fstat_failure, but you didn't paste that function
+[2018-05-15 20:45:57] <somers_> Looks like it should be a "const char*" in fstat_failure
+[2018-05-15 20:47:55] <aniketp41> Yeah I just noticed it was coming from fstat_failure. The whole time I thought "fstat_success" caused the issue.. 
+[2018-05-15 20:47:55] <aniketp41> The tests compiled now, thanks
+[2018-05-15 21:03:15] <aniketp41> Btw @somers_, is this a right way to test "fstat_failure" https://pastebin.com/uHF1YbYG ? 
+[2018-05-15 21:03:15] <aniketp41> As there weren't many failure conditions for "fstat" in the man-page. And I'm not sure how would fstat(2) fail once we have the information (including inode number) of the file..
+[2018-05-15 21:04:18] <somers_> yeah, that's about the best that you can do
+[2018-05-15 21:22:49] <aniketp41> Btw @somers_, what do you think about the issue of audit startup that we are facing currently. Would it get resolved?
+[2018-05-15 21:23:07] <aniketp41> As I have test cases piling up..
+[2018-05-15 21:23:29] <somers_> It needs to be
+[2018-05-15 21:24:43] <aniketp41> And unless I get stuck somewhere. I should be able to hopefully complete *almost* all system calls within about a month.. (success and failure mode)
+[2018-05-15 21:25:15] <somers_> cool
+[2018-05-15 21:37:22] <aniketp41> Btw @somers_, I encountered few other system calls that took "file-descriptor" as the input. For e.g fstatfs(2). But the structure it returned didn't have any Inode this time (from the man-page). So what should be the approach in this case?
+[2018-05-15 21:37:22] <aniketp41> Though can I simply check against "fstatfs.*return,success" as it looks  unlikely that the auditpipe will contain any other instance of the system call simultaneously (+- 5sec)? 
+[2018-05-15 21:38:47] <somers_> best to be specific
+[2018-05-15 21:38:56] <somers_> what else does the audit record contain?
+[2018-05-15 21:41:22] <aniketp41> header,108,11,fstatfs(2),0,Wed May 16 08:40:12 2018, + 252 msec,argument,1,0x3,fd,attribute,755,root,wheel,79,1795169,3583621,subject,root,root,wheel,root,wheel,20513,9581,54210,10.0.2.2,return,success,0,trailer,108,
+[2018-05-15 21:41:22] <aniketp41> I guess I can again check for inode by calling "stat(2)" separately
+[2018-05-15 21:54:04] <aniketp41> @somers_, does this look good? https://pastebin.com/BydD8zCX
+[2018-05-15 21:54:04] <aniketp41> I used stat(2) to get the inode number and then checked its presence in audit record while testing fstatfs(2)..
+[2018-05-15 21:55:19] <somers_> Yeah, that looks fine.  It's a trifle silly, because the inode number isn't really important to fstatfs.  But it's certainly the surest way to exclude false positives from the audit trail
+[2018-05-15 21:59:52] <aniketp41> Yes, I felt the same. Although Inode of the file which is present within a filesystem seemed a valid choice to test against..
