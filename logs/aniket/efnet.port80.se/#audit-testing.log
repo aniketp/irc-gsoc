@@ -801,3 +801,21 @@
 [2018-05-15 21:54:04] <aniketp41> I used stat(2) to get the inode number and then checked its presence in audit record while testing fstatfs(2)..
 [2018-05-15 21:55:19] <somers_> Yeah, that looks fine.  It's a trifle silly, because the inode number isn't really important to fstatfs.  But it's certainly the surest way to exclude false positives from the audit trail
 [2018-05-15 21:59:52] <aniketp41> Yes, I felt the same. Although Inode of the file which is present within a filesystem seemed a valid choice to test against..
+[2018-05-16 17:12:48] <aniketp41> Hi @somers_, for syscalls such as getfsstat(2), fpathconf(2) the audit record didn't look like it contained anything useful:
+[2018-05-16 17:12:48] <aniketp41> It was something like this: header,68,11,getfsstat(2),0,Thu May 17 04:10:34 2018, + 402 msec, subject, root,root,wheel,root,wheel, 3606,2591,38048,10.0.2.2, return,success,2,trailer,68,
+[2018-05-16 17:12:48] <aniketp41> Should I search for a simple "syscall.*return,success" regex?
+[2018-05-16 17:13:52] <aniketp41> Also, I haven't yet explored "process-control" system calls, is the situation similar for them or does the audit record actually contain some useful stuff?
+[2018-05-16 17:14:01] <somers_> There were no attribute or argument tokens?
+[2018-05-16 17:15:01] <aniketp41> I checked for two possibilities: 1) getfsstat(NULL, 0, MNT_NOWAIT);      2) getfsstat(buf, fc_count*sizeof(buf[0]), MNT_NOWAIT);
+[2018-05-16 17:15:01] <aniketp41> Both had similar record
+[2018-05-16 17:15:21] <aniketp41> These possibilities were described in the man-page
+[2018-05-16 17:16:14] <somers_> Just match on whatever you can, then.  But keep in mind that a poorly auditable syscall is a bug.  We may need to add details to some of these audit records
+[2018-05-16 17:16:17] <aniketp41> Btw @somers_, they return information about the mounted-file systems, right? Why would audit record contain any related info
+[2018-05-16 17:16:54] <somers_> Like which file system is being interrogated?
+[2018-05-16 17:18:47] <aniketp41> Yes that is the issue. But one thing I noticed is that in a normal situation, some of these syscalls don't recur unless they are being explicitely called. (Not created by any processes)
+[2018-05-16 17:18:47] <aniketp41> getfsstat(2) returns the number of mounted file-systems and their data is stored in buff array of statfs structures. i had a hunch the audit records wouldn't contain much
+[2018-05-16 17:18:47] <aniketp41> I mean there isn't anything specific to contain here.. @somers_ 
+[2018-05-16 17:19:33] <somers_> Oh, my mistake.  I thought getfsstat only worked on a single file system
+[2018-05-16 17:21:10] <aniketp41> Although if the audit records contained the return values (which they don't) I guess we could have included the number of mounted file-systems as a regex to confirm our test
+[2018-05-16 17:22:07] <somers_> That probably doesn't matter.  The purpose of auditting is to determine what somebody's intention was.  Return values aren't usually necessary for that
+[2018-05-16 17:30:19] <somers_> gtg.  Be back in a couple of hours.
