@@ -867,3 +867,18 @@
 [2018-05-17 06:49:59] * gnn (~quassel@f373.x.rootbsd.net) quit se.hub irc.underworld.no
 [2018-05-17 13:25:50] * gnn (~quassel@f373.x.rootbsd.net) join
 [2018-05-17 14:17:46] <somers_> bugs.freebsd.org
+[2018-05-17 18:43:46] <aniketp41> Hi @somers @rwatson, I was trying to test the family of "extattr" system calls dealing with the extended attributes of a file. The syscalls required a attribute namespace (which can be EXTATTR_NAMESPACE_USER in my case) and a name of the attribute. But how would I know which extended attributes exist for that file.
+[2018-05-17 18:43:46] <aniketp41> I tried random values for attribute name, e.g "name", "inode", "author" but all were audited as :  "return,failure : Attribute not found"
+[2018-05-17 18:43:59] <aniketp41> @somers_ 
+[2018-05-17 18:44:33] <somers_> lsextattr
+[2018-05-17 18:44:49] <somers_> that will show you what already exists
+[2018-05-17 18:45:27] <somers_> Look at usr.sbin/extattr/tests for examples of valid names
+[2018-05-17 18:50:38] <aniketp41> But @somers_, for the kyua tests, I'll need to create a file myself, so will there be any extended attribute by default? 
+[2018-05-17 18:50:38] <aniketp41> Like "lsextattr -q user myfilename" does not give me anything
+[2018-05-17 18:51:09] <somers_> There are none by default.  You'll have to create one.
+[2018-05-17 19:00:04] <aniketp41> Sure @somers_ , I used extattr_set_* to set a random attribute
+[2018-05-17 19:09:03] <aniketp41> @somers_, does it ever happen that audit record might contain return value of a syscall?
+[2018-05-17 19:10:01] <aniketp41> I think extattr_get_file/fd() do that
+[2018-05-17 19:11:40] <aniketp41> @somers_, can you see "123245" here: header,101,11,extattr_get_fd(2),0,Fri May 18 06:11:14 2018, + 578 msec,argument,2,0x3,fd,text,user,text,authorname,subject,root,root,wheel,root,wheel,9972,7530,56286,10.0.2.2,return,success,12345,trailer,101,
+[2018-05-17 19:12:33] <aniketp41> after return,success. That is the size of buffer I pass into the function. I guess I should use it into the regex?
+[2018-05-17 19:34:54] <somers_> Why do you need such a big buffer?
