@@ -861,3 +861,6 @@
 [2018-05-16 21:51:53] <somers_> But I'm asking you: what do you want me to run?
 [2018-05-16 21:53:09] <aniketp41> I mean, like running that code, or maybe if you have a better way of testing "getfh/lgetfh"?
 [2018-05-16 21:53:55] <somers_> That's why I'm asking what do you want me to test?  You complained about lgetfh, then sent me a snippet that only calls getfh.  If you want me to test lgetfh, then you should send me code that actually uses lgetfh
+[2018-05-16 22:03:27] <aniketp41> @somers_, here is the code for lgetfh(2), I modified the previous code a bit: https://pastebin.com/EwstzSUz
+[2018-05-16 22:06:01] <somers_> Nope, I don't see an audit record for it either
+[2018-05-16 22:43:59] <aniketp41> So @somers_, should we report this as a bug then? What would be the best way to do it?
