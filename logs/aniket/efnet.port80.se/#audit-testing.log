@@ -882,3 +882,5 @@
 [2018-05-17 19:11:40] <aniketp41> @somers_, can you see "123245" here: header,101,11,extattr_get_fd(2),0,Fri May 18 06:11:14 2018, + 578 msec,argument,2,0x3,fd,text,user,text,authorname,subject,root,root,wheel,root,wheel,9972,7530,56286,10.0.2.2,return,success,12345,trailer,101,
 [2018-05-17 19:12:33] <aniketp41> after return,success. That is the size of buffer I pass into the function. I guess I should use it into the regex?
 [2018-05-17 19:34:54] <somers_> Why do you need such a big buffer?
+[2018-05-17 20:25:30] <aniketp41> No @somers_, I was just testing it to make sure it actually stores the return value (sizeof the buffer).Here is the test case: https://pastebin.com/gARzsAdA
+[2018-05-17 20:27:35] <aniketp41> err, "%lu" instead of "%d" for sizeof() in the snippet
