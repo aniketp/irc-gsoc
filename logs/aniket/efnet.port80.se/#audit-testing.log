@@ -884,3 +884,5 @@
 [2018-05-17 19:34:54] <somers_> Why do you need such a big buffer?
 [2018-05-17 20:25:30] <aniketp41> No @somers_, I was just testing it to make sure it actually stores the return value (sizeof the buffer).Here is the test case: https://pastebin.com/gARzsAdA
 [2018-05-17 20:27:35] <aniketp41> err, "%lu" instead of "%d" for sizeof() in the snippet
+[2018-05-17 23:30:00] <aniketp41> ping @somers_, does the testcase look okay?
+[2018-05-17 23:57:49] <somers_> yeah, it looks fine
