@@ -938,3 +938,5 @@
 [2018-05-18 16:57:11] <somers_> could be.  SVN is also pretty latency-sensitive
 [2018-05-18 16:57:29] <aniketp41> Btw @somers_, what happened to Shivansh's smoketestsuite project? Last we talked, he said that there was some issue with the last differential which would place the test generation tool within tools/tools
 [2018-05-18 16:58:04] <somers_> I don't recall.  Check Phabricator.
+[2018-05-18 19:49:32] <aniketp41> Hi @somers_, any updates on the test?
+[2018-05-18 19:49:47] <somers_> Still checking out
