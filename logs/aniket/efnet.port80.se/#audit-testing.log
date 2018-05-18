@@ -895,3 +895,46 @@
 [2018-05-18 15:58:29] <somers_> You mean you want me to run all of the tests with auditd not already running, to see what the pass rate is?
 [2018-05-18 15:59:36] <aniketp41> Yes, that would be great. Although they do take up about 5 minutes now..
 [2018-05-18 15:59:49] <aniketp41> @somers_ 
+[2018-05-18 16:00:59] <somers_> ok.  It'll take awhile to check out the SVN tree, though
+[2018-05-18 16:01:26] <somers_> what is the SVN url?
+[2018-05-18 16:01:34] <somers_> for the repository I mean, not the web interface
+[2018-05-18 16:03:38] <aniketp41> I guess I used the same url, which was provided at this link you had earlier sent me: https://wiki.freebsd.org/SummerOfCodeSubversion
+[2018-05-18 16:03:38] <aniketp41> Btw, I even keep the tests updated in my git repository so that might be a lot quicker I guess: https://github.com/aniketp/AuditTestSuite/tree/master/src
+[2018-05-18 16:04:00] <aniketp41> @somers_ 
+[2018-05-18 16:04:54] <somers_> Ok, looks like anonymous access works
+[2018-05-18 16:07:50] <aniketp41> OKay, although I think Gavin had added you and @gnn in the soc-2018 group: https://svnweb.freebsd.org/socsvn/svnadmin/conf/authz?revision=337226&view=markup#l6
+[2018-05-18 16:09:04] <aniketp41> @somers_ 
+[2018-05-18 16:22:17] <aniketp41> Btw @somers_, I had a few observations and a doubt: I couldn't find any reference to audit_events i.e, xstat(2), lxstat(2), statvfs(2) in freebsd src. So am I missing something or can I safely assume that they don't exist in FreeBSD.
+[2018-05-18 16:22:17] <aniketp41> Also, there was a family of "fa" audit events related to access control lists. All relevant documentation mentioned them as library functions but the audit event list mentions them as the syscalls. : https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L225
+[2018-05-18 16:22:17] <aniketp41> Also, I couldn't audit them nor dtrace (the command you had sent me) showed any probe match...
+[2018-05-18 16:22:34] <aniketp41> @rwatson @somers_ 
+[2018-05-18 16:23:57] <somers_> xstat doesn't exist on FreeBSD AFAIK.  But you probably shouldn't worry about it.  What you should worry about is ensuring that every syscall that does exist gets audited, whether or not it's listed in audit_events
+[2018-05-18 16:25:17] <somers_> As for stuff like statvfs, look in lib/libc to see what it's really doing, and what underlying syscalls it uses
+[2018-05-18 16:25:19] <aniketp41> So are events like: acl_get_fd, acl_get_file etc considered syscalls? I guess they are library functions and my observations is that they don't get audited. @somers_ , what should I do about it
+[2018-05-18 16:26:09] <somers_> Just worry about the list of actual syscalls; not the list of audit events.  The most important thing to do is to find any syscalls that aren't auditted.
+[2018-05-18 16:33:25] <aniketp41> Okay @somers_, will do that. So till now the issue is with lgetfh(2).
+[2018-05-18 16:33:25] <aniketp41> Btw even statvfs(3) was not audited.
+[2018-05-18 16:33:53] <aniketp41> Weird how no library function is being audited
+[2018-05-18 16:36:26] <somers_> Not so weird.  The audit functionality is implemented at the syscall interface
+[2018-05-18 16:38:01] <aniketp41> Okay. So I think I should move on to file-attribute-modify audit class. Since all possible syscalls have been tested I think..
+[2018-05-18 16:40:09] <somers_> Did you look in sys/kern/syscalls.master ?
+[2018-05-18 16:40:32] <somers_> Also, sys/compat/freebsd32/syscalls.master?
+[2018-05-18 16:41:12] <somers_> There's also the Linuxulator: sys/amd64/linux/syscalls.master
+[2018-05-18 16:43:04] <aniketp41> As in, look for syscalls?
+[2018-05-18 16:43:37] <somers_> yeah
+[2018-05-18 16:44:00] <aniketp41> @somers_, but how will I identify the audit_classes. I used syscalls.master for reference to cross validate some syscalls which I thought did not exist. Like creat(2)
+[2018-05-18 16:44:01] <somers_> Oh, and have you auditted ioctl(2)?
+[2018-05-18 16:44:13] <aniketp41> That is under "io" I think
+[2018-05-18 16:44:23] <aniketp41> I haven't moved to it yet
+[2018-05-18 16:44:55] <aniketp41> I've just done "fc", "fw", "fr", "fd", "fa" and some in "fm"
+[2018-05-18 16:45:20] <aniketp41> "nt", "pc", "ad", "io" and some others are left
+[2018-05-18 16:45:53] <somers_> Well, regardless of the order in which you do things, one way or another you need to test every syscall.  Going through syscalls.master files is the only way to cover them all.
+[2018-05-18 16:46:39] <aniketp41> Yeah, I'll keep it as a reference to make sure that I don't miss any in the end
+[2018-05-18 16:49:56] <aniketp41> Btw @somers_, did you try running the tests? Hopefully they should give a better insight on maybe which tests are failing..
+[2018-05-18 16:50:09] <somers_> still checking out svn
+[2018-05-18 16:52:31] <aniketp41> Hmm, when I checked out for the first time, with the connection I had, I watched an entire movie and it finished checking out :D
+[2018-05-18 16:53:05] <somers_> that's surprising.  Do you not live at the University?
+[2018-05-18 16:53:55] <aniketp41> Yes I'm currently at here. Although connection at the lab is way faster than at the hostel rooms. So maybe that was the issue.
+[2018-05-18 16:57:11] <somers_> could be.  SVN is also pretty latency-sensitive
+[2018-05-18 16:57:29] <aniketp41> Btw @somers_, what happened to Shivansh's smoketestsuite project? Last we talked, he said that there was some issue with the last differential which would place the test generation tool within tools/tools
+[2018-05-18 16:58:04] <somers_> I don't recall.  Check Phabricator.
