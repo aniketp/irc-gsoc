@@ -886,3 +886,12 @@
 [2018-05-17 20:27:35] <aniketp41> err, "%lu" instead of "%d" for sizeof() in the snippet
 [2018-05-17 23:30:00] <aniketp41> ping @somers_, does the testcase look okay?
 [2018-05-17 23:57:49] <somers_> yeah, it looks fine
+[2018-05-18 15:54:27] <aniketp41> Hi @somers_, as of now I have 270 test-cases and it's been successfully passing everytime: https://pastebin.com/LeQafAdF
+[2018-05-18 15:54:27] <aniketp41>  I have also been commiting to the socsvn repository here: https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/
+[2018-05-18 15:54:59] <aniketp41> @somer_ can you check if it works for you this time?
+[2018-05-18 15:55:21] <aniketp41> i.e with large number of test-cases,how many of them cause the issue?
+[2018-05-18 15:55:24] <somers_> if what works for me?
+[2018-05-18 15:57:50] <aniketp41> @somers_, I was curious about how the problem which has been recurring lately fares out with these many tests run at once.
+[2018-05-18 15:58:29] <somers_> You mean you want me to run all of the tests with auditd not already running, to see what the pass rate is?
+[2018-05-18 15:59:36] <aniketp41> Yes, that would be great. Although they do take up about 5 minutes now..
+[2018-05-18 15:59:49] <aniketp41> @somers_ 
