@@ -964,3 +964,5 @@
 [2018-05-18 23:16:07] <somers_> In the long term, it's probably better to setup a 12.0 VM
 [2018-05-19 16:04:37] * somers__ (~somers@63.224.80.52) join
 [2018-05-19 16:11:20] * somers_ (~somers@63-224-80-166.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-19 18:40:55] <aniketp41> Hi @somers_, I setup a "12.0-CURRENT" VM and placed my tests within /usr/src/tests/sys/audit and tried to compile but it gave me the same error. So I fixed it and the compilation was successful. But this time it didn't generate any Kyuafile for me. Also after doing "make" in the audit directory, nothing seemed to change. SO how would I generate projects binary this way?
+[2018-05-19 18:42:31] <aniketp41> @somers__ 
