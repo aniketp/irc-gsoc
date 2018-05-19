@@ -966,3 +966,13 @@
 [2018-05-19 16:11:20] * somers_ (~somers@63-224-80-166.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-05-19 18:40:55] <aniketp41> Hi @somers_, I setup a "12.0-CURRENT" VM and placed my tests within /usr/src/tests/sys/audit and tried to compile but it gave me the same error. So I fixed it and the compilation was successful. But this time it didn't generate any Kyuafile for me. Also after doing "make" in the audit directory, nothing seemed to change. SO how would I generate projects binary this way?
 [2018-05-19 18:42:31] <aniketp41> @somers__ 
+[2018-05-19 20:13:42] <somers__> You have to do "make install"
+[2018-05-19 20:32:33] <aniketp41> Hi @somers_, I tried make install but it for some reason looks for presence of "file-create" in the test-suite, which is apparently non-existent:
+[2018-05-19 20:32:33] <aniketp41> (cd /usr/src/tests/sys/audit &&  DEPENDFILE=.depend.file-create  NO_SUBDIR=1 make -f /usr/src/tests/sys/audit/Makefile _RECURSING_PROGS=t   PROG=file-create  install)
+[2018-05-19 20:32:33] <aniketp41> install  -s -o root -g wheel -m 555   file-create /usr/tests/sys/audit/file-create
+[2018-05-19 20:32:33] <aniketp41> install: /usr/tests/sys/audit/file-create: No such file or directory
+[2018-05-19 20:33:02] <aniketp41> ping @somers__ 
+[2018-05-19 20:34:54] <somers__> Check it into your svn location and I'll take a look
+[2018-05-19 20:44:54] <aniketp41> Yes @somers__, I had updated it earlier: https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/file-attribute-access.c?r1=337233&r2=337240&pathrev=337240
+[2018-05-19 20:55:28] <somers__> I'm unable to make a connection.  Can you?
+[2018-05-19 21:39:08] <aniketp41> Yes @somers__, I was able to access the url..
