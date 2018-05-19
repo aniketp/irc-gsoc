@@ -940,3 +940,25 @@
 [2018-05-18 16:58:04] <somers_> I don't recall.  Check Phabricator.
 [2018-05-18 19:49:32] <aniketp41> Hi @somers_, any updates on the test?
 [2018-05-18 19:49:47] <somers_> Still checking out
+[2018-05-18 22:40:06] <somers_> Done checking out.  6h10m.  But the tests don't compile on FreeBSD 12
+[2018-05-18 22:40:16] <somers_>       format specifies type 'unsigned int' but the argument has type 'ino_t'
+[2018-05-18 22:40:16] <somers_>       (aka 'unsigned long') [-Werror,-Wformat]
+[2018-05-18 22:40:16] <somers_>         snprintf(regex, 30, "fstat.*%u.*return,success", statbuff.st_ino);
+[2018-05-18 22:40:16] <somers_>                                     ~~                   ^~~~~~~~~~~~~~~
+[2018-05-18 22:40:18] <somers_>                                     %lu
+[2018-05-18 22:40:20] <somers_>       format specifies type 'unsigned int' but the argument has type 'ino_t'
+[2018-05-18 22:40:22] <somers_>       (aka 'unsigned long') [-Werror,-Wformat]
+[2018-05-18 22:40:24] <somers_>         snprintf(regex, 30, "fstatfs.*%u.*return,success", statbuff.st_ino);
+[2018-05-18 22:40:26] <somers_>                                       ~~                   ^~~~~~~~~~~~~~~
+[2018-05-18 22:40:28] <somers_>                                       %lu
+[2018-05-18 22:48:47] <aniketp41> @somers_ so will it be %lu instead of %u for st_ino?
+[2018-05-18 22:50:12] <somers_> ino_t grew from 32 to 64 bits in FreeBSD 12.
+[2018-05-18 22:50:41] <somers_> Your tests must be committed into 12 first, then they can be backported to 11.  So you should make them compile on 12.
+[2018-05-18 23:08:09] <aniketp41> So @somers_, should I install a completely new "12-CURRENT" as you had said earlier that I can't updated it from 11-RELEASE-p4?
+[2018-05-18 23:08:43] <aniketp41> Is there a way to check my tests on 12 without having to upgrading to it?
+[2018-05-18 23:08:52] <aniketp41> *upgrade
+[2018-05-18 23:10:16] <aniketp41> I had the freebsd src "/usr/src" and that's where I've been compiling my tests till now
+[2018-05-18 23:15:24] <somers_> You can build 12 from 11.1, but you have to build the entire thing
+[2018-05-18 23:15:39] <somers_> cd /usr/src; make -jwhatever buildworld
+[2018-05-18 23:15:50] <somers_> And you won't be able to run the tests that way.
+[2018-05-18 23:16:07] <somers_> In the long term, it's probably better to setup a 12.0 VM
