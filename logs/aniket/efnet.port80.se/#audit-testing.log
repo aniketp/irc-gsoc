@@ -962,3 +962,5 @@
 [2018-05-18 23:15:39] <somers_> cd /usr/src; make -jwhatever buildworld
 [2018-05-18 23:15:50] <somers_> And you won't be able to run the tests that way.
 [2018-05-18 23:16:07] <somers_> In the long term, it's probably better to setup a 12.0 VM
+[2018-05-19 16:04:37] * somers__ (~somers@63.224.80.52) join
+[2018-05-19 16:11:20] * somers_ (~somers@63-224-80-166.hlrn.qwest.net) quit Read error: Operation timed out
