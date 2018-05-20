@@ -979,3 +979,8 @@
 [2018-05-20 01:40:08] * somers (~somers@2602:3f:e050:3400:e23f:49ff:fe44:d7b6) join
 [2018-05-20 01:40:09] * somers__ (~somers@63.224.80.52) quit Read error: Connection reset by peer
 [2018-05-20 02:20:12] <somers> I had no problem building your test suite.  Make sure you don't have any object files in the source directory
+[2018-05-20 08:43:10] <aniketp41> Wow, I got my first kernel panic :D => https://pastebin.com/u3DqGTS1
+[2018-05-20 08:43:10] <aniketp41> Most of the hex addresses were similar to your case earlier: Although in my case the cpuid is 1
+[2018-05-20 08:43:10] <aniketp41> @somers 
+[2018-05-20 08:52:17] <aniketp41> I was able to install the tests in /usr/tests and ran the tests from there. Although the tests were successful in case auditd is already running, I got this kernel panic when auditd is not already running...
+[2018-05-20 08:53:02] <aniketp41> Btw @somers, what is the recommended way to get out of the kernel panic? Like I had to forcefully shut down the VM and in process lost all unsaved data :/
