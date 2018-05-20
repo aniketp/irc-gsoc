@@ -976,3 +976,5 @@
 [2018-05-19 20:44:54] <aniketp41> Yes @somers__, I had updated it earlier: https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/file-attribute-access.c?r1=337233&r2=337240&pathrev=337240
 [2018-05-19 20:55:28] <somers__> I'm unable to make a connection.  Can you?
 [2018-05-19 21:39:08] <aniketp41> Yes @somers__, I was able to access the url..
+[2018-05-20 01:40:08] * somers (~somers@2602:3f:e050:3400:e23f:49ff:fe44:d7b6) join
+[2018-05-20 01:40:09] * somers__ (~somers@63.224.80.52) quit Read error: Connection reset by peer
