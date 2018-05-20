@@ -984,3 +984,11 @@
 [2018-05-20 08:43:10] <aniketp41> @somers 
 [2018-05-20 08:52:17] <aniketp41> I was able to install the tests in /usr/tests and ran the tests from there. Although the tests were successful in case auditd is already running, I got this kernel panic when auditd is not already running...
 [2018-05-20 08:53:02] <aniketp41> Btw @somers, what is the recommended way to get out of the kernel panic? Like I had to forcefully shut down the VM and in process lost all unsaved data :/
+[2018-05-20 13:09:53] <somers> @aniketp41 That panic is the one whose patch is here: https://reviews.freebsd.org/D15381
+[2018-05-20 13:10:06] <somers> If you type "reboot" at the panic prompt, your VM will reboot
+[2018-05-20 13:10:23] <somers> You can also type "dump" to take a kernel dump before you reboot
+[2018-05-20 13:11:43] <aniketp41> Yes @somers_, I had seen the patch. Also, I was wondering how I can fix the recurring panic. Like you had deleted one line in the patch so do I have to build the kernel after introducing that change?
+[2018-05-20 13:11:55] <aniketp41> Sorry, @somers 
+[2018-05-20 13:12:18] <somers> yep
+[2018-05-20 13:14:38] <aniketp41> Okay will do that. Btw @somers, what was the status of the tests? You were able to build the test-suite right?
+[2018-05-20 13:14:38] <aniketp41> Also, I had created a bug about another syscall that I noticed, wasn't audited: chflagsat(2) https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228374
