@@ -1001,3 +1001,18 @@
 [2018-05-20 18:40:03] <somers> that won't help
 [2018-05-20 18:40:22] <somers> You can delete stuff in /usr/obj, but you'll just have to recreate it when next you buildworld
 [2018-05-20 18:41:25] <somers> You should probably just increase your VM's disk size.  Expanding the root file system is possible with both root on UFS and root on ZFS
+[2018-05-20 20:46:46] <aniketp41> Hi @somers, currently I've expanded VM space and I'm doing "buildworld". Also, checked in some more tests. (Total 306 now). 
+[2018-05-20 20:46:46] <aniketp41> For chflagsat(2), I've added a "atf_tc_expect_fail()". Is it fine, considering that it does not get audited?
+[2018-05-20 20:47:24] <somers> Yep
+[2018-05-20 20:53:18] <aniketp41> Btw @somers, isn't kernel development a bit too cumbersome? As in, do you have to build the kernel for every change in source code? Is there a way to make this process a bit faster? (Cause I couldn't do much other than just trying to build the kernel)
+[2018-05-20 20:53:44] <somers> Yep.  Do "make -DKERNFAST -jwhatever buildkernel"
+[2018-05-20 20:54:02] <somers> The -DKERNFAST means don't do a clean first, and don't rescan dependencies either
+[2018-05-20 20:54:59] <aniketp41> And the "buildworld" is not done more than once, right? Cause it looks to me that doing it more than once would be very unfeasible
+[2018-05-20 20:55:17] <somers> You don't need to repeat buildworld if you're testing a kernel change
+[2018-05-20 20:55:29] <somers> Nor do you need to repeat buildworld if you're only testing a small part of world
+[2018-05-20 21:04:58] <aniketp41> Okay sure, I'll keep this mind the next time. Btw @somers shall I add all these new tests for review? (In D15286)
+[2018-05-20 21:05:05] <aniketp41> *in
+[2018-05-20 21:05:27] <somers> No, let's not.  That review is so close that I'd rather not add anything
+[2018-05-20 21:06:50] <aniketp41> Hmm okay. Btw doing this would probably take up a lot of time in reviewing and revising the changes (5875 SLOC) 
+[2018-05-20 21:11:17] <aniketp41> Btw @somers, how did the issues get resolved? I mean, I haven't done any changes in the "utils.c" or the test-cases. A while back they were inconsistent, now they are all passing in your case.
+[2018-05-20 21:12:55] <somers> Yeah, but they didn't fail consistently either.  The "incomplete audit record" bug has always been intermittent.
