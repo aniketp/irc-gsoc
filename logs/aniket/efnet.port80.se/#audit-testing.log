@@ -993,3 +993,7 @@
 [2018-05-20 13:14:38] <aniketp41> Okay will do that. Btw @somers, what was the status of the tests? You were able to build the test-suite right?
 [2018-05-20 13:14:38] <aniketp41> Also, I had created a bug about another syscall that I noticed, wasn't audited: chflagsat(2) https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228374
 [2018-05-20 15:45:16] <somers> I"ve been running the tests on loop ever since last night.  No failures yet
+[2018-05-20 16:44:50] <aniketp41> That's good news! So should I update the diff with all the latest tests or wait for it to get commited first? Afaiu, D15381 will need to be commited before D15286, right?
+[2018-05-20 16:44:50] <aniketp41> Also @somers, I included my tests in the /tests/sys/audit and then ran buildworld. It failed with some error messages that mentioned my test-cases.. Do I need to make some more changes apart from what is there in D15286 already? 
+[2018-05-20 16:48:59] <somers> what were the buildworld error messages?
+[2018-05-20 16:58:58] <aniketp41> @somers well I had closed the shell. I'm running it again
