@@ -997,3 +997,7 @@
 [2018-05-20 16:44:50] <aniketp41> Also @somers, I included my tests in the /tests/sys/audit and then ran buildworld. It failed with some error messages that mentioned my test-cases.. Do I need to make some more changes apart from what is there in D15286 already? 
 [2018-05-20 16:48:59] <somers> what were the buildworld error messages?
 [2018-05-20 16:58:58] <aniketp41> @somers well I had closed the shell. I'm running it again
+[2018-05-20 18:39:24] <aniketp41> Btw @somers, my disk space seems to have filled up. Is there some outdated files I can delete after "installworld"? I saw some commands like: "make delete-old-libs"
+[2018-05-20 18:40:03] <somers> that won't help
+[2018-05-20 18:40:22] <somers> You can delete stuff in /usr/obj, but you'll just have to recreate it when next you buildworld
+[2018-05-20 18:41:25] <somers> You should probably just increase your VM's disk size.  Expanding the root file system is possible with both root on UFS and root on ZFS
