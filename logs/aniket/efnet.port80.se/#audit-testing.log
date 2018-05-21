@@ -1034,3 +1034,4 @@
 [2018-05-20 23:33:23] <aniketp41> @somers, I got another one now
 [2018-05-20 23:33:41] <aniketp41> Probably there are more to come, since the test is running
 [2018-05-21 00:04:52] <somers> Ok, now try to debug the core with gdb
+[2018-05-21 09:37:44] <aniketp41> @somers, I couldn't find any core file. Wouldn't Kyua just clean them up after completion?
