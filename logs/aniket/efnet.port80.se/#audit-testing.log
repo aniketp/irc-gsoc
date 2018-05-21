@@ -1016,3 +1016,20 @@
 [2018-05-20 21:06:50] <aniketp41> Hmm okay. Btw doing this would probably take up a lot of time in reviewing and revising the changes (5875 SLOC) 
 [2018-05-20 21:11:17] <aniketp41> Btw @somers, how did the issues get resolved? I mean, I haven't done any changes in the "utils.c" or the test-cases. A while back they were inconsistent, now they are all passing in your case.
 [2018-05-20 21:12:55] <somers> Yeah, but they didn't fail consistently either.  The "incomplete audit record" bug has always been intermittent.
+[2018-05-20 23:20:18] <aniketp41> Hi @somers, I rebooted into the newly built kernel and the kernel panic seems to have gone. But when I installed the tests in the test-suite, for the very first time I got some wide-range of test-failures (most of them: broken test body (never occurred before)): https://pastebin.com/ETaDqXBT
+[2018-05-20 23:20:38] <aniketp41> I'm running them again and the number of test failures reduced but they are still there
+[2018-05-20 23:21:49] <somers> The signal 11 and signal 10 failures are the most interesting.  Those are both segfaults.  Have you tried debugging either?
+[2018-05-20 23:22:15] <somers> Oh, this could also happen if your world is newer than your kernel.  How did you install the VM, and how did you reinstall the kernel?
+[2018-05-20 23:25:48] <aniketp41> They're random everytime, not sure how to debug a specific test-case. I also got a lot of "Audit init control failed " messages in the main VM window.
+[2018-05-20 23:25:48] <aniketp41> @somers I grabbed a 12-CURRENT iso image https://download.freebsd.org/ftp/snapshots/amd64/amd64/ISO-IMAGES/12.0/, installed it normally. 
+[2018-05-20 23:25:48] <aniketp41> For reinstallation, "cd /usr/src" > "make -j4 buildworld" > "make -j4 buildkernel" > "make installkernel" > "reboot" > "make installworld" > "reboot"
+[2018-05-20 23:27:04] <somers> Your best bet to debug is probably to get a core file
+[2018-05-20 23:27:39] <somers> Actually, you did leave a few steps out, though in this case you can probably get away with it
+[2018-05-20 23:28:14] <aniketp41> Oh, @somers I followed the guide here: https://www.freebsd.org/doc/handbook/makeworld.html
+[2018-05-20 23:28:20] <somers> Before doing "installworld", you should do "mergemaster -p -U"
+[2018-05-20 23:28:31] <somers> After doing installworld, you should do "mergemaster -U"
+[2018-05-20 23:29:42] <aniketp41> Okay @somers, although now that I've done "installworld", how should I get to the stage before doing "installworld"?
+[2018-05-20 23:30:20] <somers> You can't.  Just do "mergemaster -U"
+[2018-05-20 23:33:23] <aniketp41> Okay, I ran the command and after that I'm currently running the tests: file-attribute-access:extattr_get_fd_success  ->  broken: Premature exit; test case received signal 6 (core dumped)  [0.413s]
+[2018-05-20 23:33:23] <aniketp41> @somers, I got another one now
+[2018-05-20 23:33:41] <aniketp41> Probably there are more to come, since the test is running
