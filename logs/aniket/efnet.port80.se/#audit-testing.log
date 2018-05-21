@@ -1033,3 +1033,4 @@
 [2018-05-20 23:33:23] <aniketp41> Okay, I ran the command and after that I'm currently running the tests: file-attribute-access:extattr_get_fd_success  ->  broken: Premature exit; test case received signal 6 (core dumped)  [0.413s]
 [2018-05-20 23:33:23] <aniketp41> @somers, I got another one now
 [2018-05-20 23:33:41] <aniketp41> Probably there are more to come, since the test is running
+[2018-05-21 00:04:52] <somers> Ok, now try to debug the core with gdb
