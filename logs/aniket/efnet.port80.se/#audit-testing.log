@@ -1051,3 +1051,43 @@
 [2018-05-21 18:37:52] <somers> Better not to skip it entirely.  You can still audit the failure case.
 [2018-05-21 18:38:52] <somers> Look at the source.  Function kern_mprotect in file sys/vm/vm_mmap.c
 [2018-05-21 18:39:06] <somers> that'll show you how to make it fail
+[2018-05-21 20:14:42] <aniketp41> @somers I looked at the code and tried to figure out a way to make it fail, and the only possible way it seemed was when (addr + size) > addr ; or when size is negative. But even very large negative values don't fail the tests.
+[2018-05-21 20:14:42] <aniketp41> Btw is it possible to use mmap(2) to manipulate mprotect(2) to fail?
+[2018-05-21 20:15:07] <aniketp41> *is not >
+[2018-05-21 20:15:32] <somers> By far the easiest way is that first EINVAL clause
+[2018-05-21 20:15:56] <aniketp41> Yes, that is the condition of comparing addr and size, right?
+[2018-05-21 20:15:56] <somers> what values did you try?
+[2018-05-21 20:16:00] <somers> yeah
+[2018-05-21 20:16:17] <aniketp41> mprotect(NULL, -400000, PROT_NONE);
+[2018-05-21 20:16:38] <aniketp41> And valid malloc'd buffer in place of NULL too
+[2018-05-21 20:21:21] <somers> Well, the NULL case obviously isn't going to work.  NULL is 0, and nothing is going to be less than that.
+[2018-05-21 20:21:44] <somers> Why don't you try using a hardcoded (invalid) addr?
+[2018-05-21 20:27:52] <aniketp41> Okay, I got it to work using invalid addr (-1) :) . But the compiler generated warning: "-Wint-conversion" 
+[2018-05-21 20:28:36] <aniketp41> @somers, is there a workaround the warning?
+[2018-05-21 20:29:02] <aniketp41> Cause I think the compiler will always notice the invalid addr
+[2018-05-21 20:29:44] <somers> Yeah.  Use SIZE_MAX instead of -1.  The compiler is complaining because you're coercing a signed value to an unsigned
+[2018-05-21 20:31:44] <aniketp41> I think any integer value should give this warning: "warning: initialization makes pointer from integer without a cast "
+[2018-05-21 20:34:01] <somers> Yeah.  But you can handle that just with a (void*)
+[2018-05-21 20:36:15] <aniketp41> Oh right, I had tried casting it earlier, but for some reason it didn;t work. (I guess that was because I forgot to enclose -1 with (void *)).
+[2018-05-21 20:36:15] <aniketp41> Now it's working, thanks @somers!
+[2018-05-21 20:36:20] <somers> np
+[2018-05-21 20:39:18] <aniketp41> But the audit record still doesn't contain anything useful: "header,68,11,mprotect(2),0,Tue May 22 02:07:59 2018, + 353 msec,subject,root,root,0,root,0,2938,2839,60856,10.0.2.2,return,failure : Invalid argument,4294967295,trailer,68,
+[2018-05-21 20:39:18] <aniketp41> "
+[2018-05-21 20:39:18] <aniketp41> This might work for failure case but a lot of similar successful audit records were created for success case
+[2018-05-21 20:40:26] <somers> Are you using a 32-bit VM?
+[2018-05-21 20:44:08] <aniketp41> No it's amd64
+[2018-05-21 20:44:12] <aniketp41> @simers
+[2018-05-21 20:44:18] <aniketp41> @somers 
+[2018-05-21 20:44:45] <somers> Then where did the 4294967295 come from?
+[2018-05-21 20:45:30] <aniketp41> I'm not really sure. I've noticed very large numbers in every test-failure case. For success case most contained return values @somers 
+[2018-05-21 20:46:42] <somers> It would be good to track that down.
+[2018-05-21 20:47:36] <somers> In general, when you're auditing stuff for security purposes, you need to know what _everything_ means.  Because nefarious stuff often looks confusing
+[2018-05-21 20:50:56] <aniketp41> Yes @somers, I'd try to do that. Btw for success case, notice the 0: header,68,11,mprotect(2),0,Tue May 22 02:18:54 2018, + 414 msec,subject,root,root,0,root,0,3866,2839,60856,10.0.2.2,return,success,0,trailer,68,
+[2018-05-21 20:50:56] <aniketp41> Also, have a look at this implementation in which I used the return value to pin-point to the system call instance triggered by us: https://github.com/aniketp/AuditTestSuite/blob/master/src/file-attribute-modify.c#L109
+[2018-05-21 20:52:44] <aniketp41> @somers I got it: 4294967295 is (2^32 - 1) which is the limit for "int"
+[2018-05-21 20:53:04] <somers> Yeah, but why?  None of those arguments are int
+[2018-05-21 20:53:33] <aniketp41> return is int, right? So this should make sense?
+[2018-05-21 20:54:09] <aniketp41> I mean, maybe the audit record can't contain negative values so they circled back to largest int?
+[2018-05-21 20:54:50] <somers> Ok.  I saw "argument" and assumed that field was related to the arguments.  If it's actually the return value, then it makes sense
+[2018-05-21 20:54:55] <aniketp41> The format of audit record can be: "return,{return-status},{return-value}"
+[2018-05-21 20:54:58] <somers> Still, I don't know why it's formatted as unsigned
