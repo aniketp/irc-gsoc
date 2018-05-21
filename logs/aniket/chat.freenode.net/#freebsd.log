@@ -375,3 +375,29 @@
 [2018-04-26 18:37:21] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) quit Ping timeout: 240 seconds
 [2018-04-26 18:40:02] * HarveyPwca (~HarveyPwc@ip-64-134-38-52.public.wayport.net) quit Read error: Connection reset by peer
 [2018-04-26 18:41:08] * HarveyPwca (~HarveyPwc@ip-64-134-38-52.public.wayport.net) join
+[2018-05-21 12:04:25] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-05-21 12:04:25] * undefined topic Welcome to #FreeBSD! | Have fun, be civilized, respect others, stay on-topic or /join #freebsd-social | /join #freebsd-irc for channel assistance | Spectre & Meldown Security Advisory: https://goo.gl/d4oKVv (SA-18:03)
+[2018-05-21 12:04:25] * koobs topic_set_by
+[2018-05-21 12:04:37] * twk (~tweak@unaffiliated/tweak) join
+[2018-05-21 12:05:42] <aniketp41> Hi how would I create a "whiteout" file in FreeBSD? 
+[2018-05-21 12:07:05] <megaTherion> whats that?
+[2018-05-21 12:07:46] * Tykling (tykling@znc.tyknet.dk) join
+[2018-05-21 12:09:33] <aniketp41> megaTherion: The man-page of undelete(2) says that the system call currently only works if the "path" is a whiteout file
+[2018-05-21 12:10:05] * dendazen (~dendazen@pool-96-242-161-215.nwrknj.fios.verizon.net) join
+[2018-05-21 12:10:10] <aniketp41> I wanted to audit a successful trigger of undelete(2) so for that I'll need to create a whiteout file
+[2018-05-21 12:10:42] <megaTherion> lemme check, I honestly never heard that term
+[2018-05-21 12:10:45] * stealintv (~stealintv@12.216.153.200) join
+[2018-05-21 12:11:01] <megaTherion> well "a whiteout in a union file system"
+[2018-05-21 12:11:07] <megaTherion> so its probably something quite specific ;)
+[2018-05-21 12:12:23] <megaTherion> I never dealt with unionfs much
+[2018-05-21 12:12:35] <megaTherion> but I guess you'd have to understand these details then
+[2018-05-21 12:14:15] * nighty- (~nighty@s229123.ppp.asahi-net.or.jp) join
+[2018-05-21 12:14:56] <aniketp41> So megaTherion: Is it different from UFS? As in, I don't have much experience regarding various file-systems in FreeBSD
+[2018-05-21 12:15:03] <nighty-> Does anyone know if FreeBSD/armv (v7 or/and arm64) support freebsd-update too ?
+[2018-05-21 12:15:15] <megaTherion> aniketp41: yes absolutly, unionfs is a complete own thing
+[2018-05-21 12:15:43] <megaTherion> nighty-: amd64 for sure, arm - no clue
+[2018-05-21 12:15:44] * daj8 (~daj8@jupiter.fea.unicamp.br) join
+[2018-05-21 12:15:47] <nighty-> I guess it makes sense only in case of eMMC or SATA or SSSD
+[2018-05-21 12:15:56] <megaTherion> but I'd assume so if there are actual releases for arm
+[2018-05-21 12:16:16] <nighty-> megaTherion, well not sure this requires a whole infra to make
+[2018-05-21 12:17:27] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) quit Ping timeout: 240 seconds
