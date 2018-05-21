@@ -1042,3 +1042,12 @@
 [2018-05-21 12:48:24] <aniketp41> Okay, after 5-6 runs after the first, none tests failed. I'm not sure why one or two failed initially..
 [2018-05-21 15:26:31] <aniketp41> So megaTherion: Is it different from UFS? As in, I don't have much experience regarding various file-systems in FreeBSDx
 [2018-05-21 16:49:38] <somers> who or what is megaTherion?
+[2018-05-21 18:18:18] <aniketp41> Hi @somers, I was trying to understand about "whiteout" objects in union filesystem as I would need it to audit "undelete(2)". So I had asked a question regarding that on #freebsd channel on freenode
+[2018-05-21 18:18:49] <aniketp41> It turns out, I can't do that in UFS (which I am currently using)
+[2018-05-21 18:19:11] <somers> Yikes.  unionfs doesn't work very well.  Pretty much nobody uses it anymore.
+[2018-05-21 18:36:50] <aniketp41> Okay, so I guess I can skip "undelete(2)" then? 
+[2018-05-21 18:36:50] <aniketp41> Also, I was having another weird issue. I can't get mprotect(2) to fail, no matter whatever I do. Like passing in invalid memory buffers or invalid lengths or invalid flags. It always compiles and always returns 0. :/
+[2018-05-21 18:36:50] <aniketp41> @somers, can you suggest some way to do it? https://pastebin.com/PZEnHa6e
+[2018-05-21 18:37:52] <somers> Better not to skip it entirely.  You can still audit the failure case.
+[2018-05-21 18:38:52] <somers> Look at the source.  Function kern_mprotect in file sys/vm/vm_mmap.c
+[2018-05-21 18:39:06] <somers> that'll show you how to make it fail
