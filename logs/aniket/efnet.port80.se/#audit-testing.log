@@ -1091,3 +1091,5 @@
 [2018-05-21 20:54:50] <somers> Ok.  I saw "argument" and assumed that field was related to the arguments.  If it's actually the return value, then it makes sense
 [2018-05-21 20:54:55] <aniketp41> The format of audit record can be: "return,{return-status},{return-value}"
 [2018-05-21 20:54:58] <somers> Still, I don't know why it's formatted as unsigned
+[2018-05-22 01:51:07] * somers_ (~somers@63-224-81-229.hlrn.qwest.net) join
+[2018-05-22 01:52:33] * somers (~somers@2602:3f:e050:3400:e23f:49ff:fe44:d7b6) quit Ping timeout: 252 seconds
