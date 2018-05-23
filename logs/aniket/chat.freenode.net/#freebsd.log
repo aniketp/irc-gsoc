@@ -401,3 +401,37 @@
 [2018-05-21 12:15:56] <megaTherion> but I'd assume so if there are actual releases for arm
 [2018-05-21 12:16:16] <nighty-> megaTherion, well not sure this requires a whole infra to make
 [2018-05-21 12:17:27] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) quit Ping timeout: 240 seconds
+[2018-05-23 11:07:54] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-05-23 11:07:54] * undefined topic Welcome to #FreeBSD! | Have fun, be civilized, respect others, stay on-topic or /join #freebsd-social | /join #freebsd-irc for channel assistance | Spectre & Meldown Security Advisory: https://goo.gl/d4oKVv (SA-18:03)
+[2018-05-23 11:07:54] * koobs topic_set_by
+[2018-05-23 11:09:16] <aniketp41> Hi, what would be the best way to create a terminal device? I'm supposed to use revoke(2) system call and the man page suggests using it while creating a pseudo-terminal device
+[2018-05-23 11:13:50] * twk (~tweak@unaffiliated/tweak) quit Ping timeout: 260 seconds
+[2018-05-23 11:16:32] * twk (~tweak@unaffiliated/tweak) join
+[2018-05-23 11:16:34] * lbart (~quassel@LFbn-ANN-1-185-237.w86-200.abo.wanadoo.fr) quit Ping timeout: 264 seconds
+[2018-05-23 11:16:42] * slowpak (~slowpak@gateway/tor-sasl/slowpak) quit Remote host closed the connection
+[2018-05-23 11:17:15] * slowpak (~slowpak@gateway/tor-sasl/slowpak) join
+[2018-05-23 11:19:49] * kh (~hk@unaffiliated/kh) join
+[2018-05-23 11:21:18] * lesta (~lesta@unaffiliated/jimlesta) quit Quit: lesta
+[2018-05-23 11:21:34] * IamKing (~liege@unaffiliated/iamking) join
+[2018-05-23 11:23:47] * Network2501 nick project0x9c5
+[2018-05-23 11:25:01] * IamKing (~liege@unaffiliated/iamking) quit Read error: Connection reset by peer
+[2018-05-23 11:25:41] * IamKing (~liege@unaffiliated/iamking) join
+[2018-05-23 11:26:34] * weird_error (~am55@unaffiliated/am55) join
+[2018-05-23 11:36:01] * project0x9c5 nick Network2501
+[2018-05-23 11:37:00] * GenteelBen (GenteelBen@cpc129112-lutn14-2-0-cust66.know.cable.virginm.net) quit
+[2018-05-23 11:37:02] * raynold (uid201163@gateway/web/irccloud.com/x-ndtzpjtjcpjfpoxp) quit Quit: Connection closed for inactivity
+[2018-05-23 11:40:42] * Unb0rn_ (~Unb0rn@188.233.186.70) join
+[2018-05-23 11:41:26] * Unb0rn (~Unb0rn@188.233.186.70) quit Ping timeout: 252 seconds
+[2018-05-23 11:41:27] * Unb0rn_ nick Unb0rn
+[2018-05-23 11:41:55] * skalis (1000@li1371-246.members.linode.com) quit
+[2018-05-23 11:47:42] * Unb0rn (~Unb0rn@188.233.186.70) quit Ping timeout: 245 seconds
+[2018-05-23 11:50:36] * shinnok (~shinnok@unaffiliated/shinnok) quit Ping timeout: 252 seconds
+[2018-05-23 11:51:05] * zarez (~Thunderbi@fs-93-93-44-38.fullsave.info) join
+[2018-05-23 11:51:36] * skalis (1000@li1371-246.members.linode.com) join
+[2018-05-23 11:52:34] * potatoe (~potatoe@unaffiliated/potatoe5) quit Ping timeout: 264 seconds
+[2018-05-23 11:54:11] * gm152 (ridout@gateway/vpn/privateinternetaccess/b) quit Quit: WeeChat 2.1
+[2018-05-23 11:54:11] * c0ffee152 (coffee@gateway/vpn/privateinternetaccess/b) quit Quit: Lost terminal
+[2018-05-23 11:55:28] * Drakonis (c81153b8@gateway/web/cgi-irc/kiwiirc.com/ip.200.17.83.184) join
+[2018-05-23 11:59:28] * daj8 (~daj8@jupiter.fea.unicamp.br) join
+[2018-05-23 11:59:43] * steelcowboy (~steelcowb@2600-6c52-7a00-0058-0000-0000-0000-0a6f.dhcp6.chtrptr.net) quit Read error: Connection reset by peer
+[2018-05-23 12:00:00] * steelcowboy (~steelcowb@2600-6c52-7a00-0058-0000-0000-0000-0a6f.dhcp6.chtrptr.net) join
