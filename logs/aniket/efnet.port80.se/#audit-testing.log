@@ -1097,3 +1097,4 @@
 [2018-05-23 00:41:56] <aniketp41> What might I be missing here?
 [2018-05-23 01:18:13] <somers_> revoke(2) is normally only used on terminal devices.  Try creating a pseudotermina;l
 [2018-05-23 01:43:37] <aniketp41> Sure, will try to do that. Btw @somers_, aren't we allowed to dynamically allocate memory in Kyua test cases? I tried to do so for munmap(2). and this code returns 0 but kyua test case returns segfault https://pastebin.com/dsdxhgrV
+[2018-05-23 02:01:06] <aniketp41> Okay, I got it to work, I first mapped a memory segment using mmap(2) and then simply un-mapped it
