@@ -1147,3 +1147,30 @@
 [2018-05-23 18:20:31] <aniketp41> Sure, btw @somers_, "sysctl debug.kdb.panic=1" also causes kernel panic. Irrespective of audit mask or whether auditd is running or not
 [2018-05-23 18:22:31] <aniketp41> Also, I didn't find any "_exit" in the audit record (assuming audit mask has flag="pc"), either with _exit(1) or _exit(0).
 [2018-05-23 18:22:31] <aniketp41> However, there were a bunch of "exit(2)" in the record. However, they all returned "success"
+[2018-05-23 20:24:41] <aniketp41> @somers_, I created a bug report: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228444
+[2018-05-23 20:24:41] <aniketp41> I couldn't assign the bug to you so added you to subscribers
+[2018-05-23 20:25:51] <somers_> thanks
+[2018-05-23 20:26:06] <somers_> BTW, causing a panic is exactly what "sysctl debug.kdb.panic=1" is supposed to do
+[2018-05-23 20:33:56] <aniketp41> Okay, I see. It got me worried as to why that was happening. 
+[2018-05-23 20:36:12] <aniketp41> Also, @somers_, for execve, I'll need a shell script to execute (which should be in the same directory). So do I need to specify something in the Makefile so as to ensure that the "make install" places it in the test-suite?
+[2018-05-23 20:36:53] <somers_> Nah, you don't need a shell script.  Just call fork() in the testcase, have the child execve(), and have the parent wait() on the child
+[2018-05-23 20:37:01] <aniketp41> uname -a: FreeBSD bsdtest 12.0-CURRENT FreeBSD 12.0-CURRENT #1: Mon May 21 20:10:48 IST 2018     root@bsdtest:/usr/obj/usr/src/amd64.amd64/sys/GENERIC  amd64
+[2018-05-23 20:37:33] <somers_> paste it into the issue
+[2018-05-23 20:37:45] <aniketp41> Yeah I did already
+[2018-05-23 20:38:51] <aniketp41> Not sure why uname shows the wrong date. Although it is correctly set
+[2018-05-23 20:39:33] <somers_> That's the date when the kernel was compiled
+[2018-05-23 20:44:03] <aniketp41> Oh, okay. Makes sense now!
+[2018-05-23 20:52:33] <aniketp41> @somers_, in the test-case, why do we need fork() & wait() along with execve(). Can't we evaluate the execve() syscall directly?
+[2018-05-23 20:52:51] <aniketp41> As in, why do we need to create a child process?
+[2018-05-23 20:53:05] <somers_> Doing that will quit the Kyua process, and you don't want to do that
+[2018-05-23 20:55:23] <aniketp41> Okay so even if I'm calling execve() from child process, I'll need an executable to call as the first argument of execve(), that is why I was asking about the script. 
+[2018-05-23 20:55:45] <aniketp41> Or is there any workaround that? @somers_ 
+[2018-05-23 20:56:41] <somers_> Well, any executable will work.  Like /usr/bin/true
+[2018-05-23 20:58:27] <aniketp41> Yes I initially thought about it. But in case that executable is not-present in the system, the tests might fail. Like, it's possible that I can just remove that particular executable. So will that be the right approach then? 
+[2018-05-23 21:06:11] <aniketp41> Also, @somers_, what should I do about the "return,failure: Unknown error". I'm positive that it only happens when execve() successfully overlays the current process and the current process never returns. Which essentially means our test was successful
+[2018-05-23 21:07:10] <somers_> You can count on pretty much anything in /usr/bin being present
+[2018-05-23 21:07:28] <somers_> A few things you shouldn't count on.  Those are the things that can be disabled by src.conf.  But true(1) is not among them.
+[2018-05-23 21:07:56] <somers_> You should figure out why audit(4) is returning the wrong thing
+[2018-05-23 21:20:18] <aniketp41> Okay, btw @somers_, where in openbsm can I find the relevant code? Which actually decides what should be in the audit record..
+[2018-05-23 21:20:38] <aniketp41> Then I will have a look why its returning a failure
+[2018-05-23 21:20:57] <somers_> In this case, you probably need to look in the kernel, not openbsdm
