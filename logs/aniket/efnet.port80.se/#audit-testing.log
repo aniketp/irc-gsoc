@@ -1098,3 +1098,49 @@
 [2018-05-23 01:18:13] <somers_> revoke(2) is normally only used on terminal devices.  Try creating a pseudotermina;l
 [2018-05-23 01:43:37] <aniketp41> Sure, will try to do that. Btw @somers_, aren't we allowed to dynamically allocate memory in Kyua test cases? I tried to do so for munmap(2). and this code returns 0 but kyua test case returns segfault https://pastebin.com/dsdxhgrV
 [2018-05-23 02:01:06] <aniketp41> Okay, I got it to work, I first mapped a memory segment using mmap(2) and then simply un-mapped it
+[2018-05-23 16:37:37] <aniketp41> Hi @somers_, the man-page of execve(2) syscall says that successful call has no process to return to. So will it ever show up, "return,success" in the audit record?
+[2018-05-23 16:37:37] <aniketp41> I've been trying various implementations and the obvious errors return failure with appropriate reasons but the code which looked right always returned "return,failure: Unknown error". Is it because successful execve(2) call never returns? 
+[2018-05-23 16:38:35] <somers_> Are you saying that you did in fact get an audit record for a successful invocation?
+[2018-05-23 16:38:56] <aniketp41> Nope, never. Been trying to get one
+[2018-05-23 16:39:39] <aniketp41> I mean, it always rteturns failure. For what looks a correct approach, @somers_ 
+[2018-05-23 16:39:41] <somers_> So what returned "return,failure: Unknown error"
+[2018-05-23 16:39:53] <aniketp41> Okay, I'll show you the code
+[2018-05-23 16:40:03] <somers_> Does it return a failure record for a successful invocation?
+[2018-05-23 16:41:55] <aniketp41> Man page says execve(2) doesn't have a success return. It simply overlays the calling process. @somers_ 
+[2018-05-23 16:42:33] <somers_> Yeah.  But I don't understand what you're problem is.  What are you expecting to happen, and what is happening instead?
+[2018-05-23 16:44:18] <aniketp41> If the invocation was successful, it should not continue with the original program. 
+[2018-05-23 16:44:18] <aniketp41> So my question was whether my analogy is wrong? or will it never actually return success. I'm thinking it does "Unknown error" when the invocation was successful since the original process never returns?
+[2018-05-23 16:45:33] <somers_> what does "Unknown error" ?
+[2018-05-23 16:46:15] <aniketp41> This snippet: https://pastebin.com/kGTDV27h
+[2018-05-23 16:46:50] <somers_> I mean, "what is printing the error message"?
+[2018-05-23 16:46:57] <somers_> Evidently not Kyua
+[2018-05-23 16:48:00] <aniketp41> Yeah, I used those programs (in pastebin link) and checked auditpipe from a separate window. 
+[2018-05-23 16:48:00] <aniketp41> header,142,11,execve(2),0,Wed May 23 16:33:45 2018, + 375 msec,exec arg,script,hello,world,path,/root/test/script,attribute,755,root,0,77,4574855,9149967,subject,root,root,0,root,0,1626,752,50338,10.0.2.2,return,failure: Unknown error: 201,4294967295,trailer,142,
+[2018-05-23 16:49:22] <somers_> So you're saying that even when execve succeeds, auditpipe reports that it failed?
+[2018-05-23 16:50:16] <aniketp41> Like, the execution of the above programs never prints the final printf() statement, suggesting the invocation was successful and still auditpipe returned "Unknown error"
+[2018-05-23 16:50:16] <aniketp41> @somers_, Yes, precisely! Although I thought I might be wrong in my analogy
+[2018-05-23 16:51:26] <somers_> Well, I don't know why it prints that.  You'd have to look into the implementation.
+[2018-05-23 16:53:28] <aniketp41> Well what I think happens is that, since the program (in successful invocation) never returns (The new process takes over). Kyua doesn't have an explicit return value to check whether it passed or failed. It simply returns "Unknown error". 
+[2018-05-23 16:54:11] <aniketp41> Maybe like the default part of any switch statement, where you don't know what happened 
+[2018-05-23 16:55:01] <somers_> I thought you said this had nothing to do with Kyua?
+[2018-05-23 16:56:13] <aniketp41> Sorry, auditpipe
+[2018-05-23 16:57:35] <somers_> You'd have to look at the code to see what's going on.  I was under the impression that the kernel generated the entire audit record when the system call returned, but evidently that's not true.
+[2018-05-23 16:57:56] <somers_> Have you tried _exit(2) ?
+[2018-05-23 16:59:36] <aniketp41> I'll try that next @somers_ 
+[2018-05-23 16:59:36] <aniketp41> Btw when I make deliberate error: Like wrong script name: It actually returns, printing the final printf() statement in the "pastebin code" and auditpipe shows this:
+[2018-05-23 16:59:36] <aniketp41> header,116,11,execve(2),0,Wed May 23 16:57:55 2018, + 294 msec,exec arg,script,hello,world,path,/root/test/script.sh,subject,root,root,0,root,0,2238,752,50338,10.0.2.2,return,failure : No such file or directory,4294967295,trailer,116,
+[2018-05-23 17:11:29] <aniketp41> @somers_, btw is it possible that any command line utility causes kernel panic?
+[2018-05-23 17:11:29] <aniketp41> Cause I have an "exa" (port) alias for "ls" and when I do that, Kernel panics. While actual "ls" command doesn't cause one
+[2018-05-23 17:12:31] <somers_> Sure.  Just do "sysctl debug.kdb.panic=1"
+[2018-05-23 17:13:20] <aniketp41> It says: "Acquiring blockable sleep lock with spinlock or critical section held evclass_lock @ /usr/src/sys/security/audit/audit_bsm_db.c:119"
+[2018-05-23 17:14:40] <somers_> suspicious location.  Do you have any local kernel modifications?  Are you running with the patch from D15381 ?
+[2018-05-23 17:15:31] <aniketp41> Yes, @somers_, I removed that line and built the entire world. And then I've been running it since
+[2018-05-23 17:15:57] <aniketp41> *the line removal on D15381
+[2018-05-23 17:15:58] <somers_> but no other changes?
+[2018-05-23 17:16:48] <aniketp41> No I think not..
+[2018-05-23 17:17:16] <aniketp41> It just happened after I created a sample C program with "_exit(2)" but didn't run it yet..
+[2018-05-23 17:17:36] <aniketp41> Before that it was wokring perfectly. The change doesn't make sens
+[2018-05-23 17:18:23] <somers_> Do you get the panic when auditd is stopped?
+[2018-05-23 17:28:00] <aniketp41> No @somers_, it only happened when it was running. And another observation. It only happens when I set system wide audit flag as "pc" (To check _exit(2)'s audit). In normal cases, it doesn't happen whether auditd is running or not 
+[2018-05-23 17:30:24] <somers_> Good info.  Go ahead and file a bug.  Make sure to include the full stack trace.
+[2018-05-23 17:30:45] <somers_> I gtg.  Back in a few

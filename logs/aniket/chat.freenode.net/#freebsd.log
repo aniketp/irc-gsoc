@@ -651,3 +651,24 @@
 [2018-05-23 15:58:59] * emacsomancer (~user@172.83.40.25) join
 [2018-05-23 15:59:39] * bhoman (~bhoman@li641-56.members.linode.com) join
 [2018-05-23 15:59:43] <Freaky> shbrngdo: patents for mp3 expired last year
+[2018-05-23 16:00:41] * sigma6 (~mbeer@gate.codingtechnologies.de) quit Ping timeout: 256 seconds
+[2018-05-23 16:00:47] <drougge> So here's what the less than stellar pkg error handling looked like: https://pastebin.com/hC6mVXgB  As far as I can see only line 5 (which had scrolled out of my terminal when I said "y") indicates there will be a problem.
+[2018-05-23 16:01:04] * VoidChicken (~VoidChick@ip68-7-4-204.sd.sd.cox.net) quit Read error: Connection reset by peer
+[2018-05-23 16:01:47] * VoidChicken (~VoidChick@ip68-7-4-204.sd.sd.cox.net) join
+[2018-05-23 16:02:44] * jcarl43 (~jcarl@vpn-ca01.nbsig.com) join
+[2018-05-23 16:04:34] * RickDeckard (~tgburrin@152.179.78.138) join
+[2018-05-23 16:05:13] * Darkclaw (~Andre@unaffiliated/darkclaw) part "Leaving"
+[2018-05-23 16:05:18] * Darkclaw_ (~darkclaw@unaffiliated/darkclaw) join
+[2018-05-23 16:07:10] * longshot (~nobody@2001:470:f0f4:a0a:75f8:fa77:c4ca:2d86) quit Quit: Leaving.
+[2018-05-23 16:09:14] * sab110 (~sbaig14@cpe-2606-A000-112A-80FC-7285-C2FF-FE5A-F98B.dyn6.twc.com) quit Ping timeout: 260 seconds
+[2018-05-23 16:10:03] * svm_invictvs (~svm_invic@unaffiliated/svminvictvs/x-938456) quit Quit: My MacBook has gone to sleep. ZZZzzz…
+[2018-05-23 16:10:31] * zarez (~Thunderbi@fs-93-93-44-38.fullsave.info) quit Quit: zarez
+[2018-05-23 16:11:25] * user03 (~user03@unaffiliated/user03) join
+[2018-05-23 16:12:10] * seschwar (~seschwar@unaffiliated/seschwar) join
+[2018-05-23 16:15:01] * drakonis (~drakonis@unaffiliated/drakonis) quit Remote host closed the connection
+[2018-05-23 16:17:41] <aniketp41> Hi, what would be the best way to create a terminal device? I'm supposed to use revoke(2) system call and the man page suggests using it while creating a pseudo-terminal device
+[2018-05-23 16:21:53] * GenteelBen (~GenteelBe@cpc129112-lutn14-2-0-cust66.know.cable.virginm.net) join
+[2018-05-23 16:22:46] * BRLX (~Thunderbi@rtr.ak-p.at) quit Quit: BRLX
+[2018-05-23 16:23:07] * cpape (~user@cpape.eu) quit Ping timeout: 245 seconds
+[2018-05-23 16:28:06] * longshot (~nobody@2001:470:f0f4:a0a:75f8:fa77:c4ca:2d86) join
+[2018-05-23 16:28:54] <shanth> drougge: is the lame library where you think it is?
