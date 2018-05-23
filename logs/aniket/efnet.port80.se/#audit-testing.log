@@ -1093,3 +1093,7 @@
 [2018-05-21 20:54:58] <somers> Still, I don't know why it's formatted as unsigned
 [2018-05-22 01:51:07] * somers_ (~somers@63-224-81-229.hlrn.qwest.net) join
 [2018-05-22 01:52:33] * somers (~somers@2602:3f:e050:3400:e23f:49ff:fe44:d7b6) quit Ping timeout: 252 seconds
+[2018-05-23 00:41:41] <aniketp41> Hi @somers_, I'm trying to audit revoke(2) which simply requires a const char *path as the argument. But passing any path always returns in a failure: return,failure : Invalid argument
+[2018-05-23 00:41:56] <aniketp41> What might I be missing here?
+[2018-05-23 01:18:13] <somers_> revoke(2) is normally only used on terminal devices.  Try creating a pseudotermina;l
+[2018-05-23 01:43:37] <aniketp41> Sure, will try to do that. Btw @somers_, aren't we allowed to dynamically allocate memory in Kyua test cases? I tried to do so for munmap(2). and this code returns 0 but kyua test case returns segfault https://pastebin.com/dsdxhgrV
