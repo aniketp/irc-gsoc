@@ -1144,3 +1144,6 @@
 [2018-05-23 17:28:00] <aniketp41> No @somers_, it only happened when it was running. And another observation. It only happens when I set system wide audit flag as "pc" (To check _exit(2)'s audit). In normal cases, it doesn't happen whether auditd is running or not 
 [2018-05-23 17:30:24] <somers_> Good info.  Go ahead and file a bug.  Make sure to include the full stack trace.
 [2018-05-23 17:30:45] <somers_> I gtg.  Back in a few
+[2018-05-23 18:20:31] <aniketp41> Sure, btw @somers_, "sysctl debug.kdb.panic=1" also causes kernel panic. Irrespective of audit mask or whether auditd is running or not
+[2018-05-23 18:22:31] <aniketp41> Also, I didn't find any "_exit" in the audit record (assuming audit mask has flag="pc"), either with _exit(1) or _exit(0).
+[2018-05-23 18:22:31] <aniketp41> However, there were a bunch of "exit(2)" in the record. However, they all returned "success"
