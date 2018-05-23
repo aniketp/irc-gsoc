@@ -569,3 +569,85 @@
 [2018-05-23 13:59:47] * electro33 (uid613@gateway/web/irccloud.com/x-sozgouyerpyqszft) join
 [2018-05-23 13:59:50] <shbrngdo> smartctl is one of those things you NEVER use until you really need it
 [2018-05-23 13:59:57] <Darkclaw> kk
+[2018-05-23 14:01:24] <Drakonis> a reminder: because you have linux compatibility, it doesn't mean you can run linux binaries that require linux interfaces
+[2018-05-23 14:01:29] <Drakonis> its syscalls
+[2018-05-23 14:02:09] <Drakonis> be back soon
+[2018-05-23 14:02:24] * Drakonis (c81153b8@gateway/web/cgi-irc/kiwiirc.com/ip.200.17.83.184) quit Remote host closed the connection
+[2018-05-23 14:05:50] * rennj (~rennj@97-121-167-28.clsp.qwest.net) join
+[2018-05-23 14:07:08] * Unb0rn (~Unb0rn@188.233.186.70) join
+[2018-05-23 14:08:29] * cur8or (~cur8or@72canterbury.cybersmart.co.za) quit Ping timeout: 252 seconds
+[2018-05-23 14:09:17] * tigelle (~tigelle@gateway/tor-sasl/tigelle) join
+[2018-05-23 14:11:46] * bhoman (~bhoman@li641-56.members.linode.com) join
+[2018-05-23 14:11:50] <cirdan> smartctl disk scan is good but quite the same as writing the data yourself
+[2018-05-23 14:12:01] <cirdan> badblocks is a wonderful took if you can get it to work just be careful of the options
+[2018-05-23 14:15:17] <CrtxReavr> Darkclaw, sorry about that random =
+[2018-05-23 14:15:23] <CrtxReavr> Been writing too much code. ..
+[2018-05-23 14:15:27] <CrtxReavr> space equals space
+[2018-05-23 14:15:29] <shbrngdo> stupid keyboard can't type
+[2018-05-23 14:15:46] * longshot (~nobody@2001:470:f0f4:a0a:75f8:fa77:c4ca:2d86) join
+[2018-05-23 14:17:15] * user03 (~user03@unaffiliated/user03) quit Read error: Connection reset by peer
+[2018-05-23 14:18:52] * shbrngdo action ponders the effects of a 'domestic situation' with respect to the integrity of a hard drive, imagines hard drive being thrown at you by soon to be INsignificant other
+[2018-05-23 14:19:53] <shbrngdo> "at least I caught the thing with my [insert body part here]"
+[2018-05-23 14:20:03] <LadyElusive>  it'd be fine
+[2018-05-23 14:20:16] <LadyElusive> face*
+[2018-05-23 14:27:28] * AJ_Z0 (~AJ_Z0@pdpc/supporter/professional/ajz0) quit Quit: ZNC 1.6.1+deb1~ubuntu12.04.2 - http://znc.in
+[2018-05-23 14:27:50] * scain (~scain@2607:5300:60:233b::1) join
+[2018-05-23 14:29:54] * fstd_ (~fstd@unaffiliated/fisted) join
+[2018-05-23 14:30:04] * AJ_Z0 (~AJ_Z0@pdpc/supporter/professional/ajz0) join
+[2018-05-23 14:32:01] * HarveyPwca (~HarveyPwc@ip-64-134-173-247.public.wayport.net) join
+[2018-05-23 14:32:45] * fstd (~fstd@unaffiliated/fisted) quit Ping timeout: 245 seconds
+[2018-05-23 14:32:45] * fstd_ nick fstd
+[2018-05-23 14:35:31] * drakonis (~drakonis@unaffiliated/drakonis) join
+[2018-05-23 14:39:32] * Savemech (Savemech@gateway/shell/firrre/x-sbgrzkmlsldnzxbn) quit Ping timeout: 256 seconds
+[2018-05-23 14:40:47] * aalm (~aalm@37-219-100-76.nat.bb.dnainternet.fi) quit Quit: xyz 2.0.1
+[2018-05-23 14:42:59] * amrfrsh (~Thunderbi@85.17.23.105) quit Quit: amrfrsh
+[2018-05-23 14:43:03] * hemi770 (~hemi666@unaffiliated/hemi770) quit Ping timeout: 256 seconds
+[2018-05-23 14:43:13] * kh (~hk@unaffiliated/kh) quit Ping timeout: 248 seconds
+[2018-05-23 14:44:24] * hemi770 (~hemi666@unaffiliated/hemi770) join
+[2018-05-23 15:00:37] * mgxm (~mgxm@unaffiliated/mgxm) quit Remote host closed the connection
+[2018-05-23 15:00:47] * mgxm (~mgxm@unaffiliated/mgxm) join
+[2018-05-23 15:01:00] * tomoyat1 (~tomoyat1@133.130.119.65) quit Quit: ZNC 1.6.5 - http://znc.in
+[2018-05-23 15:01:29] * tomoyat1 (~tomoyat1@133.130.119.65) join
+[2018-05-23 15:02:07] * jnewt (~jnewt@c-174-58-180-12.hsd1.ks.comcast.net) join
+[2018-05-23 15:02:56] * raichoo (~raichoo@office02.saltation.de) quit Remote host closed the connection
+[2018-05-23 15:10:33] * srg (~srg@unaffiliated/srg) quit Quit: Rebooting, updating, or something broke...
+[2018-05-23 15:16:09] * srg (~srg@unaffiliated/srg) join
+[2018-05-23 15:19:22] * bhoman (~bhoman@li641-56.members.linode.com) quit Quit: ZNC 1.6.5 - http://znc.in
+[2018-05-23 15:20:31] * astrofog (~astrofog@unaffiliated/astrofog) join
+[2018-05-23 15:23:28] * GJdan (~dan@d154-5-206-153.bchsia.telus.net) join
+[2018-05-23 15:24:07] * qrvpzvb (~otto@ppp005054174236.access.hol.gr) join
+[2018-05-23 15:24:53] * qrvpzvb (~otto@ppp005054174236.access.hol.gr) part #freebsd
+[2018-05-23 15:28:23] * hemi770 (~hemi666@unaffiliated/hemi770) quit Ping timeout: 256 seconds
+[2018-05-23 15:29:37] * emacsomancer (user@gateway/vpn/privateinternetaccess/emacsomancer) quit Ping timeout: 248 seconds
+[2018-05-23 15:33:59] * astrofog (~astrofog@unaffiliated/astrofog) quit Quit: Quite
+[2018-05-23 15:34:25] * RickDeckard (~tgburrin@152.179.78.138) quit Ping timeout: 248 seconds
+[2018-05-23 15:35:50] * raichoo (~raichoo@dslb-178-009-020-060.178.009.pools.vodafone-ip.de) join
+[2018-05-23 15:37:15] <debdrup> an updated version of diskinfo in 11.2 and smart in base is something i'm looking forward to
+[2018-05-23 15:38:22] * andreasdr (3ed6f9ca@gateway/web/freenode/ip.62.214.249.202) join
+[2018-05-23 15:39:12] <debdrup> because it means that it's possible to get both the serial number for a disk (to be used as a glabel, for zfs add /dev/label/bay#-serial# (et cetera), as well as a way to get smart attributes for charting
+[2018-05-23 15:41:19] * hemi770 (~hemi666@unaffiliated/hemi770) join
+[2018-05-23 15:41:47] * raynold (uid201163@gateway/web/irccloud.com/x-hbtkmagmyoeegmoa) join
+[2018-05-23 15:46:08] * _0bitcount (~Big_Byte@90.162.105.206) join
+[2018-05-23 15:46:13] * semeion (~semeion@unaffiliated/semeion) join
+[2018-05-23 15:46:38] <drougge> Just installed mencoder from quarterly packages, seems to be missing a dependency: Shared object "libmp3lame.so.0" not found, required by "mencoder"
+[2018-05-23 15:48:12] <shbrngdo> you can try installing it manually
+[2018-05-23 15:48:28] <shbrngdo> or maybe you need to build it from ports
+[2018-05-23 15:48:30] <drougge> Ah, it actually says so ("pkg: mencoder has a missing dependency: lame") when installing, it's just that there's so much output. It could have been more prominently displayed (and not scolled of screen as it was).
+[2018-05-23 15:48:47] <drougge> So yeah, build from ports it is I guess.
+[2018-05-23 15:49:11] <shbrngdo> the problem with things LIKE 'lame' is that it [allegedly] violates patents and so they won't distribute binaries.  probably.
+[2018-05-23 15:49:37] <shbrngdo> I've seen similar things before with mp4 encoding and whatnot.  decoding seems to be 'ok', encoding not so much.
+[2018-05-23 15:50:06] <drougge> I'd say the problem is pkg doesn't scream and shout and require --yes-I-know-it-wont-work flags or something, lame not having a package is a secondary problem.
+[2018-05-23 15:50:40] <shbrngdo> ack on that.  hopefully it didn't stop in the middle and scream, rather than keep going and let you know what didn't work at the end
+[2018-05-23 15:50:48] * Dani-hp (~dani@2001:1620:2048:3b41:9a90:96ff:fecd:f69e) join
+[2018-05-23 15:50:54] * Dani-hp (~dani@2001:1620:2048:3b41:9a90:96ff:fecd:f69e) part #freebsd
+[2018-05-23 15:51:10] <shbrngdo> in which case an "ignore errors" flag would be useful, as well as 'tee' to a log file
+[2018-05-23 15:52:01] * semeion nick mnemonic
+[2018-05-23 15:53:04] * ferdna (~ferdna@68-73-71-246.lightspeed.elpstx.sbcglobal.net) join
+[2018-05-23 15:53:10] <Darkclaw> smartctl long test did not result in any errors
+[2018-05-23 15:53:15] <drougge> pkg printed a warning above the very long list of found depencies and no other indication that something would be wrong. Then it installed all the packages and I couldn't run mencoder. (Now that I've installed a locally built lame I can.)
+[2018-05-23 15:54:36] <Darkclaw> shbrngdo, is it safe to assume that the HD is physically OK?
+[2018-05-23 15:55:02] * Rollabunna (~Rollabunn@2400:2410:2841:f000:9c70:1ac0:8d30:87b7) join
+[2018-05-23 15:57:58] * tdy (~tdy@unaffiliated/tdy) quit Ping timeout: 264 seconds
+[2018-05-23 15:58:59] * emacsomancer (~user@172.83.40.25) join
+[2018-05-23 15:59:39] * bhoman (~bhoman@li641-56.members.linode.com) join
+[2018-05-23 15:59:43] <Freaky> shbrngdo: patents for mp3 expired last year
