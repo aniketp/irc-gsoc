@@ -1229,3 +1229,14 @@
 [2018-05-24 02:48:05] <somers_> There's special code to handle _exit, because it actually terminates the process
 [2018-05-24 02:49:46] <aniketp41> Oh, that makes sense. I guess we can change ar,_errno in the switch case for execve. That should hopefully work
 [2018-05-24 03:26:42] <somers_> But only if we can know for sure that execve suceeded
+[2018-05-24 12:10:19] <aniketp41> @somers_, I checked in the test-cases for execve(2) in both success and failure mode. (I had figured out the issue for regex not matching and fixed it). Please give the tests a run just to be sure they work for you too.
+[2018-05-24 12:10:19] <aniketp41> https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/exec.c?revision=337248&view=markup
+[2018-05-24 12:13:09] <aniketp41> Funny thing is these two tests complete the exec "ex" audit class.
+[2018-05-24 12:56:01] <aniketp41> Hi @somers_, I think there might be another bug in audit/audit_ioctl.h.
+[2018-05-24 12:56:01] <aniketp41> The structure here https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_ioctl.h#L41 needs <bsm/libbsm.h> and the include isn't present there
+[2018-05-24 12:56:52] <aniketp41> When I'm trying to test ioctl(2), this gives me compilation error and to resolve that I have to include<bsm/libbsm.h> before it
+[2018-05-24 13:54:05] <somers_> Missing headers in header files aren't usually bugs.  That's usually deliberate, in order to reduce header pollution.  What symbol from audit_ioctl.h were you trying to use?
+[2018-05-24 13:55:02] <somers_> Whichever it was, its man page should've specified which headers you should include
+[2018-05-24 13:58:46] <aniketp41> I was only using the AUDITPIPE_FLUSH. But the audit_ioctl.h also declared a "struct auditpipe_ioctl_preselect" which is supposed to be used as the third argument in some ioctl. But the "au_mask_t" is declared in the <bsm/libbsm.h>. So that header should also be present in the ioctl header right?
+[2018-05-24 13:58:53] <aniketp41> @somers_ 
+[2018-05-24 13:59:26] <aniketp41> Also, @somers_, have a look at the test for ioctl(2): https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/ioctl.c?revision=337249&view=markup
