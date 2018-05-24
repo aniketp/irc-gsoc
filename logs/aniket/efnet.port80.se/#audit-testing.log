@@ -1240,3 +1240,14 @@
 [2018-05-24 13:58:46] <aniketp41> I was only using the AUDITPIPE_FLUSH. But the audit_ioctl.h also declared a "struct auditpipe_ioctl_preselect" which is supposed to be used as the third argument in some ioctl. But the "au_mask_t" is declared in the <bsm/libbsm.h>. So that header should also be present in the ioctl header right?
 [2018-05-24 13:58:53] <aniketp41> @somers_ 
 [2018-05-24 13:59:26] <aniketp41> Also, @somers_, have a look at the test for ioctl(2): https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/ioctl.c?revision=337249&view=markup
+[2018-05-24 14:00:09] <aniketp41> I'm using the hex value of file-descriptor (which was present as it is in the audit record). To eliminate the false positives
+[2018-05-24 14:03:58] <aniketp41> @somers_ if you are using something pre-declared in a header file, you need to include it's declaration header right?
+[2018-05-24 14:42:20] <somers_> I don't understand the question
+[2018-05-24 14:57:13] <aniketp41> So if a header file uses a struct which is declared somewhere else. Should the header file not include the header file which declares the struct @somers_ 
+[2018-05-24 14:57:43] <aniketp41> I mean, instead of asking people to do it..
+[2018-05-24 14:58:31] <somers_> Unlike a lot of projects FreeBSD doesn't have that rule, because it leads to overinclusion and namespace pollution.  The general rule is "#include whatever the man page tells you to"
+[2018-05-24 15:00:27] <aniketp41> So afaik, the ioctls are used jn auditpipe(4) but there wasn't any mention in there.
+[2018-05-24 15:00:44] <aniketp41> * manpage of auditpipe
+[2018-05-24 15:03:38] <aniketp41> Still @somers_ I thought it would be nice to have one #include <bsm/libbsm.h> in there
+[2018-05-24 15:03:51] <aniketp41> https://github.com/openbsm/openbsm/blob/master/sys/bsm/audit.h#L36 its done here for example
+[2018-05-24 15:04:03] <somers_> If the entire file is not #includeable without first #including another, then it makes sense to #include from the header file.  (Or move the offending symbol into audit.h, but that would be more invasive)
