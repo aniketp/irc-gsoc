@@ -1268,3 +1268,4 @@
 [2018-05-24 19:36:37] <somers_> Well, it's standardized, even if not supported by freebsd:http://pubs.opengroup.org/onlinepubs/009695299/functions/xsh_chap02_06.html#tag_02_06
 [2018-05-24 19:55:09] <aniketp41> Also, @somers_, if a syscall is not present in that list, does it mean that it does not get audited? Like very famous ones getpeername(2)
 [2018-05-24 19:55:25] <aniketp41> There might be many more in other audit classes
+[2018-05-24 20:21:55] <aniketp41> Also, @somers_, have a look at this revision: https://reviews.freebsd.org/D15561
