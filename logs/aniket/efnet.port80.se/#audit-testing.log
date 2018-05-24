@@ -1256,3 +1256,15 @@
 [2018-05-24 17:08:17] <somers_> yeah
 [2018-05-24 17:08:32] <aniketp41> Maybe moving the struct definition along with other struct definitions in "bsm/audit.h" would be a better and feasible approach?
 [2018-05-24 17:08:48] <somers_> Yes, moving the struct definition is probably better
+[2018-05-24 19:23:47] <aniketp41> Hi @somers_,just to confirm, syscalls {putmsg(2), getmsg(2), putpmsg(2), getpmsg(2)} are not defined in FreeBSD, right? I couldn't find any man-page or locate them in the src repo
+[2018-05-24 19:25:05] <somers_> Never heard of them.  Where did you see a reference?
+[2018-05-24 19:25:36] <aniketp41> Same old audit_event list: https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L207
+[2018-05-24 19:29:40] <aniketp41> @somers_ 
+[2018-05-24 19:33:54] <somers_> Ahh, that list is shared between freebsd and darwin
+[2018-05-24 19:34:48] <aniketp41> Then @somers_, should the syscalls not be defined in the darwin's list: https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L294
+[2018-05-24 19:34:57] <aniketp41> If they are present in Darwin
+[2018-05-24 19:35:19] <aniketp41> They are defined before Darwin's syscalls start
+[2018-05-24 19:36:23] <aniketp41> Oh I see, the Darwin list conflicts with Solaris. Okay it makes sense now
+[2018-05-24 19:36:37] <somers_> Well, it's standardized, even if not supported by freebsd:http://pubs.opengroup.org/onlinepubs/009695299/functions/xsh_chap02_06.html#tag_02_06
+[2018-05-24 19:55:09] <aniketp41> Also, @somers_, if a syscall is not present in that list, does it mean that it does not get audited? Like very famous ones getpeername(2)
+[2018-05-24 19:55:25] <aniketp41> There might be many more in other audit classes
