@@ -1251,3 +1251,8 @@
 [2018-05-24 15:03:38] <aniketp41> Still @somers_ I thought it would be nice to have one #include <bsm/libbsm.h> in there
 [2018-05-24 15:03:51] <aniketp41> https://github.com/openbsm/openbsm/blob/master/sys/bsm/audit.h#L36 its done here for example
 [2018-05-24 15:04:03] <somers_> If the entire file is not #includeable without first #including another, then it makes sense to #include from the header file.  (Or move the offending symbol into audit.h, but that would be more invasive)
+[2018-05-24 17:07:39] <aniketp41> It's impossible to include <audit_ioctl.h> without <bsm/audit.h> so we'll have to include that anyway in our program. But as you said it's also possible to move the struct definition into <bsm/audit.h> and include the header in audit_ioctl.h.
+[2018-05-24 17:07:39] <aniketp41> @somers_, "au_mask_t" is not defined in audit_ioctl.h so using it without any include looks erroneous to me 
+[2018-05-24 17:08:17] <somers_> yeah
+[2018-05-24 17:08:32] <aniketp41> Maybe moving the struct definition along with other struct definitions in "bsm/audit.h" would be a better and feasible approach?
+[2018-05-24 17:08:48] <somers_> Yes, moving the struct definition is probably better
