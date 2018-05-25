@@ -1269,3 +1269,6 @@
 [2018-05-24 19:55:09] <aniketp41> Also, @somers_, if a syscall is not present in that list, does it mean that it does not get audited? Like very famous ones getpeername(2)
 [2018-05-24 19:55:25] <aniketp41> There might be many more in other audit classes
 [2018-05-24 20:21:55] <aniketp41> Also, @somers_, have a look at this revision: https://reviews.freebsd.org/D15561
+[2018-05-24 22:39:09] <aniketp41> @somers_, If I'm creating a socket in a Kyua test case, do I need to close the socket descriptor myself or will Kyua do it for me while cleaning up? 
+[2018-05-24 23:55:58] <somers_> what about AUE_GETPEERNAME ?
+[2018-05-24 23:56:36] <somers_> If you create a socket in a Kyua test case, you need to close it yourself in a successful test.
