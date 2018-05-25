@@ -1276,3 +1276,6 @@
 [2018-05-25 00:06:40] <aniketp41> Yes @somers_, did here: https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/network.c?revision=337251&view=markup#l56
 [2018-05-25 13:03:02] <aniketp41> Hi @somers_, does it happen that we are not allowed to create a pair of sockets using socketpair(2) .
 [2018-05-25 13:03:02] <aniketp41> "socketpair(PF_INET, SOCK_STREAM, IPPROTO_TCP, &tr)" this always gives: "Operation not supported"
+[2018-05-25 14:01:13] <aniketp41> Also @somers_, just to confirm, we would need to select() the client socket for writing, right?
+[2018-05-25 14:45:03] <somers_> @aniketp41 try PF_UNIX instead of PF_INET
+[2018-05-25 14:45:36] <somers_> For a very small amount of data, you can get away without doing select, because the kernel's sockbuf won't fill up.
