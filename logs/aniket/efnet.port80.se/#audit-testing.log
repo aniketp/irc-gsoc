@@ -1272,3 +1272,5 @@
 [2018-05-24 22:39:09] <aniketp41> @somers_, If I'm creating a socket in a Kyua test case, do I need to close the socket descriptor myself or will Kyua do it for me while cleaning up? 
 [2018-05-24 23:55:58] <somers_> what about AUE_GETPEERNAME ?
 [2018-05-24 23:56:36] <somers_> If you create a socket in a Kyua test case, you need to close it yourself in a successful test.
+[2018-05-25 00:05:36] <aniketp41> @somers_, AUE_GETPEERNAME isn't present in the list of audit event. I'll try to see if it gets audited nevertheless 
+[2018-05-25 00:06:40] <aniketp41> Yes @somers_, did here: https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/network.c?revision=337251&view=markup#l56
