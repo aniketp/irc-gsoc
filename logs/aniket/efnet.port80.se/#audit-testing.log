@@ -1301,3 +1301,27 @@
 [2018-05-25 19:57:26] <somers_> In general, a lot more things can go wrong with inet sockets than unix sockets.  Where possible, you should prefer to use unix sockets
 [2018-05-25 19:57:30] <somers_> They're faster, too.
 [2018-05-25 19:57:46] <aniketp> Okay, will change that part!
+[2018-05-25 20:04:17] <aniketp> @somers_ on replacing PF_INET with PF_UNIX, half of the tests failed: https://pastebin.com/rCiHf1n6
+[2018-05-25 20:05:49] <somers_> You can't use TCP with PF_UNIX
+[2018-05-25 20:05:51] <somers_> Use 0 instead
+[2018-05-25 20:05:57] <aniketp> Yeah figured that out
+[2018-05-25 20:06:08] <aniketp> Now it works @somers_ 
+[2018-05-25 20:06:32] <aniketp> Had faced the similar problem in socketpair(2)
+[2018-05-25 21:03:18] <aniketp> Hi @somers_, PF_UNIX now caused issue while bind(2)ing in most test-cases: https://pastebin.com/5URkxXZG
+[2018-05-25 21:03:18] <aniketp> While it worked with PF_INET
+[2018-05-25 21:04:17] <somers_> How did you create the server variable?
+[2018-05-25 21:09:29] <aniketp> Yes sorry, it should've been AF_UNIX instead of AF_INET
+[2018-05-25 21:10:14] <aniketp> But still the tests failed. Maybe the addresses are assigned in a different way for AF_UNIX @somers_ ?
+[2018-05-25 21:10:14] <aniketp> I'll try to figure out what is the right way to do so
+[2018-05-25 21:10:52] <aniketp> "server->sun_family = AF_UNIX;"
+[2018-05-25 21:11:14] <somers_> Yes, addresses are quite different.  You need to use a sockaddr_un, and the address is actually a path on the filesystem
+[2018-05-25 21:11:52] <aniketp> Here's how I did it @somers_: https://pastebin.com/gVSAnvZR
+[2018-05-25 21:12:16] <somers_> Yeah, that totally won't work for AF_UNIX
+[2018-05-25 21:43:44] <aniketp> So @somers_, setsockopt(2) is essentially useless for host internal protocols right? Since we're unlink()ing the server address after every run
+[2018-05-25 21:44:22] <aniketp> But even though it was not required, it still showed up in the audit record as a success return
+[2018-05-25 21:44:28] <somers_> I wouldn't say that
+[2018-05-25 21:44:42] <somers_> some options apply to PF_UNIX sockets
+[2018-05-25 21:45:06] <somers_> Oh, you mean SO_REUSEADDR?  Yeah, that's useless.  Actually, I'm not sure why you used that for PF_INET in the first place
+[2018-05-25 21:45:51] <aniketp> Oh one reason was that I needed to test the audit of setsockopt(2) :P 
+[2018-05-25 21:46:21] <aniketp> And I thought maybe in case the port 9000 is busy it might free it.
+[2018-05-25 21:48:35] <somers_> SO_REUSEADDR doesn't have anything to do with addresses that you explicitly bind(2).  It's only for the local port.  The port you usually don't care about.
