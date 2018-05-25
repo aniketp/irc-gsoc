@@ -1279,3 +1279,25 @@
 [2018-05-25 14:01:13] <aniketp41> Also @somers_, just to confirm, we would need to select() the client socket for writing, right?
 [2018-05-25 14:45:03] <somers_> @aniketp41 try PF_UNIX instead of PF_INET
 [2018-05-25 14:45:36] <somers_> For a very small amount of data, you can get away without doing select, because the kernel's sockbuf won't fill up.
+[2018-05-25 18:42:04] * aniketp41 nick aniketp
+[2018-05-25 19:08:06] <aniketp> @somers_ though why does it not work with PF_INET? like apart from PF_UNIX I tried PF_LOCAL and it worked for both cases. Also, it didn't make sense as to why two IPv4 sockets are not supported..
+[2018-05-25 19:08:53] <somers_> PF_UNIX == PF_LOCAL
+[2018-05-25 19:09:23] <somers_> There simply aren't many (any?) use cases where you would need a pair of connected inet sockets
+[2018-05-25 19:10:25] <somers_> And if you did create a pair of inet sockets, what ports would they use?
+[2018-05-25 19:10:47] <aniketp> @somers_ I tried making the connection without using select() , but everytime it gives back EINPROGRESS. This didn't happen in FreeBSD-11. I guess doing a select would be a better choice then?
+[2018-05-25 19:11:38] <somers_> I'm not sure what you mean.  I'd have to see the code to understand.
+[2018-05-25 19:15:09] <aniketp> Here is the makeshift code I've been using : https://pastebin.com/Pp3wBMCV @somers_ 
+[2018-05-25 19:15:49] <somers_> Oh, I thought this had something to do with socketpair
+[2018-05-25 19:16:30] <somers_> which syscall are you trying to exercise?
+[2018-05-25 19:16:36] <aniketp> No, in this case I was referring to testing "connect(2)" for which I thought I'd need select()
+[2018-05-25 19:17:16] <aniketp> And all that come post to connect(), e.g accept(), readfrom() etc
+[2018-05-25 19:17:30] <somers_> Try removing the O_NONBLOCK part for the client socket
+[2018-05-25 19:21:59] <aniketp> Thanks @somers_, it worked!
+[2018-05-25 19:21:59] <aniketp> Though, can we get away with the client being "blocking" later on? I'll have to read the man-pages of syscalls similar to "send()" and "recv()" to be sure but I think when trying to alternate between server and client while sending and receiving data, is it possible that client blocks the process in some cases?  
+[2018-05-25 19:23:03] <somers_> It might block on writes, but if your writes are small enough it won't.  And it might block on reads, but not if you've already written to the other end.
+[2018-05-25 19:55:37] <aniketp> Hi @somers_, please have a look at the "connect_success" test case: https://pastebin.com/HsTTRg9i 
+[2018-05-25 19:55:37] <aniketp> Here is the whole "network" test-program till now: https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/network.c?revision=337252&view=markup
+[2018-05-25 19:55:37] <aniketp> Is the approach fine? I think the size of individual test cases might get larger for all pending network syscalls
+[2018-05-25 19:57:26] <somers_> In general, a lot more things can go wrong with inet sockets than unix sockets.  Where possible, you should prefer to use unix sockets
+[2018-05-25 19:57:30] <somers_> They're faster, too.
+[2018-05-25 19:57:46] <aniketp> Okay, will change that part!
