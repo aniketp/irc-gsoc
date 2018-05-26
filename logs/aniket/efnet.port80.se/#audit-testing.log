@@ -1329,3 +1329,5 @@
 [2018-05-25 23:47:26] <aniketp> The implementation notes section in the man-pages shows few scenarios all of which use PF_INET/PF_INET6
 [2018-05-25 23:47:48] <somers_> I don't know.
 [2018-05-26 00:09:34] <aniketp> @somers_ I got it. I was using shutdown() on the wrong socket. I should've used it on the socket descriptor which is returned when a connection is made.
+[2018-05-26 10:30:24] * somers_ (~somers@63-224-81-229.hlrn.qwest.net) quit Read error: Connection reset by peer
+[2018-05-26 10:31:45] * somers (~somers@63.224.81.229) join
