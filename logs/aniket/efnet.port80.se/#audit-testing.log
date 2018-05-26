@@ -1328,3 +1328,4 @@
 [2018-05-25 23:46:36] <aniketp> Hi @somers_ does shutdown() work with PF_UNIX sockets? AS after accept() with the client, I assumed that shutdown should've worked but it still shows: "Socket is not connected"
 [2018-05-25 23:47:26] <aniketp> The implementation notes section in the man-pages shows few scenarios all of which use PF_INET/PF_INET6
 [2018-05-25 23:47:48] <somers_> I don't know.
+[2018-05-26 00:09:34] <aniketp> @somers_ I got it. I was using shutdown() on the wrong socket. I should've used it on the socket descriptor which is returned when a connection is made.
