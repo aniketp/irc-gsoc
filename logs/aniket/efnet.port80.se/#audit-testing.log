@@ -1331,3 +1331,10 @@
 [2018-05-26 00:09:34] <aniketp> @somers_ I got it. I was using shutdown() on the wrong socket. I should've used it on the socket descriptor which is returned when a connection is made.
 [2018-05-26 10:30:24] * somers_ (~somers@63-224-81-229.hlrn.qwest.net) quit Read error: Connection reset by peer
 [2018-05-26 10:31:45] * somers (~somers@63.224.81.229) join
+[2018-05-26 14:03:13] <aniketp> Hi @somers, would you advise on using a separate variadic function for closing socket descriptors? There are upto 3 socket descriptors in each test case and I was thinking of closing them in a separate function..  
+[2018-05-26 14:23:41] <aniketp> @somers, the test-case for syscalls concerned with sending and receiving data seem to be getting quite heavy. Can you suggest some further optimizations in this test case : https://pastebin.com/piBhETHs
+[2018-05-26 14:23:41] <aniketp> I already made 3 static functions.
+[2018-05-26 14:24:38] <aniketp> Or shall I leave them as it is?
+[2018-05-26 15:42:05] <somers> Well, you could certainly combine check_readfs and recvfrom
+[2018-05-26 15:42:35] <somers> Would it help to create a socketpair-like helper function?
+[2018-05-26 15:42:54] <somers> Actually, why don't you just use socketpair?  It should work in this case, because you're using PF_UNIX sockets
