@@ -1338,3 +1338,5 @@
 [2018-05-26 15:42:05] <somers> Well, you could certainly combine check_readfs and recvfrom
 [2018-05-26 15:42:35] <somers> Would it help to create a socketpair-like helper function?
 [2018-05-26 15:42:54] <somers> Actually, why don't you just use socketpair?  It should work in this case, because you're using PF_UNIX sockets
+[2018-05-26 18:15:42] <aniketp> @somers actually the issue is that the function check_readfs will be shared by recv(2), recvfrom(2), and recvmsg(2) so I separated that part.
+[2018-05-26 18:15:42] <aniketp> Yes socketpairs might actually do the job since I have a similar set of sockets each for both client and server. I'll try that out!
