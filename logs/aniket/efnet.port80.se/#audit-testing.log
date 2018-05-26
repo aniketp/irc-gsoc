@@ -1325,3 +1325,6 @@
 [2018-05-25 21:45:51] <aniketp> Oh one reason was that I needed to test the audit of setsockopt(2) :P 
 [2018-05-25 21:46:21] <aniketp> And I thought maybe in case the port 9000 is busy it might free it.
 [2018-05-25 21:48:35] <somers_> SO_REUSEADDR doesn't have anything to do with addresses that you explicitly bind(2).  It's only for the local port.  The port you usually don't care about.
+[2018-05-25 23:46:36] <aniketp> Hi @somers_ does shutdown() work with PF_UNIX sockets? AS after accept() with the client, I assumed that shutdown should've worked but it still shows: "Socket is not connected"
+[2018-05-25 23:47:26] <aniketp> The implementation notes section in the man-pages shows few scenarios all of which use PF_INET/PF_INET6
+[2018-05-25 23:47:48] <somers_> I don't know.
