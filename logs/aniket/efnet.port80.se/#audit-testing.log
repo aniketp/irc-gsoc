@@ -1414,3 +1414,8 @@
 [2018-05-27 03:40:41] * somers_ (~somers@63-224-80-209.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-05-27 03:56:21] <aniketp> @somers__, this seems to be using the struct instead of a pointer to the struct : https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_ioctl.h#L65
 [2018-05-27 03:57:52] <aniketp> Also, even if we are forward declaring a struct, would we still not need to know where its members are coming from? (I guess for that we'll still need bsm/audit.h)
+[2018-05-27 12:11:04] <somers__> When you forward declare a struct, you don't need to know anything but its name.
+[2018-05-27 12:11:28] <somers__> But the only thing you can do with it is make a pointer to it.
+[2018-05-27 13:16:02] <aniketp> @somers__ I think it needs the whole struct instead of just a pointer to it.
+[2018-05-27 13:16:18] <aniketp> "#define	AUDITPIPE_GET_PRESELECT_AUID	_IOR(AUDITPIPE_IOBASE, struct auditpipe_ioctl_preselect)"
+[2018-05-27 13:16:57] <aniketp> #define _IOR(AUDITPIPE_IOBASE, 10, struct auditpipe_ioctl_preselect)
