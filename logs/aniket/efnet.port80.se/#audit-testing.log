@@ -1421,3 +1421,7 @@
 [2018-05-27 13:16:57] <aniketp> #define _IOR(AUDITPIPE_IOBASE, 10, struct auditpipe_ioctl_preselect)
 [2018-05-27 15:20:08] <somers__> It depends on what that macro does
 [2018-05-27 15:20:16] <somers__> Have you looked it up?
+[2018-05-27 16:57:46] <aniketp> Hi @somers__, If I'm creating a message queue using msgget(2) do I need to destroy that message myself using msgctl(2) or wil Kyua do it for me? I'm not too familiar with message queues so can't figure it out.
+[2018-05-27 16:58:24] <somers__> On succes, you need to cleanup everything just like a regular program, as if Kyua weren't involved.
+[2018-05-27 17:35:47] <aniketp> Yes @somers__, I learned that the hard way. While creating test programs, to check whether msgctl(2) was being audited. I didn't explicitly delete the queues and as a result it exceeded the system limit
+[2018-05-27 17:36:08] <somers__> lol
