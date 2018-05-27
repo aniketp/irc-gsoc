@@ -1430,3 +1430,4 @@
 [2018-05-27 19:51:56] <somers__> For TEST_METADATA, any bits that are the same for all files can be declared simply like "TEST_METADATA+=  foo=bar".  No need to specify it separately for each test program
 [2018-05-27 19:52:45] <somers__> You could try replacing all of the "SRCS.*+=" line with a single "SRCS+=utils.c" line.  I'm not sure if that would work
 [2018-05-27 19:53:09] <aniketp> Okay, will try that..
+[2018-05-27 20:35:04] <aniketp> @somers__, "SRCS+=utils.c" doesn't work. I get that familiar linker error: https://pastebin.com/CrRksVbM
