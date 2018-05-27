@@ -1419,3 +1419,5 @@
 [2018-05-27 13:16:02] <aniketp> @somers__ I think it needs the whole struct instead of just a pointer to it.
 [2018-05-27 13:16:18] <aniketp> "#define	AUDITPIPE_GET_PRESELECT_AUID	_IOR(AUDITPIPE_IOBASE, struct auditpipe_ioctl_preselect)"
 [2018-05-27 13:16:57] <aniketp> #define _IOR(AUDITPIPE_IOBASE, 10, struct auditpipe_ioctl_preselect)
+[2018-05-27 15:20:08] <somers__> It depends on what that macro does
+[2018-05-27 15:20:16] <somers__> Have you looked it up?
