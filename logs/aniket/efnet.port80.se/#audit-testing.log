@@ -1406,3 +1406,11 @@
 [2018-05-27 01:08:58] <aniketp> @somers__, the headers, "audit/audit_ioctl.h" and "bsm/audit.h" are connected in a way that I couldn't separate them even after a lot of thought. There's no way we can use "audit_ioctl.h" without "bsm/audit.h". One of the ioctl parameters uses a struct defined in bsm/audit.h which is also used by a lot more files. So we possibly can't move the "au_mask_t" out of "bsm/audit.h" into "audit_ioctl.h".
 [2018-05-27 01:08:58] <aniketp> I also added a typedef for struct auditpipe_ioctl_preselect to make it consistent with the other struct definitions 
 [2018-05-27 01:09:45] <aniketp> "au_mask_t" <= "struct au_mask"
+[2018-05-27 02:17:11] <somers__> Does it use the whole struct, or just a pointer to the struct?
+[2018-05-27 02:20:58] <somers__> Because if it only really needs a pointer, then you can forward-declare the struct
+[2018-05-27 03:23:02] * somers_ (~somers@63-224-80-209.hlrn.qwest.net) join
+[2018-05-27 03:29:52] * somers__ (~somers@63-224-81-235.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-27 03:35:08] * somers__ (~somers@63-224-81-23.hlrn.qwest.net) join
+[2018-05-27 03:40:41] * somers_ (~somers@63-224-80-209.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-27 03:56:21] <aniketp> @somers__, this seems to be using the struct instead of a pointer to the struct : https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_ioctl.h#L65
+[2018-05-27 03:57:52] <aniketp> Also, even if we are forward declaring a struct, would we still not need to know where its members are coming from? (I guess for that we'll still need bsm/audit.h)
