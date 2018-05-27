@@ -1392,3 +1392,17 @@
 [2018-05-26 23:54:16] <aniketp> @somers__, here its mentioned it as AUE_NFS_GETFH,https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c#L813
 [2018-05-26 23:54:16] <aniketp> maybe that's why it gets audited as nfs_getfh
 [2018-05-26 23:55:36] <somers__> No, the reason is that init_sysent.c says that the getfh syscall uses the AUE_NFS_GETFH audit event, and /etc/security/audit_event stringifies that as "nfs_getfh"
+[2018-05-27 00:02:59] <aniketp> @somers__ I think it might not be a bug. I've been trying to audit getfh(2) but's its listen in audit_event list within the "Darwin-Solaris" section. So it could be like, I'm only supposed to audit getfh(nfs_getfh) within the "ad" audit class?
+[2018-05-27 00:03:16] <aniketp> *listed
+[2018-05-27 00:30:20] <somers__> Yeah, it's not a bug.  Perhaps a "questionable design decision", but not really a bug
+[2018-05-27 00:32:42] <aniketp> Sure. Btw @somers__, which audit class would you recommend testing next? (As in general order in difficulty ). I have "process-control", "administrative" and "inter-process-communication" left
+[2018-05-27 00:38:47] <somers__> It's up to you.  Each group has its own challenges.
+[2018-05-27 00:38:59] <somers__> Personally, I think IPC is more fun though.
+[2018-05-27 00:43:25] <aniketp> Sure, I'l start with IPC then. And I'm currently having trouble with msgctl(2), though I'll try to figure out what's the issue.
+[2018-05-27 00:44:06] <aniketp> Btw @somers__, about the review: https://reviews.freebsd.org/D15561 . Did you have a look at it?
+[2018-05-27 00:49:33] <somers__> Yeah.  It looks mostly ok, but it needs build testing.  I'll do that now
+[2018-05-27 00:50:05] <somers__> Actually, you can do it yourself.  Just do "make universe".  However, it takes around 8 hours even on good hardware.  On your laptop, probably longer.
+[2018-05-27 00:50:21] <somers__> But the project has some build servers for just this purpose
+[2018-05-27 01:08:58] <aniketp> @somers__, the headers, "audit/audit_ioctl.h" and "bsm/audit.h" are connected in a way that I couldn't separate them even after a lot of thought. There's no way we can use "audit_ioctl.h" without "bsm/audit.h". One of the ioctl parameters uses a struct defined in bsm/audit.h which is also used by a lot more files. So we possibly can't move the "au_mask_t" out of "bsm/audit.h" into "audit_ioctl.h".
+[2018-05-27 01:08:58] <aniketp> I also added a typedef for struct auditpipe_ioctl_preselect to make it consistent with the other struct definitions 
+[2018-05-27 01:09:45] <aniketp> "au_mask_t" <= "struct au_mask"
