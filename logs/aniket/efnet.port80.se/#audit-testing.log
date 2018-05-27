@@ -1425,3 +1425,8 @@
 [2018-05-27 16:58:24] <somers__> On succes, you need to cleanup everything just like a regular program, as if Kyua weren't involved.
 [2018-05-27 17:35:47] <aniketp> Yes @somers__, I learned that the hard way. While creating test programs, to check whether msgctl(2) was being audited. I didn't explicitly delete the queues and as a result it exceeded the system limit
 [2018-05-27 17:36:08] <somers__> lol
+[2018-05-27 18:00:42] <aniketp> @somers__, I created initial 12 tests for message queue syscall family: https://github.com/aniketp/AuditTestSuite/blob/master/src/inter-process.c. Please have a look.
+[2018-05-27 19:50:22] <aniketp> Btw @somers__, is there any cleaner way to organize the Makefile? It looks a bit cluttered after 11 test programs: https://github.com/aniketp/AuditTestSuite/blob/master/src/Makefile
+[2018-05-27 19:51:56] <somers__> For TEST_METADATA, any bits that are the same for all files can be declared simply like "TEST_METADATA+=  foo=bar".  No need to specify it separately for each test program
+[2018-05-27 19:52:45] <somers__> You could try replacing all of the "SRCS.*+=" line with a single "SRCS+=utils.c" line.  I'm not sure if that would work
+[2018-05-27 19:53:09] <aniketp> Okay, will try that..
