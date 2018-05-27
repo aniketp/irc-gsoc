@@ -1366,3 +1366,29 @@
 [2018-05-26 21:55:23] <aniketp> https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L588
 [2018-05-26 21:55:31] <aniketp> Yes @somers_ 
 [2018-05-26 21:56:30] <aniketp> @somers_ same result for syscalls related to sctp_peeloff [None of them get audited] https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L591
+[2018-05-26 22:36:25] * somers__ (~somers@63-224-81-235.hlrn.qwest.net) join
+[2018-05-26 22:43:06] * somers_ (~somers@63-224-81-155.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-26 22:44:55] <aniketp> Also, @somers__, shall I also audit getfh(2) (nfs_getfh(2) in a different audit class) as a expected failure in "fa" audit class?
+[2018-05-26 22:45:09] <aniketp> *which is audited as nfs_getfh(2)
+[2018-05-26 22:48:29] <somers__> If there's no audit record, then it's a failure
+[2018-05-26 22:53:28] <aniketp> Okay, but what about the audit class being different? @somers__ 
+[2018-05-26 22:53:44] <somers__> what do you mean?
+[2018-05-26 22:54:00] <aniketp> nfs_getfh(2) is within the "ad" audit class
+[2018-05-26 22:54:16] <aniketp> While "getfh(2)" is "fa" @somers__ 
+[2018-05-26 22:55:13] <somers__> So you think that getfh and nfs_getfh should be in the same audit class?
+[2018-05-26 22:59:03] <aniketp> I'm not sure how nfs_getfh(2) is different from getfh(2). (Maybe something to do with Network File System maybe?). So I wondered if they ought to be in the same audit class. 
+[2018-05-26 22:59:03] <aniketp> It could be that they are intentionally in different audit classes. But it's strange to me how one syscall gets audited as another with a completely different audit class. 
+[2018-05-26 22:59:03] <aniketp> I've had such situations before, e.g open(2) as openat(2). close(2) as closefrom(2). But they were within the same audit class. This case is unique..
+[2018-05-26 22:59:11] <aniketp> @somers__ 
+[2018-05-26 22:59:53] <somers__> what do you mean "one syscall gets audited as another"?
+[2018-05-26 23:00:32] <aniketp> @somers__, when I try to audit "getfh(2)", nfs_getfh(2) shows up in the audit record
+[2018-05-26 23:01:09] <somers__> Have a look in lib.  Is getfh really a wrapper around nfs_getfh?
+[2018-05-26 23:08:59] <aniketp> @somers__, I found the man page but couldn't find the source code https://github.com/freebsd/freebsd/blob/f5d95e1f8d32db4ccccfd5ad9cecb21ed07a695d/lib/libc/sys/getfh.2. 
+[2018-05-26 23:08:59] <aniketp> Can you please point me to it?
+[2018-05-26 23:09:40] <aniketp> Also, I found out why open gets audited as openat(2). libc converts it to openat(2): https://github.com/freebsd/freebsd/blob/master/lib/libc/sys/open.c#L58
+[2018-05-26 23:17:17] <aniketp> Also, @somers__, I completed all syscalls for "nt" audit class taking reference from audit_events list. Please checkout the tests and have a look at them: https://svnweb.freebsd.org/socsvn/soc2018/aniketp/head/tests/sys/audit/network.c?revision=337254&view=markup 
+[2018-05-26 23:44:18] <somers__> It's in kern/init_sysent.c:213
+[2018-05-26 23:46:56] <somers__> There is no nfs_getfh syscall; I don't know why they call it that.
+[2018-05-26 23:54:16] <aniketp> @somers__, here its mentioned it as AUE_NFS_GETFH,https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c#L813
+[2018-05-26 23:54:16] <aniketp> maybe that's why it gets audited as nfs_getfh
+[2018-05-26 23:55:36] <somers__> No, the reason is that init_sysent.c says that the getfh syscall uses the AUE_NFS_GETFH audit event, and /etc/security/audit_event stringifies that as "nfs_getfh"
