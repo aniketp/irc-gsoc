@@ -1433,3 +1433,7 @@
 [2018-05-27 20:35:04] <aniketp> @somers__, "SRCS+=utils.c" doesn't work. I get that familiar linker error: https://pastebin.com/CrRksVbM
 [2018-05-27 23:19:03] <aniketp> Hi @somers__, Is "ushort" acceptable data type or shall I use something else in place?
 [2018-05-27 23:19:47] <somers__> Best to use the standardized types.
+[2018-05-28 02:43:04] <aniketp> Hi @somers__, while trying to audit shm_open(2) and shm_unlink(2), I couldn't get them to pass on a relative path , e.g const char *path = "pathname"; But the result was successful when I replaced "pathname" with "/pathname". Is this approach fine for Kyua test case since I'm kind of creating an absolute path
+[2018-05-28 03:02:46] <somers__> shm does not use a real filesystem path
+[2018-05-28 03:02:49] <somers__> It's a separate namespace
+[2018-05-28 03:03:23] <somers__> The easiest thing to do would probably be to use getcwd to build an absolute path
