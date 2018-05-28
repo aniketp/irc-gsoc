@@ -1431,3 +1431,5 @@
 [2018-05-27 19:52:45] <somers__> You could try replacing all of the "SRCS.*+=" line with a single "SRCS+=utils.c" line.  I'm not sure if that would work
 [2018-05-27 19:53:09] <aniketp> Okay, will try that..
 [2018-05-27 20:35:04] <aniketp> @somers__, "SRCS+=utils.c" doesn't work. I get that familiar linker error: https://pastebin.com/CrRksVbM
+[2018-05-27 23:19:03] <aniketp> Hi @somers__, Is "ushort" acceptable data type or shall I use something else in place?
+[2018-05-27 23:19:47] <somers__> Best to use the standardized types.
