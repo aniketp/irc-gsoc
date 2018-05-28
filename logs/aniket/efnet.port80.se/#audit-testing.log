@@ -1437,3 +1437,5 @@
 [2018-05-28 03:02:46] <somers__> shm does not use a real filesystem path
 [2018-05-28 03:02:49] <somers__> It's a separate namespace
 [2018-05-28 03:03:23] <somers__> The easiest thing to do would probably be to use getcwd to build an absolute path
+[2018-05-28 06:42:44] * mpts_ (~mpts@boston-packets.hackerspace.pl) join
+[2018-05-28 06:42:54] * mpts_ nick mpts
