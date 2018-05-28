@@ -1439,3 +1439,18 @@
 [2018-05-28 03:03:23] <somers__> The easiest thing to do would probably be to use getcwd to build an absolute path
 [2018-05-28 06:42:44] * mpts_ (~mpts@boston-packets.hackerspace.pl) join
 [2018-05-28 06:42:54] * mpts_ nick mpts
+[2018-05-28 18:33:36] <aniketp> Hi @somers__, the pipe(2) syscall creates a lot of noise [A lot of other processes are creating pipes at the same time apparently]. And the audit record doesn't contain anything to pin point to the syscall we triggered. 
+[2018-05-28 18:33:36] <aniketp> "header,68,11,pipe(2),0,Mon May 28 18:27:19 2018, + 761 msec,subject,root,root,0,root,0,746,742,32814,10.0.2.2,return,success,0,trailer,68,"
+[2018-05-28 18:33:36] <aniketp> So shall I simply match against "pipe.*return,success" in the test case, considering there is not much I can do here
+[2018-05-28 18:45:10] <somers__> what are all those other numbers?
+[2018-05-28 18:46:14] <aniketp> From the doc: " The subject token stores the audit user ID, effective user ID and group ID, real user ID and group ID, process ID, session ID, port ID, and login address"
+[2018-05-28 18:46:57] <aniketp> Maybe I can use the user id or the process id?
+[2018-05-28 18:47:02] <aniketp> @somers__ 
+[2018-05-28 18:47:18] <somers__> Yeah, the process ID should be a pretty good filter
+[2018-05-28 18:49:00] <aniketp> Oh, I should have thought about it earlier. Maybe using the PID would have been a better option for all syscalls that didn't have much info in their audit record. I'll have a look at my previous test cases an try to implement this part @somers__ 
+[2018-05-28 18:52:26] <aniketp> Yeah, just need to add the regex matching with the output of getpid(). This extracted out the target pipe(2) audit record
+[2018-05-28 18:58:20] <aniketp> @somers__, that seemed to work: "Looking for 'pipe.*12310.*return,success' in 'header,68,11,pipe(2),0,Mon May 28 18:57:32 2018, + 497 msecsubject,root,root,wheel,root,wheel,12310,742,32814,10.0.2.2return,success,0trailer,68'"
+[2018-05-28 18:59:03] <somers__> good
+[2018-05-28 19:42:45] <aniketp> Hi @somers__, apart from some issues which I've compiled here: https://pastebin.com/J3G1WaQv 
+[2018-05-28 19:42:45] <aniketp> It looks like all possible auditable events for IPC are done: https://github.com/aniketp/AuditTestSuite/blob/master/src/inter-process.c
+[2018-05-28 19:42:55] <aniketp> Have a look in case I missed something..
