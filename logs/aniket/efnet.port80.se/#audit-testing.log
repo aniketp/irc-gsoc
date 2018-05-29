@@ -1561,3 +1561,22 @@
 [2018-05-29 01:59:32] <aniketp> I guess if they have vanished, then the issue with me was due to qlen and "ad". (Because atf_tc_fail("incomplete audit record") ) never exited for me. 
 [2018-05-29 01:59:32] <aniketp> @somers__ did it stop happening for you after you checkout approximately 200 tests from my branch?
 [2018-05-29 01:59:39] <aniketp> *checkedout
+[2018-05-29 02:00:34] <aniketp> Because I think I made some changes to the "utils.c" prior to checking in my tests
+[2018-05-29 02:00:56] <somers__> I haven't seen it in that branch, no.  But I also don't see it in the current version of D15286
+[2018-05-29 02:02:55] <aniketp> Now that is totally weird :D
+[2018-05-29 02:02:55] <aniketp> I think maybe because of the "printf()" statement in current D15286, they've stopped occuring for you {That was my last change I think}
+[2018-05-29 02:04:20] <aniketp> But it is highly possible that printf() might've hid the corrupted "audit startup" message and it caused the error for you. [It could be very rare and that might explain why I'm not gettting any incomplete audit record]
+[2018-05-29 02:05:03] <aniketp> But again, if audit records were indeed being produced, why would it not exit on the atf_tc_fail() condition for me.., @somers__ 
+[2018-05-29 02:05:12] <aniketp> This is confusing
+[2018-05-29 02:06:23] <aniketp> I think maybe increasing "qlimit" and removing the "ad" should make the tests error free? @somers__ 
+[2018-05-29 02:07:09] <aniketp> Now since even on atf_tc_fail() check there hasn't been any incomplete audit record?
+[2018-05-29 02:13:49] <somers__> We don't want the test to be error free.  We want to reproduce the error so we can fix the root cause.
+[2018-05-29 02:38:32] <aniketp> So @somers__ can you please checkout the current branch and  run the tests after introducing the atf_tc_fail statement instead of printf?
+[2018-05-29 02:38:59] <aniketp> It might be possibke that errors recur for you..
+[2018-05-29 02:39:07] <aniketp> But not for me
+[2018-05-29 02:40:25] <somers__> I just did that.  I ran it for 15 runs with no errors
+[2018-05-29 02:40:33] <somers__> On D15286, that is
+[2018-05-29 02:40:41] <somers__> Now I'm trying earlier versions of D15286
+[2018-05-29 02:47:03] <aniketp> Sure, I'll also have a run through the versions after I wake up
+[2018-05-29 02:47:49] <somers__> Shit, you're still awake at 8:17 AM ?
+[2018-05-29 02:47:59] <somers__> Ahh, to be young and responsibilityless
