@@ -1580,3 +1580,6 @@
 [2018-05-29 02:47:03] <aniketp> Sure, I'll also have a run through the versions after I wake up
 [2018-05-29 02:47:49] <somers__> Shit, you're still awake at 8:17 AM ?
 [2018-05-29 02:47:59] <somers__> Ahh, to be young and responsibilityless
+[2018-05-29 12:50:57] <somers__> I figured out how to reproduce it
+[2018-05-29 12:51:12] <somers__> The incomplete audit records had the same root cause as the panic I fixed.
+[2018-05-29 12:51:31] <somers__> I just had to back out my fix, recompile with INVARIANTS off, and I immediately got incomplete audit records
