@@ -1521,3 +1521,43 @@
 [2018-05-28 23:25:57] <somers__> I don't know.  Don't you look it up ?
 [2018-05-28 23:27:17] <aniketp> Well I thought it might be different for different systems. I was trying to set various values for q_limit to see if the audit pipe fills up 
 [2018-05-28 23:27:54] <aniketp> You once remarked that it is 1024 so I thought I should confirm @somers__ 
+[2018-05-29 00:37:01] <aniketp> Hi @somers__ I've been trying to reproduce the errors for the past hour. Even on shifting to "atf_tc_fail("Incomplete audit record")" from "printf("Incomplete audit record")", I never get "incomplete audit records". However when I set "ad" for audit startup and check the qlen after check_audit function , it generally returns something around 300. 
+[2018-05-29 00:37:01] <aniketp> On setting it to max and eliminating "ad". Tests pass 100% of the time
+[2018-05-29 00:38:10] <aniketp> But reducing qlen to something like "10" times out 100% of the time when "ad" is present and passes everytime when "ad" is absent
+[2018-05-29 00:45:28] <aniketp> So essentially it looks to me that qlen and the extraneous "ad" setttings are the only thing that are causing the issue
+[2018-05-29 00:46:22] <aniketp> ping  @somers__ . Can you think of any way I can reproduce the "incomplete audit record" error? Only way I could do it was to negate the if condition :P
+[2018-05-29 01:24:58] <somers__> You just have to experiment, trying different things.
+[2018-05-29 01:25:15] <somers__> For now, leave "ad" present, because it's always been present whenever we've seen this bug before.
+[2018-05-29 01:25:21] <somers__> You might try intermediate values of qlen
+[2018-05-29 01:27:57] <somers__> Also, you should print errno whenever you get an incomplete audit record
+[2018-05-29 01:28:04] <somers__> The usual way to do that is with perror(3)
+[2018-05-29 01:29:15] <aniketp> But @somers__, I've never encountered "audit incomplete record" bug. Even when I had FreeBSD 11. I changed it to printf() statement only because the tests failed for you because of this reason.
+[2018-05-29 01:29:39] <somers__> Those timeouts you had earlier today were probably caused by incomplete audit records
+[2018-05-29 01:32:18] <aniketp> But they've gone away after I increased the qlimit to qlimit_max. Also, just to be sure that actually "incomplete audit record" was the reason for the test case timeout, I reset everything back to its initial condition and replaced "printf" with "atf_tc_fail". So @somers__ if it was due to incomplete audit record, it should have failed straight away, right? 
+[2018-05-29 01:32:52] <somers__> Not necessarily, because the error has always been intermittent
+[2018-05-29 01:33:36] <aniketp> Also, when I set qlimit to 0 and 1. I got the timeouts 100% of the time. 
+[2018-05-29 01:33:50] <somers__> That's to be expected
+[2018-05-29 01:34:54] <somers__> You might also try running on FreeBSD 12.0-CURRENT.  That's where I observed the errors.  It's also better in general to run there, because that's where the code needs to be committed first.
+[2018-05-29 01:36:36] <aniketp> @somers__ I'm running FreeBSD 12: uname -a: FreeBSD bsdtest 12.0-CURRENT FreeBSD 12.0-CURRENT #1: Mon May 21 20:10:48 IST 2018     root@bsdtest:/usr/obj/usr/src/amd64.amd64/sys/GENERIC  amd64
+[2018-05-29 01:36:36] <aniketp> Also, I got all my kernel panics and the broken test case body in FreeBSD-12
+[2018-05-29 01:38:49] <aniketp> Prior to that, everything worked fine. Also, I'm not sure how the errors are related. @somers__ so you mean that since the "incomplete audit record" is intermittent, it is causing timeouts. But don't we already have that "if condition" check in place? How could the incomplete record bypass that check? 
+[2018-05-29 01:39:43] <somers__> Weren't you just 'printf'ing on au_read_rec failure?
+[2018-05-29 01:40:26] <somers__> My understanding is that you were.  If so, then any incomplete audit record for records we don't care about would go unnoticed.  But if the "audit startup" record were the incomplete one, then we would timeout waiting for audit startup
+[2018-05-29 01:40:34] <somers__> That's why I saw the last time that I was able to reproduce the failure
+[2018-05-29 01:40:37] <aniketp> Also, even on FreeBSD 12, I've never had "incomplete audit timeouts". I initially had some segfaults, timeouts and broken testcase body.
+[2018-05-29 01:40:37] <aniketp> No I shifted to "atf_tc_fail" as soon as I started debugging
+[2018-05-29 01:41:13] <aniketp> @somers__ 
+[2018-05-29 01:44:55] <aniketp> @somers__ actually I mentioned this one of the previous messages, I have enabled the "atf_tc_fail" condition so essentially any "incomplete record" cannot get past. And I have not had a single instance of incomplete audit record since I changed to atf_tc_fail condition.
+[2018-05-29 01:45:56] <aniketp> And the timeouts are all dependent on the combination of "ad" setting and "qlimit". So it looks like these issues are not even related.
+[2018-05-29 01:47:33] <somers__> The timeouts that you see from manipulating the qlen are very predictable.  But I think there is a sweet spot that produces the incomplete audit records.
+[2018-05-29 01:48:11] <somers__> The last time I was able to reproduce them, it was when you had a "printf" in there, and they showed up as a timeout.  Inspection of the detailed test output showed that the "audit startup" record was never found.
+[2018-05-29 01:50:17] <aniketp> Okay @somers__, how often did you get the incomplete records with atf_tc_fail() check enabled?
+[2018-05-29 01:50:26] <somers__> You certainly have encountered the "incomplete audit record bug".  You talk about it in the dicussion of D15286.
+[2018-05-29 01:50:58] <somers__> At its most frequent, I saw the error about once for every 3 or so test runs
+[2018-05-29 01:52:44] <aniketp> Yes I did but post some change they vanished. Also, after some point, they vanished entirely (might have been some change that fixed for me). But even then you were getting the errors so I changed the atf_tc_fail() to printf() so that they don't occur for you.
+[2018-05-29 01:53:48] <aniketp> But it looks like they still occur for you, and once in a while a corrupted audit record, which happens to be of the audit startup, timeouts the test for you
+[2018-05-29 01:53:52] <aniketp> @somers__ 
+[2018-05-29 01:54:46] <somers__> I haven't seen them at all lately
+[2018-05-29 01:59:32] <aniketp> I guess if they have vanished, then the issue with me was due to qlen and "ad". (Because atf_tc_fail("incomplete audit record") ) never exited for me. 
+[2018-05-29 01:59:32] <aniketp> @somers__ did it stop happening for you after you checkout approximately 200 tests from my branch?
+[2018-05-29 01:59:39] <aniketp> *checkedout
