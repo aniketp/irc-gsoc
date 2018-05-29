@@ -1614,3 +1614,40 @@
 [2018-05-29 16:04:18] <aniketp> Haha, quite cool!
 [2018-05-29 16:21:47] <aniketp> Also, @somers__, I updated D15286, please have a look
 [2018-05-29 16:22:23] <somers__> ok
+[2018-05-29 18:06:02] <aniketp> Hi @somers__, setting audit mask before audit startup causes issues with some audit classes. For eg, execve(2) works fine but for an audit class like "fc" generates a lot of events and "audit startup" was not noticed by Kyua. 
+[2018-05-29 18:06:02] <aniketp> A much better solution I think would be to set "no" before audit startup and "name" after the audit startup. [Just like our previous approach but replace "ad" with "no"]
+[2018-05-29 18:06:21] <somers__> Yep.  Makes sense.
+[2018-05-29 18:10:57] <aniketp> Also, my change for some reason increased the time the tests are taking. Some even took around 4-5 secs [Mostly network APIs] and "sendto_failure" even failed to be noticed within the time limit. Although on next run, it was noticed within 4 seconds. So I'm inclined on increasing the test timeout to 10 seconds. Would you recommend this @somers__  
+[2018-05-29 18:11:19] <somers__> which change did that?
+[2018-05-29 18:11:51] <aniketp> introducing "no" local audit class before audit startup
+[2018-05-29 18:12:37] <somers__> that's pretty weird.  Did you try to see what step is taking more time?
+[2018-05-29 18:29:13] <aniketp> No @somers__ the tests in general don't take much time. [I tried running the tests multitple tests with and without introducing a "no" audit class setting]
+[2018-05-29 18:29:13] <aniketp> Irrespective of the change. The tests in usual take about 0.100 seconds. About 7-8 of the 429 tests took more than 5 seconds. (One even took about 6.2 seconds)
+[2018-05-29 18:29:13] <aniketp> I think this is not an issue with the audit system, this generally only occurs with specific syscalls and for especially for those which have a huge test-case body or very time-consuming testing.
+[2018-05-29 18:29:13] <aniketp> For example, sendto,recvfrom generally take about 4-5 secs because I'm setting up the entire socket just to test them. Also, few syscalls like fchflags(2) use file descriptor and as a result, to eliminate false positives, I've used stat(2) to get the inode number to get the specific syscall we triggered
+[2018-05-29 18:30:16] <aniketp> @somers__ this is not intermittent, it is specific to some syscalls within specific audit class and due to the nature of my test case body, are generating lot's of events
+[2018-05-29 18:30:30] <somers__> So did the audit class change affect runtimes or not?
+[2018-05-29 18:30:37] <aniketp> I guess 10seconds would be sufficient as none took more than this amount
+[2018-05-29 18:31:01] <aniketp> No I had not confirmed earlier, adding "no" does not affect anything
+[2018-05-29 18:31:55] <aniketp> The tests perform as they did before. (Few failed (specific) because of timeout, and those took around 6 secs to pass when I increased the timeout to 10 secs)
+[2018-05-29 18:32:00] <aniketp> @somers__ 
+[2018-05-29 18:36:30] <somers__> Are the same tests slow every time?
+[2018-05-29 18:42:33] <aniketp> No the slow tests are same but they are not slow everytime, like once every 2-3 runs. Also, running them individually generally does not take much time.
+[2018-05-29 18:42:33] <aniketp> Also, its hard to track down specific syscalls whether they take long time to complete because currently there are so many of them @somers__ 
+[2018-05-29 18:42:33] <aniketp> But a general observation suggests they are the same  
+[2018-05-29 18:43:32] <somers__> There are several ways to figure out which syscall is slow, but it helps if you can reproduce the problem.
+[2018-05-29 19:09:16] <aniketp> @somers__ , sorry for the earlier report, I had 5 runs at the test and I actually noted down which ones are failing, Except for "ioctl_success" [Which took 5 seconds on two occasions], none of the syscalls were same (some different variants of open(2) did repeat). 
+[2018-05-29 19:09:16] <aniketp> Also, on 3 occasions out of the 1600 tested, tests timed out, I think they would have taken a bit more than 10 seconds too. 
+[2018-05-29 19:09:16] <aniketp> Also, none of the tests of "file-create" or the ones in D15286, take more then 0.200 seconds.
+[2018-05-29 19:09:55] <aniketp> I guess, the issue is with audit startup taking more time than generally observed sometimes
+[2018-05-29 19:10:51] <somers__> You should look at the stdout output of the timed out tests.  Did they fail waiting for audit startup, or waiting for the auditable event?
+[2018-05-29 19:11:27] <aniketp> @somers__ how can I do that? afaik, I can only debug one test at a time
+[2018-05-29 19:11:38] <somers__> Use kyua report-html
+[2018-05-29 19:28:24] <aniketp> @somers__ in the next run, "inter-process:semctl_set_failure" timedout, and the html's stdout showed that it couldn't find audit startup.
+[2018-05-29 19:28:37] <aniketp> Standard output:
+[2018-05-29 19:28:37] <aniketp> auditd is not running.
+[2018-05-29 19:28:37] <aniketp> Starting auditd.
+[2018-05-29 19:28:48] <aniketp> Standard error
+[2018-05-29 19:28:48] <aniketp> Files left in work directory after failure: started_auditd
+[2018-05-29 19:31:02] <aniketp> Also, @somers__ I think instead of <a name="xfail"></a> in the context section of test summary, it should be <a id="xfail"></a>
+[2018-05-29 19:31:14] <aniketp> Because it doesn't link to it otherwise
