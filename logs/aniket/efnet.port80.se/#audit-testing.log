@@ -1475,3 +1475,49 @@
 [2018-05-28 21:29:21] <somers__> I doubt it.  I think the bug is probably triggered by the high volume of audit events during auditd startup.
 [2018-05-28 21:30:21] <aniketp> Yes, Btw I got "qlen=qlimit" (in an earlier exercise) in FreeBSD 12. There were a lot of events being generated for me too @somers__ 
 [2018-05-28 21:43:00] <somers__> We need to fix this.  Worst case, if we can't reproduce it frequently enough to fix, then we need to add enough debugging info to the code so that whoever runs into the issue next will be able to figure it out
+[2018-05-28 22:03:14] <aniketp> Btw @somers__ I've been recently getting "broken: Test case body timed out" on about random 1-5 of 429 test-cases, when auditd is not already running. What could this mean? (This only happens on first 2 -3 runs, post that, they never fail) What could be the reason for this?
+[2018-05-28 22:03:45] <somers__> sounds like an incomplete audit record to me.
+[2018-05-28 22:06:27] <aniketp> @somers__ did you get such errors before? This has been happening after I rebuilt after D15381 on FreeBSD-12. On FreeBSD-11 there were only "incomplete audit record" and "not found within the time-limit error"
+[2018-05-28 22:07:34] <somers__> At some point you changed "atf_tc_fail("Incomplete audit record")" to a mere "printf("Incomplete audit record")".  That's why you're seeing timeouts now
+[2018-05-28 22:08:29] <somers__> Also, I don't see any of the qlen stuff in D15286.  Why didn't you add that code?
+[2018-05-28 22:23:58] <aniketp> @somers__ will do that.
+[2018-05-28 22:23:58] <aniketp> Btw do you think that adding an extra "ad" class just for audit startup is causing an issue with the timeout?
+[2018-05-28 22:24:27] <somers__> Causing, now.  Aggravating, yes, because it increases the volume of auditted events.
+[2018-05-28 22:25:13] <aniketp> I did a kyua debug with that feature enabled vs it commented out: https://pastebin.com/19py66j2
+[2018-05-28 22:26:34] <aniketp> I think changing audit mask from "ad" to "fc (example)" took a bit of time and there are still a lot of auditon(2) events being generated
+[2018-05-28 22:26:39] <aniketp> @somers__ 
+[2018-05-28 22:26:54] <somers__> With what commentted out?  The ad audit class?  How can you receive the audit startup event if you do that?
+[2018-05-28 22:27:15] <aniketp> Audit startup turns up on any audit class
+[2018-05-28 22:27:35] <aniketp> @somers__ it is there in the second case. Have a look
+[2018-05-28 22:28:10] <aniketp> I think "audit startup" and "audit shutdown" show up everytime 
+[2018-05-28 22:29:22] <aniketp> And @somers__ note that the auditon(2) events are being generated _after_ audit startup. So I think adding "ad" class did not serve our purpose
+[2018-05-28 22:29:32] <somers__> Interesting.  Are you sure?  Because it's listed in class "ad" in /etc/security/audit_events.  Are you sure that the ad class was disabled for the entire duration of that program?
+[2018-05-28 22:31:59] <aniketp> Yeah it is. Actually I think I'm sure. When I started learning audit system and was playing around with "praudit /dev/auditpipe". I noticed audit startup and audit shutdown everytime. [Note: I was not even aware of the administrative events at that time]
+[2018-05-28 22:32:31] <aniketp> And yes, you can see no auditon(2) events in the second instance of the pastebin link. Which means "ad" was disabled
+[2018-05-28 22:32:34] <aniketp> @somers__ 
+[2018-05-28 22:33:34] <aniketp> And @somers__ not a single test failed post that change: 429/429 passed (0 failed)
+[2018-05-28 22:33:55] <aniketp> I had two runs with the audit system stopped initially
+[2018-05-28 22:38:58] <aniketp> Yeah, the auditon(2) events seem to have gone away. And I also observed the decrease in the time taken for the tests to complete post removing the auditon event
+[2018-05-28 22:46:33] <aniketp> ping @somers__  
+[2018-05-28 22:47:14] <somers__> what do you mean "removing the auditon event"?
+[2018-05-28 22:48:54] <aniketp> Sorry, "removing the set_preselect_mode("ad") line from utils.c"
+[2018-05-28 22:49:38] <somers__> And by "auditon(2) events have gone away" do you mean "auditon(2) events except for audit startup" ?
+[2018-05-28 22:52:22] <aniketp> Yes, the line "Looking for 'audit startup' in 'header,56,11,audit startup,0,Mon May 28 22:35:59 2018, + 947 msectext,auditd::Audit startupreturn,success,0trailer,56'" is always there in any "kyua debug". 
+[2018-05-28 22:52:22] <aniketp> Which means that audit startup does show up always.
+[2018-05-28 22:52:22] <aniketp> Btw @somers__ can you run the latest tests (I've checked them in on my svn branch ) and remove "set_preselect_mode(fd[0].fd, &aumask);" from utils.c to see it the result is same for you?
+[2018-05-28 22:53:01] <somers__> What are you expecting me to see?
+[2018-05-28 22:55:40] <aniketp> Whether you get any timeouts or not @somers__ . It could be that there might be something I might not have noticed while running the tests
+[2018-05-28 22:56:01] <somers__> are you hoping that I'll get fewer?
+[2018-05-28 22:56:51] <somers__> Minimizing timeouts is not what you should be focused on right now.  Rather, you should be doing the opposite: maximizing timeouts.  We need to be able to reproduce the incomplete audit record bug so we can fix it.
+[2018-05-28 22:56:58] <aniketp> I'm not sure. Did you run the tests before? For my case the errors seem to have dissappeared
+[2018-05-28 22:58:21] <aniketp> Yeah but what if they dissappear? @somers__ 
+[2018-05-28 22:58:21] <aniketp> If none occur for you then we can be pin-point to "ad" class or auditon(2) as the mischief for th e "incomplete audit record" bug
+[2018-05-28 22:58:45] <somers__> No.  Absence of evidence is not evidence for absence.
+[2018-05-28 22:59:21] <somers__> We need to reproduce the bug reliably.  Only then can we debug it.
+[2018-05-28 23:01:38] <aniketp> Okay. @somers__ I'll try creating test cases for "ad" audit class events. Specially auditon(2) and run them repeatedly. If the timeouts come-back (without the extra "ad" for audit startup) then can we reason that maybe "ad" has something to do with it? 
+[2018-05-28 23:02:52] <somers__> You previously had a setup that reproduced the bug occasionally.  I think you should go back to that, then tinker with it to try to reproduce the bug more frequently.
+[2018-05-28 23:03:01] <somers__> You could try reducing the qlen, for example
+[2018-05-28 23:25:34] <aniketp> @somers__ the qlimit_max is 1024 right? 
+[2018-05-28 23:25:57] <somers__> I don't know.  Don't you look it up ?
+[2018-05-28 23:27:17] <aniketp> Well I thought it might be different for different systems. I was trying to set various values for q_limit to see if the audit pipe fills up 
+[2018-05-28 23:27:54] <aniketp> You once remarked that it is 1024 so I thought I should confirm @somers__ 
