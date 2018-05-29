@@ -1583,3 +1583,27 @@
 [2018-05-29 12:50:57] <somers__> I figured out how to reproduce it
 [2018-05-29 12:51:12] <somers__> The incomplete audit records had the same root cause as the panic I fixed.
 [2018-05-29 12:51:31] <somers__> I just had to back out my fix, recompile with INVARIANTS off, and I immediately got incomplete audit records
+[2018-05-29 14:56:01] <aniketp> Yeah, I've been consistently pulling all-nighters since the vacation started. You might have done something similar during you time at Caltech? :P
+[2018-05-29 14:59:13] <aniketp> Also, @somers__ , so if we're sure that the "Bad tailq" fix was indeed the fix for the root cause for the "incomplete audit record" errors, would it make sense to now remove the code which sets the "ad" class for "audit startup", since we're sure that audit startup shows up regardless of the preselection flag.
+[2018-05-29 14:59:13] <aniketp> I also think we should set QLIMIT to QLIMIT_MAX just as an extra precaution 
+[2018-05-29 15:22:46] <somers__> Yes, and yes
+[2018-05-29 15:37:28] <aniketp> Btw @somers__ I think you've not added your @FreeBSD.org alias to your Github account and your local .gitconfig file. I guess that explains why your username on the commits on github don't get automatically converted to links, e.g: https://github.com/freebsd/freebsd/commit/7c423a65c91bf1b002e8f1f6f0f8bfa9beefcc9c
+[2018-05-29 15:37:53] <aniketp> I noticed this with many other committers too
+[2018-05-29 15:41:45] <somers__> What local .gitconfig file?
+[2018-05-29 15:43:38] <aniketp> The config file which stores the default settings for github. For ex, mine here: https://github.com/aniketp/dotfiles/blob/master/.gitconfig
+[2018-05-29 15:44:36] <aniketp> @somers__ 
+[2018-05-29 15:45:44] <somers__> How would that affect how my commits show up in FreeBSD's github mirror?
+[2018-05-29 15:51:16] <aniketp> Well, I cloned one of your repositories, "mock_shootout" and checked the git log, and it showed me this: "Author: Alan Somers <asomers@gmail.com>"
+[2018-05-29 15:51:16] <aniketp> While the "Fix bad tailq" commit on the github showed "Author: asomers <asomers@FreeBSD.org>"
+[2018-05-29 15:51:16] <aniketp> Now this would explain that all your own work on github is committed using your gmail ID. 
+[2018-05-29 15:51:16] <aniketp> This issue would not add you to the contributers list on the github mirror. 
+[2018-05-29 15:51:16] <aniketp> I think if you add you FreeBSD.org alias to your github account, this should automatically link all your freebsd commits to your account 
+[2018-05-29 15:51:22] <aniketp> @somers__ 
+[2018-05-29 15:51:49] <aniketp> I've faced this issue before
+[2018-05-29 15:56:21] <somers__> So you think that if I add an alias at https://github.com/settings/emails , that github will automatically link my freebsd commits to my account?
+[2018-05-29 15:56:35] <aniketp> Yup, that should work @somers__ 
+[2018-05-29 15:57:33] <aniketp> Also, then you will be added to the contributers in the github mirror. As currently asomers@FreeBSD.org doesn't exist in Github's database
+[2018-05-29 15:57:35] <somers__> Will it work for already-pushed FreeBSD commits, or only new FreeBSD commits?
+[2018-05-29 15:58:12] <aniketp> If all the already pushed commits have asomers@FreeBSD.org so they all will be linked
+[2018-05-29 15:58:57] <aniketp> @somers__ 
+[2018-05-29 15:59:05] <somers__> I'll try it.
