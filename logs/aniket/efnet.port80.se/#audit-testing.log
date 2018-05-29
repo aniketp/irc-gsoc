@@ -1607,3 +1607,10 @@
 [2018-05-29 15:58:12] <aniketp> If all the already pushed commits have asomers@FreeBSD.org so they all will be linked
 [2018-05-29 15:58:57] <aniketp> @somers__ 
 [2018-05-29 15:59:05] <somers__> I'll try it.
+[2018-05-29 16:01:49] <somers__> Yep, it worked!  Thanks for the tip.
+[2018-05-29 16:03:02] <aniketp> Also @somers__ in case you didn't notice, look at the #64th contributer in the freebsd mirror 
+[2018-05-29 16:03:15] <aniketp> https://github.com/freebsd/freebsd/commits?author=asomers
+[2018-05-29 16:03:18] <somers__> I see him.  Handsome fellow.
+[2018-05-29 16:04:18] <aniketp> Haha, quite cool!
+[2018-05-29 16:21:47] <aniketp> Also, @somers__, I updated D15286, please have a look
+[2018-05-29 16:22:23] <somers__> ok
