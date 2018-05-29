@@ -1651,3 +1651,20 @@
 [2018-05-29 19:28:48] <aniketp> Files left in work directory after failure: started_auditd
 [2018-05-29 19:31:02] <aniketp> Also, @somers__ I think instead of <a name="xfail"></a> in the context section of test summary, it should be <a id="xfail"></a>
 [2018-05-29 19:31:14] <aniketp> Because it doesn't link to it otherwise
+[2018-05-29 20:03:02] <somers__> Take it up with Kyua's maintainers
+[2018-05-29 20:07:06] <aniketp> @somers__ actually initially I had put "set_preselect_mode(fd[0].fd, &nomask);" after audit startup. 
+[2018-05-29 20:07:06] <aniketp> Placing it before (which should have been the case) does not result in any timeout and I can't find any test-case taking more than 0.500 seconds
+[2018-05-29 20:07:24] <aniketp> I'll update the diff now
+[2018-05-29 20:15:40] <aniketp> @somers__ updated the diff. Seems initially my incorrect placement of the code caused the issue. Now the tests seem to be behaving normally
+[2018-05-29 20:16:03] <somers__> ok, I'll take a look
+[2018-05-29 20:28:47] <aniketp> @somers__ I updated the revision quite a few more times as I had missed few things earlier, sorry for that!
+[2018-05-29 21:28:06] <aniketp> Hi @somers__, does the current version of D15286 work fine?
+[2018-05-29 21:28:30] <somers__> It passes the tests, if that's what you mean
+[2018-05-29 21:29:31] <aniketp> Were there any tests which took extra time. It didn't happen to me after I fixed the code placement @somers__ 
+[2018-05-29 21:30:02] <somers__> no.  they were all about the same time
+[2018-05-29 21:31:20] <aniketp> Okay. So if there is any issues in the code I can fix them or else I hope they are ready to be landed? Cause there are a lot of tests waiting to be reviewed..
+[2018-05-29 21:32:35] <aniketp> @somers__ 
+[2018-05-29 21:32:56] <somers__> Yeah, I'm doing a full review now
+[2018-05-29 21:45:52] <aniketp> @somers__ there were a few library functions in the acl_(get/set)_(file/fd/link) which were mentioned in the audit event list. Although, earlier you had said that the library functions don't get audited but I saw their "ar_event" in audit_bsm.c: Wouldn't that imply that they should be audited? 
+[2018-05-29 21:45:52] <aniketp> https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c#L792
+[2018-05-29 21:51:03] <somers__> they may be a syscall on darwin, but a library call on freebsd, or vice versa
