@@ -1720,3 +1720,5 @@
 [2018-05-30 03:37:42] <aniketp> Also, @somers__ I think I've started encountering potentially dangerous syscalls. For ex, in chroot(2), I'm simply leaving the root directory as it is, i.e chroot("/"). And for umask(2), which sets the calling process's file creation mode, I've used mode as 0000 so as not affect any file creation. Are these approaches fine or shall I not test the success mode of these syscalls?
 [2018-05-30 03:37:59] <aniketp> *as not to
 [2018-05-30 03:53:54] <somers__> those make sense
+[2018-05-30 04:43:10] * mpts (~mpts@boston-packets.hackerspace.pl) quit Read error: Operation timed out
+[2018-05-30 04:44:16] * mpts (~mpts@boston-packets.hackerspace.pl) join
