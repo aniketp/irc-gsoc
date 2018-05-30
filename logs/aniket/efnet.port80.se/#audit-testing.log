@@ -1700,3 +1700,13 @@
 [2018-05-29 23:13:36] <somers__> It's conventional to use the username
 [2018-05-29 23:13:47] <somers__> Full names are reserved for people who don't have accounts.
 [2018-05-29 23:15:41] <aniketp> Okay, yes. I thought I saw Shivansh's full name but turns out it was his username too: https://github.com/freebsd/freebsd/commit/9ed52ddd11b61fba5e08fdbba98c00093825e684
+[2018-05-30 00:14:49] <aniketp> Hi @somers__ here's a new revision: https://reviews.freebsd.org/D15613
+[2018-05-30 00:59:00] <aniketp> @somers__ my VM panics on every reboot/startup. [After I set the audit class as "pc" and try to list the directories]. Is there a way to get out of this loop?
+[2018-05-30 00:59:21] <aniketp> I can't basically get in my system noe
+[2018-05-30 00:59:32] <somers__> what is the panic?
+[2018-05-30 01:01:35] <aniketp> panic: "ufs_dirbad: /: bad dir ino 802560 at offset 1536: mangled entry" @somers__ 
+[2018-05-30 01:02:14] <somers__> Ouch.  Well, you can try to boot single-user, then fsck it
+[2018-05-30 01:03:54] <aniketp> Yeah, I did that earlier, but I guess I should've skipped the journal.. (I didn't and nothing changed)
+[2018-05-30 01:05:49] <aniketp> @somers__ is it possible that "auditd(8)" and "pc" audit class and "exa : port" are related? Cause they all seem responsible for the consistent panic
+[2018-05-30 01:06:24] <aniketp> I guess I should not use exa while testing "pc" system calls
+[2018-05-30 01:07:00] <somers__> Yes.  exa is probably exercising some audit buggy path whenever auditing is enabled.
