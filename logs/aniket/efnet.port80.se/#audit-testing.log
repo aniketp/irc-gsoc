@@ -1723,3 +1723,6 @@
 [2018-05-30 04:43:10] * mpts (~mpts@boston-packets.hackerspace.pl) quit Read error: Operation timed out
 [2018-05-30 04:44:16] * mpts (~mpts@boston-packets.hackerspace.pl) join
 [2018-05-30 12:19:19] <somers__> Many of those dangerous syscalls can also be done in a forked() subprocess
+[2018-05-30 15:40:05] * somers_ (~somers@63-224-81-116.hlrn.qwest.net) join
+[2018-05-30 15:46:18] * somers__ (~somers@63-224-81-23.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-30 15:57:26] <somers_> Once you finish writing tests for audit(4), you might consider raising the WARNS of praudit(8) and auditd(8), and fixing the Coverity issues in openbsm
