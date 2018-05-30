@@ -1710,3 +1710,13 @@
 [2018-05-30 01:05:49] <aniketp> @somers__ is it possible that "auditd(8)" and "pc" audit class and "exa : port" are related? Cause they all seem responsible for the consistent panic
 [2018-05-30 01:06:24] <aniketp> I guess I should not use exa while testing "pc" system calls
 [2018-05-30 01:07:00] <somers__> Yes.  exa is probably exercising some audit buggy path whenever auditing is enabled.
+[2018-05-30 02:01:12] * shivansh (~zeebu@14.139.38.125) join
+[2018-05-30 02:01:35] * shivansh (~zeebu@14.139.38.125) quit Client Quit
+[2018-05-30 02:08:37] <aniketp> Hi @somers__,did some tests break on adding the tests for audit? This commit undid that https://reviews.freebsd.org/rS334362
+[2018-05-30 02:54:56] <somers__> Yes.  Not your fault, though
+[2018-05-30 02:55:11] <somers__> Looks like some of the openbsm headers are gcc-incompatible
+[2018-05-30 03:00:30] <aniketp> @somers__ I think I only used <bsm/audit.h> and <bsm/libbsm.h> in the test programs. I guess maybe those are responsible then?
+[2018-05-30 03:08:16] <somers__> yes
+[2018-05-30 03:37:42] <aniketp> Also, @somers__ I think I've started encountering potentially dangerous syscalls. For ex, in chroot(2), I'm simply leaving the root directory as it is, i.e chroot("/"). And for umask(2), which sets the calling process's file creation mode, I've used mode as 0000 so as not affect any file creation. Are these approaches fine or shall I not test the success mode of these syscalls?
+[2018-05-30 03:37:59] <aniketp> *as not to
+[2018-05-30 03:53:54] <somers__> those make sense
