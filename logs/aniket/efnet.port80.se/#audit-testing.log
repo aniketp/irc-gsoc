@@ -1746,3 +1746,41 @@
 [2018-05-30 17:02:02] <somers_> ok
 [2018-05-30 17:02:05] <aniketp> I simply opened a PR on OpenBSM @somers_ 
 [2018-05-30 17:35:07] <aniketp> @somers_ here is another one https://reviews.freebsd.org/D15620 . I had opened a bug report on it earlier: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=226713
+[2018-05-30 20:02:08] <aniketp> Hi @somers_, the setpriority(2) is causing me some weird problems. When I simply set the default priority of the current user it slows down my VM. Also, on trying to obtain the current priority using getpriority(2) and setting the value returned so as not to cause any change still causes the issue. 
+[2018-05-30 20:02:08] <aniketp> int p = getpriority(PRIO_USER, 0);
+[2018-05-30 20:02:08] <aniketp> setpriority(PRIO_USER, 0, p);
+[2018-05-30 20:02:43] <aniketp> Is there a better way to handle this syscall or should I skip it?
+[2018-05-30 20:03:07] <somers_> what value did you supply for which ?
+[2018-05-30 20:03:26] <aniketp> PRIO_USER @somers_ 
+[2018-05-30 20:03:44] <somers_> better to use PRIO_PROCESS, or you'll be rescheduling all of root's processes!
+[2018-05-30 20:04:43] <aniketp> Yeah, PRIO_PROCESS worked fine. Should've done that earlier :D
+[2018-05-30 20:07:10] <aniketp> Also, @somers_ , isn't it better to let the "struct auditpipe_ioctl_preselect" definition be along with its buddies in the audit.h? I thought it would be a better design..
+[2018-05-30 20:08:33] <somers_> You've got to be very careful when editting public header files.  Moving that structure will add symbols to the namespace of currently working programs.  It's not to be done lightly.
+[2018-05-30 20:08:58] <somers_> If that structure has no use that doesn't also involve including sys/security/audit_ioctl.h, then there's no reason to move it.
+[2018-05-30 20:10:55] <aniketp> Okay, will move it back. Btw will the typedef work fine? @somers_ . Or shall I remove it too? Cause all other auditpipe's ioctls had struct definitions with them
+[2018-05-30 20:11:31] <somers_> I don't think you need the typedef
+[2018-05-30 20:40:19] <aniketp> OKay, @somers_, so it essentially brings down to including bsm/audit.h to security/audit/audit_ioctl.h
+[2018-05-30 20:40:23] <aniketp> Done here D15561
+[2018-05-30 20:49:39] <aniketp> Also, @somers_ I did not create test cases for open(2) by taking every combination. Opening files in these modes it a separate audit event in itself and not just a combination. Also, @rwatson, emphasized on testing all these audit events specified by "open(2)" and "openat(2)". So it would make sense to test these audit events.
+[2018-05-30 20:49:39] <aniketp> Also here is the list for possible audit events for open(2):https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L93
+[2018-05-30 20:50:51] <somers_> You should put that info in the review, not just in IRC
+[2018-05-30 20:50:59] <aniketp> As the regex matching like "read,creat,trunc" is present in the header along with open(2) and not in the arguments
+[2018-05-30 20:51:43] <somers_> complete sentences, please?
+[2018-05-30 20:56:02] <aniketp> Oh, sorry. The last statement was the addition to previous ones. I meant: The part like "read,creat,trunc" which I'm matching as the regex is present in the header token and not in the arguments, so it's like each opening mode is an audit events in itself. @somers_   
+[2018-05-30 20:59:28] <somers_> Are you saying that "open" is in a separate token from "read,create,trunc", or in a separate record?
+[2018-05-30 21:08:41] * aniketp (~aniketp41@159.65.149.37) join
+[2018-05-30 21:11:40] <aniketp> @somers_ I think they both are in the same token (header) within the same audit record. 
+[2018-05-30 21:11:40] <aniketp> LIke, open(path, O_CREAT | O_RDONLY | O_TRUNC, mode)'s audit record will have something like this
+[2018-05-30 21:11:40] <aniketp> header,129,11,open(2) - read,creat,trunc 0,Wed May 30 21:00:53 2018, + 666 msec
+[2018-05-30 21:11:40] <aniketp> argument,2,0x0,flags
+[2018-05-30 21:11:40] <aniketp> path,/dev/auditpipe
+[2018-05-30 21:11:40] <aniketp> attribute,600,root,wheel,2159309312,21,21
+[2018-05-30 21:11:40] <aniketp> subject,root,root,0,root,0,1437,1340,35370,10.0.2.2
+[2018-05-30 21:11:40] <aniketp> return,success,7
+[2018-05-30 21:11:40] <aniketp> trailer,129
+[2018-05-30 21:11:40] <aniketp>  
+[2018-05-30 21:12:28] <aniketp> If the mode "flag" string was in the argument then the open(2) would only have one audit event
+[2018-05-30 21:13:16] <somers_> Yikes; your delimiter character is present in that field
+[2018-05-30 21:14:11] <aniketp> @somers_ I did not understand.. :/
+[2018-05-30 21:27:00] * aniketp (~aniketp41@159.65.149.37) join
+[2018-05-30 21:50:11] <aniketp> @somers_ would you suggest adding syscall's name in the regex? I thought it might not be that important since we already have the opening modes and we are more concerned with the return status of a syscall trigger
