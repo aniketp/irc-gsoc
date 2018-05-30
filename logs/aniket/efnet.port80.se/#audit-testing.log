@@ -1726,3 +1726,23 @@
 [2018-05-30 15:40:05] * somers_ (~somers@63-224-81-116.hlrn.qwest.net) join
 [2018-05-30 15:46:18] * somers__ (~somers@63-224-81-23.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-05-30 15:57:26] <somers_> Once you finish writing tests for audit(4), you might consider raising the WARNS of praudit(8) and auditd(8), and fixing the Coverity issues in openbsm
+[2018-05-30 16:01:24] <aniketp> Sure, although @somers_, I couldn't really understand what WARNS?=6 did, does it increase the strictness of warnings while building ?
+[2018-05-30 16:01:42] <somers_> Yup.  Dialing up WARNS adds more -W options to the compiler
+[2018-05-30 16:02:55] <aniketp> And I saw your PR in OpenBSM, which removed some redundant function declarations, so is there some testing to be done in that regard too?
+[2018-05-30 16:03:00] <aniketp> @somers_ 
+[2018-05-30 16:03:31] <somers_> I already submitted that to freebsd too.  I'm doing another build test, then I'll reenable the tests that emaste disabled.
+[2018-05-30 16:05:41] <aniketp> Oh this one: https://reviews.freebsd.org/rS334388 . It was not there a while before so I did not notice :-'
+[2018-05-30 16:11:19] <aniketp> Btw @somers_ did you have a look the open(2) and openat(2) tests for "fc" here: https://reviews.freebsd.org/D15613
+[2018-05-30 16:11:40] <somers_> nope
+[2018-05-30 16:12:24] <aniketp> Also, there are quite a few manpage corrections that are pending in the PR that was merged in OpenBSM, shall I create a review for them?
+[2018-05-30 16:12:48] <aniketp> I had created a bug report about them earlier @somers_  
+[2018-05-30 16:13:26] <somers_> Sure, if you like.  If you don't, they'll be mass-merged eventually.  But it may take a long time.
+[2018-05-30 16:14:50] <aniketp> Yes, for someone using au_read_rec() and the auditpipe ioctls can be easily mislead by the man-page. I'd rather open them now as they won't take much time to be reviewed I think. 
+[2018-05-30 16:37:24] <aniketp> @somers_ here is the first one: https://reviews.freebsd.org/D15618 [On au_read_rec()'s return value]
+[2018-05-30 16:37:59] <somers_> i see it
+[2018-05-30 16:38:03] <somers_> I'll review it shortly
+[2018-05-30 17:01:19] <somers_> Did you open a bug for the man page issue?
+[2018-05-30 17:01:43] <aniketp> No, not for the au_read_rec() issue
+[2018-05-30 17:02:02] <somers_> ok
+[2018-05-30 17:02:05] <aniketp> I simply opened a PR on OpenBSM @somers_ 
+[2018-05-30 17:35:07] <aniketp> @somers_ here is another one https://reviews.freebsd.org/D15620 . I had opened a bug report on it earlier: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=226713
