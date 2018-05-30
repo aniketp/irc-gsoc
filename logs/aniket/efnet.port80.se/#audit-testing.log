@@ -1668,3 +1668,35 @@
 [2018-05-29 21:45:52] <aniketp> @somers__ there were a few library functions in the acl_(get/set)_(file/fd/link) which were mentioned in the audit event list. Although, earlier you had said that the library functions don't get audited but I saw their "ar_event" in audit_bsm.c: Wouldn't that imply that they should be audited? 
 [2018-05-29 21:45:52] <aniketp> https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c#L792
 [2018-05-29 21:51:03] <somers__> they may be a syscall on darwin, but a library call on freebsd, or vice versa
+[2018-05-29 22:15:09] <aniketp> @somers__ can I have an atf_require condition in the cleanup part of a test-case?
+[2018-05-29 22:16:09] <somers__> Nope.  What were you trying to do?
+[2018-05-29 22:17:59] <aniketp> No as you asked to use "atf_utils_file_exist" So I was thinking of implementing a check condition to confirm that the auditd stopped successfully
+[2018-05-29 22:18:07] <aniketp> @somers__ 
+[2018-05-29 22:18:33] <somers__> If auditd doesn't stop, there's not much that you can do about it
+[2018-05-29 22:28:15] <aniketp> @somers__ in the Makefile that you had given me earlier, it contained: "CFLAGS+=        -I${.CURDIR:H:H}" so I left it as it is
+[2018-05-29 22:28:15] <aniketp> Is it not required?
+[2018-05-29 22:28:41] <somers__> which Makefile did I give you?
+[2018-05-29 22:29:34] <aniketp> Way back I had asked you how you used to compile the tests, so you said you placed the tests in tests/sys/audit and used a particular makefile 
+[2018-05-29 22:30:10] <somers__> likely copied from some other part of the tree
+[2018-05-29 22:30:24] <somers__> Did I send you the contents, or the location from which I copied ?
+[2018-05-29 22:30:29] <aniketp> TESTSDIR=       ${TESTSBASE}/sys/audit
+[2018-05-29 22:30:29] <aniketp> ATF_TESTS_C+=   mkdir-atf0
+[2018-05-29 22:30:29] <aniketp> TEST_METADATA.mkdir-atf0+= timeout="30"
+[2018-05-29 22:30:29] <aniketp> CFLAGS+=        -I${.CURDIR:H:H}
+[2018-05-29 22:30:29] <aniketp> WARNS?= 6
+[2018-05-29 22:30:29] <aniketp> 03:11 <somers_>  .include <bsd.test.mk>
+[2018-05-29 22:30:40] <aniketp> These were the original contents @somers__ 
+[2018-05-29 22:31:37] <aniketp> If that line is not required then I can remove it no issues, I just wanted to clarify about it though..
+[2018-05-29 22:38:06] <somers__> Looks like I probably copied it from tests/sys/aio/Makefile, which needed it for freebsd_test_suite/macros.h.  You can remove it.
+[2018-05-29 22:44:29] <aniketp> Okay @somers__, I updated the revision:
+[2018-05-29 22:51:31] <somers__> Does D15286 cover all fc syscalls?
+[2018-05-29 22:58:16] <aniketp> Nope, there are 24 tests for open() in rc, wc, rwc, rct, wct, rwct as well. (That is why I had included the sys/syscall.h).
+[2018-05-29 22:58:16] <aniketp> I was thinking of their review as soon as this is done
+[2018-05-29 22:58:27] <aniketp> @somers__ : https://github.com/aniketp/AuditTestSuite/blob/master/src/file-create.c
+[2018-05-29 22:58:51] <somers__> ok.  We can commit the initial batch first, just to get the process in place
+[2018-05-29 23:00:00] <aniketp> Yes, that's what I was thinking of, post this, I'll sequentially create revisions for similar syscalls so that if there are any issues, we can narrow it down.
+[2018-05-29 23:01:01] <aniketp> Yay! Finally after 4 weeks the revision is accepted :D
+[2018-05-29 23:13:14] <aniketp> Btw @somers__, just curious, couldn't it have been my whole name instead of username in the commit message?
+[2018-05-29 23:13:36] <somers__> It's conventional to use the username
+[2018-05-29 23:13:47] <somers__> Full names are reserved for people who don't have accounts.
+[2018-05-29 23:15:41] <aniketp> Okay, yes. I thought I saw Shivansh's full name but turns out it was his username too: https://github.com/freebsd/freebsd/commit/9ed52ddd11b61fba5e08fdbba98c00093825e684
