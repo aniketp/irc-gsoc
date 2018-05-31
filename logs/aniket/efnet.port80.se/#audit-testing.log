@@ -1887,3 +1887,13 @@
 [2018-05-31 17:42:41] <somers__> But we can at least add a comment to the top of /etc/security/audit_event advising developers to update the tests whenever changing default audit classes
 [2018-05-31 17:44:54] <aniketp> I guess probably no one would change that list, else there could be serious repercussions in some other files. Apart from the audit tests breaking
 [2018-05-31 17:46:23] <somers__> What else would break, if you only change the audit classes?
+[2018-05-31 18:13:07] <aniketp> Well I guess nothing should, if there is no code which uses the exact mapping. So @somers__ should we add a comment at the top of audit_events then?
+[2018-05-31 18:13:07] <aniketp> Also, I think the only changes that might take place are the deprecated events or the events not supported by FreeBSD being removed?
+[2018-05-31 18:13:35] <aniketp> Or some new events being added. But they should not break the tests.
+[2018-05-31 18:17:13] <aniketp> Also, in the tests, I'm overriding what audit class is set in "/etc/security/audit_class".  But I doubt why someone other than a developer would change the /etc/security/audit_event
+[2018-05-31 18:17:19] <aniketp> @somers__ 
+[2018-05-31 18:56:19] <somers__> You're overriding audit_class or only audit_control ?
+[2018-05-31 19:12:31] <aniketp> Just the audit_control @somers__ . Essentially. I'm not touching anything in the kernel. Just the user-space system wide audit settings
+[2018-05-31 19:13:31] <somers__> Actually, the flags and naflags settings from audit_control _are_ kernelspace settings
+[2018-05-31 19:18:36] <aniketp> Oh, okay. I meant, I'm not changing any mappings of audit classes and audit events. @somers__ 
+[2018-05-31 19:19:02] <aniketp> Just the flag for attributable events.
