@@ -1897,3 +1897,12 @@
 [2018-05-31 19:13:31] <somers__> Actually, the flags and naflags settings from audit_control _are_ kernelspace settings
 [2018-05-31 19:18:36] <aniketp> Oh, okay. I meant, I'm not changing any mappings of audit classes and audit events. @somers__ 
 [2018-05-31 19:19:02] <aniketp> Just the flag for attributable events.
+[2018-05-31 20:02:58] <aniketp> @somers__ I've removed the "rights reserved" line from all source and header files
+[2018-05-31 20:04:31] <somers__> ok
+[2018-05-31 20:07:43] <aniketp> Btw @somers__, this line already asks people not to change any mapping of audit events and audit classes: https://github.com/openbsm/openbsm/blob/master/etc/audit_event#L4
+[2018-05-31 20:07:56] <aniketp> I guess this should be reliable then ?
+[2018-05-31 20:08:43] <somers__> No, it doesn't say anything about classes.  That warning is just about hte mapping between event identifiers, numeric values, and event names
+[2018-05-31 20:09:38] <aniketp> Oh, yes. Didn't notice that.. So, you're suggesting we add another line to not change the audit class mapping as well? @somers__ 
+[2018-05-31 20:10:17] <somers__> Not exactly.  Just a warning to change the tests whenever changing the classes
+[2018-05-31 20:23:27] <aniketp> Btw @somers__ , the process control and administrative syscalls don't return much in their audit records. I almost everytime have to use the PID to eliminate the false positives. Though it works but just that the records aren't much informative. Also, more often than not the auditing was easy since I had to provide hardcoded PIDs, addresses even for success case
+[2018-05-31 20:23:42] <aniketp> Have a look: https://github.com/aniketp/AuditTestSuite/blob/master/src/process-control.c
