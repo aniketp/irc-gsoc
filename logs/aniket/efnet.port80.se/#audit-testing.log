@@ -1784,3 +1784,21 @@
 [2018-05-30 21:14:11] <aniketp> @somers_ I did not understand.. :/
 [2018-05-30 21:27:00] * aniketp (~aniketp41@159.65.149.37) join
 [2018-05-30 21:50:11] <aniketp> @somers_ would you suggest adding syscall's name in the regex? I thought it might not be that important since we already have the opening modes and we are more concerned with the return status of a syscall trigger
+[2018-05-30 22:47:04] <aniketp> ping @somers_ 
+[2018-05-30 22:47:51] <somers_> I could go either way.  It would definitely be nice to have, but it's not essential.  It could perhaps be a later enhancement.
+[2018-05-30 22:50:55] <aniketp> Yes, sure. It could be while we are checking the semantics of the audit record. 
+[2018-05-30 22:50:55] <aniketp> Btw @somers_ about open(2) with all auditable file modes? Don't you think it is essential that we check for each one of them? Since open(2) from what I've observed is the most recurring syscall of all
+[2018-05-30 22:51:21] <aniketp> Also, since they are separately defined in the audit event list
+[2018-05-30 22:51:32] <somers_> Yeah I do.  I didn't realize before that each combination of modes is a separate event
+[2018-05-30 22:51:47] <somers_> Could you add a comment to that effect?  It isn't obvious.
+[2018-05-30 22:52:39] <aniketp> Okay sure, one comment in the beginning of the test program or before every test case? @somers_
+[2018-05-30 22:52:49] <somers_> Just one is fine
+[2018-05-30 23:03:37] <aniketp> @somers_ added the comment!
+[2018-05-30 23:03:44] <somers_> k
+[2018-05-30 23:24:33] <aniketp> Besides @somers_ I had not checked the name of syscalls in any other file-create events. I just noticed that:
+[2018-05-30 23:24:33] <aniketp> char *successreg = "fileforaudit.*return,success";
+[2018-05-30 23:24:33] <aniketp> char *failurereg = "fileforaudit.*return,failure";
+[2018-05-30 23:24:42] <aniketp> *,
+[2018-05-30 23:25:16] <aniketp> I guess the whole test-program is consistent that way
+[2018-05-30 23:56:42] <aniketp> ping @somers_, is the diff D15613 ready to be landed?
+[2018-05-30 23:57:11] <somers_> I haven't reviewed your latest change
