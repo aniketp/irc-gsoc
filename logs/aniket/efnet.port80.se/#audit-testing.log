@@ -1836,3 +1836,54 @@
 [2018-05-31 15:19:40] <aniketp> But @somers__, shouldn't we be testing all audit events of all audit classes? Also, I had initially asked you about it and you said that "maybe we ought to test them all". So I had to spend a lot of time in creating tests for all possibilities
 [2018-05-31 15:39:10] <aniketp> @somers_ looks like there is a Hash Table with stores the mapping between each audit class and event here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm_db.c#L120
 [2018-05-31 15:41:00] <aniketp> In a few lines below, a loop check for all audit events corresponding to the audit class and then audits them if they have been triggered. (Look like it uses  dtrace to keep track of that): https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm_db.c#L87
+[2018-05-31 16:16:15] <aniketp> ping @somers__ . If I'm including <sys/param> then I don't need <sys/types>, right?
+[2018-05-31 16:34:08] <somers__> that can't be the correct table if it's only used by dtrace
+[2018-05-31 16:34:18] <somers__> Correct, you should only include one of sys/param.h or sys/types.h
+[2018-05-31 16:37:07] <aniketp> @somers__,I guess to map the audit events and audit classes, the /etc/security/audit_events is used to fill up the mapping hash table "evclass_hash[EVCLASSMAP_HASH_TABLE_SIZE];" 
+[2018-05-31 16:38:07] <aniketp> And all these special audit events are described in these few structures in https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm_klib.c#L68
+[2018-05-31 16:38:33] <aniketp> I think we probably should test them all since they have been exclusively defined this way @somers__ 
+[2018-05-31 16:40:35] <somers__> There are only 24 open-related audit events.  There isn't a separate event for each audit class.
+[2018-05-31 16:40:47] <somers__> Mutiplying 24 events by six classes is just too much
+[2018-05-31 16:44:41] <aniketp> So what would you suggest we do @somers__ ? I can have a separate test program for open(2) and openat(2)?
+[2018-05-31 16:45:07] <aniketp> But them what audit class would I set? I think I can take a bitwise OR of all classes?
+[2018-05-31 16:45:20] <aniketp> *then
+[2018-05-31 16:45:40] <somers__> Setting just one audit class is sufficient to check that all syscalls are auditted
+[2018-05-31 16:47:06] <aniketp> Okay, so for open(2),which audit class should I set?
+[2018-05-31 16:47:12] <aniketp> @somers__ 
+[2018-05-31 16:47:35] <somers__> Pick your favorite
+[2018-05-31 16:47:46] <somers__> Or pick one that applies to every variation of AUE_OPEN
+[2018-05-31 16:49:44] <aniketp> A thought process I had was that since open(2) can be audited within every audit class, perhaps we should test all possible cases. For example open(O_TRUNC | ...) is to be audited as "file-delete" and if the audit isn't being recorded, then users can delete files to their heart's content without being caught .. @somers__  
+[2018-05-31 16:50:31] <aniketp> But sure, if we are only testing a single audit class, then I'll try to divide the test cases accordingly
+[2018-05-31 16:52:10] <somers__> It's worthwhile to have a separate test, independent of open/openat, that ensures that the class field of audit_security does what it's supposed to.  But testing every audit event in every class is just too much.  Would you also do the negative?  Test that, say, AUE_FORK doesn't show up in any audit class except pc?
+[2018-05-31 16:53:17] <somers__> In general, testing every combination of two combinable things leads to O(n^2) runtime.  It's often better to pick a baseline, then test every variation of each thing while holding the other things constant.  That's O(n)
+[2018-05-31 16:58:53] <aniketp> OKay @somers__ I've planned my division. Going by it, the "file-create" audit class will contain tests for open, openat in "rc", "wc", "rwc". {So a total of 3x4 test cases}. Is this fine? So that I can update D15613?
+[2018-05-31 16:59:32] <aniketp> I guess then that comment will also not be required, @somers__ 
+[2018-05-31 16:59:49] <aniketp> Since, we've eventually divided the test-cases..
+[2018-05-31 16:59:53] <somers__> what about cases without O_CREAT ?
+[2018-05-31 17:00:53] <aniketp> They will go in their own audit classes @somers__ . I'll sequentially created differential revisions in the order that make more sense :P
+[2018-05-31 17:01:22] <aniketp> But for now, I think let's complete "file-create" @somers__ 
+[2018-05-31 17:04:14] <somers__> I suppose that's fine
+[2018-05-31 17:04:36] <somers__> Personally, I think of the syscall as being more important than the audit class.  But there's no obvious way to group syscalls
+[2018-05-31 17:04:51] <somers__> (except by the ABI group, but that's too big)
+[2018-05-31 17:06:07] <aniketp> Yes precisely. Or since open(2) is so controversial, would you suggest that I have a separate test-program for it? @somers__ 
+[2018-05-31 17:06:07] <aniketp> Like all 48 tests specifically for open(2) and openat(2)?
+[2018-05-31 17:06:53] <somers__> that's not a bad idea.  open(2) and friends are pretty weird
+[2018-05-31 17:07:44] <aniketp> Sure, then I guess I should abandon D15163 as "file-create" without open(2) family is complete
+[2018-05-31 17:08:22] <somers__> ok
+[2018-05-31 17:10:02] <aniketp> Also, @somers__, how bad is a test-program with only 4 test cases? Like "file-read" will only have tests for readlink(2) and readlinkat(2). Same for "ioctl" and "execve"
+[2018-05-31 17:10:25] <somers__> Not bad at all
+[2018-05-31 17:11:02] <somers__> Weird.  I wonder why AUE_READ and friends are in class no ?
+[2018-05-31 17:11:24] <somers__> I guess they're considered too frequent to audit in any other class
+[2018-05-31 17:18:58] <aniketp> Btw "no" audit class does not get audited right? @somers__ 
+[2018-05-31 17:19:44] <somers__> I thought there was a way to turn off the filter and see all events?
+[2018-05-31 17:25:10] <aniketp> I tried to check. read(2) doesn't get audited in "no". Also I think this is to be expected since "no" is an "invalid class" @somers__ 
+[2018-05-31 17:25:35] <somers__> ok
+[2018-05-31 17:31:53] <aniketp> @somers__ here is the diff for file-read: https://reviews.freebsd.org/D15636
+[2018-05-31 17:31:59] <aniketp> please have a look
+[2018-05-31 17:32:07] <somers__> ok
+[2018-05-31 17:37:40] <somers__> Actually I'm beginning to doubt the strategy of dividing tests by audit class.  /etc/security/audit_event is a config file, so sysadmins can change audit classes
+[2018-05-31 17:38:06] <somers__> You've configured auditpipe to ignore /etc/security/audit_control, but it's still bound by /etc/security/audit_event, right?
+[2018-05-31 17:41:45] <somers__> There's probably no helping it.
+[2018-05-31 17:42:41] <somers__> But we can at least add a comment to the top of /etc/security/audit_event advising developers to update the tests whenever changing default audit classes
+[2018-05-31 17:44:54] <aniketp> I guess probably no one would change that list, else there could be serious repercussions in some other files. Apart from the audit tests breaking
+[2018-05-31 17:46:23] <somers__> What else would break, if you only change the audit classes?
