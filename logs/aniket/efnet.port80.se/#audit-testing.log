@@ -1805,3 +1805,34 @@
 [2018-05-31 00:04:47] <aniketp> Okay
 [2018-05-31 13:44:05] * somers__ (~somers@63-224-81-77.hlrn.qwest.net) join
 [2018-05-31 13:50:24] * somers_ (~somers@63-224-81-116.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-05-31 14:52:47] <aniketp> @somers_ the link for the open(2) audit event within freebsd's audit event list is exceeding 80 chars limit, is it allowed to wrap around?
+[2018-05-31 14:52:55] <aniketp> ping @somers__ 
+[2018-05-31 14:53:26] <somers__> Yeah.  You can't stick a line break in the middle of the URL, so there's nothing to do about it
+[2018-05-31 14:53:40] <somers__> Although in this particular case, a URL probably isn't appropriate
+[2018-05-31 14:54:07] <somers__> Since this file is within the same repo as the file you need to link to, you should probably just specify audit_event's path within head
+[2018-05-31 14:55:23] <aniketp> @somers__, something like this? "Please see: contrib/openbsm/etc/audit_event#L97"
+[2018-05-31 14:55:34] <somers__> Yeah, like that
+[2018-05-31 14:58:27] <aniketp> Btw @somers__ I've created tests for all possible opening modes in all allowed audit classes. About 184 out of 450 tests are for open(2) and openat(2) in success and failure mode only :P
+[2018-05-31 14:59:10] <somers__> Whoa, that's a lot.  But there are only 48 AUE events.  If each one has failure and success, then that's 96.  How do you get to 184?
+[2018-05-31 15:00:04] <aniketp> You're only counting open(2) I think. There is openat(2) too...
+[2018-05-31 15:00:36] <aniketp> Sorry its 192 @somers__ (48x4)
+[2018-05-31 15:01:27] <somers__> Actually, I double counted.  In audit_kevents.h, I see 12 AUE events for open (beginning at line 126) and 12 for openat (beginning at line 286
+[2018-05-31 15:03:11] <aniketp> Yeah, true. But here is a catch: "AUE_OPEN_RWTC:open(2) - read,write,creat,trunc:fc,fd,fw,fr,fa,fm" will have tests in all 6 audit classes :P @somers__ 
+[2018-05-31 15:03:30] <aniketp> That just increases the count a lot
+[2018-05-31 15:03:44] <somers__> why do you need to test multiple audit classes?
+[2018-05-31 15:04:02] <somers__> Are you saying that the event is supposed to show up if any one of those 6 classes is selected?
+[2018-05-31 15:04:18] <aniketp> Yup, its true. @somers__ 
+[2018-05-31 15:04:56] <somers__> where is that defined?
+[2018-05-31 15:07:06] <aniketp> The holy audit events list: https://github.com/freebsd/freebsd/blob/master/contrib/openbsm/etc/audit_event#L107
+[2018-05-31 15:07:06] <aniketp> which I've been following all along.
+[2018-05-31 15:07:06] <aniketp> Please have a look at the tests I've created for open(2) and openat(2) in various audit class test programs. You'll see that they all are within multiple audit classes
+[2018-05-31 15:07:14] <aniketp> @somers__ : https://github.com/aniketp/AuditTestSuite/tree/master/src
+[2018-05-31 15:09:10] <somers__> mmm.  annoying
+[2018-05-31 15:11:02] <somers__> Also, don't forget to test AUE_CREAT
+[2018-05-31 15:11:12] <somers__> from creat(2)
+[2018-05-31 15:12:35] <somers__> I don't want to test that many permuatations.  Can you figure out where the filter classes get applied?  Maybe we can find a more direct way of testing the filters
+[2018-05-31 15:16:15] <aniketp> @somers__ creat(2) is deprecated. I had a talk with @dstolfa regarding it. https://github.com/freebsd/freebsd/blob/master/sys/sys/syscall.h#L16
+[2018-05-31 15:16:37] <aniketp> I tried to audit it and it turns out we can't audit creat(2) as well
+[2018-05-31 15:19:40] <aniketp> But @somers__, shouldn't we be testing all audit events of all audit classes? Also, I had initially asked you about it and you said that "maybe we ought to test them all". So I had to spend a lot of time in creating tests for all possibilities
+[2018-05-31 15:39:10] <aniketp> @somers_ looks like there is a Hash Table with stores the mapping between each audit class and event here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm_db.c#L120
+[2018-05-31 15:41:00] <aniketp> In a few lines below, a loop check for all audit events corresponding to the audit class and then audits them if they have been triggered. (Look like it uses  dtrace to keep track of that): https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm_db.c#L87
