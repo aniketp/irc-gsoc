@@ -1953,3 +1953,6 @@
 [2018-06-01 04:44:42] * somers_ (~somers@63-224-81-39.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-06-01 04:53:33] * somers_ (~somers@63-224-80-239.hlrn.qwest.net) join
 [2018-06-01 04:59:58] * somers__ (~somers@63-224-80-234.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-06-01 12:05:25] <somers_> Here's an audit escape for you: fsync(2) is auditted in the fm class, but aio_fsync(2) isn't auditted at all.
+[2018-06-01 12:05:35] <somers_> those two should both be in the same class
+[2018-06-01 12:06:22] <somers_> Ditto with aio_mlock
