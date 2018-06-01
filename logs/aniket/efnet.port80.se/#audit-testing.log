@@ -1984,3 +1984,7 @@
 [2018-06-01 19:21:13] <aniketp> I found this in one of the kyua releases
 [2018-06-01 19:21:28] <somers_> yeah
 [2018-06-01 19:24:39] <aniketp> @somers_ updated..
+[2018-06-01 21:52:05] <aniketp> Hi @somers_, I was able to get revoke(2) be audited in success mode using openpty(3), so do I need to destroy that pseudo terminal myself? I had two file descriptors, "master" and "aslave"
+[2018-06-01 21:53:36] <somers_> Yes.  Close it just like any other file descriptor.
+[2018-06-01 21:55:58] <aniketp> Okay. Also I forgot one thing, in syscalls like ftruncate(2) for example, I forgot to close the file-descriptor too
+[2018-06-01 21:56:25] <aniketp> I guess I'll update that in the next revision
