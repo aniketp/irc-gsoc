@@ -1906,3 +1906,13 @@
 [2018-05-31 20:10:17] <somers__> Not exactly.  Just a warning to change the tests whenever changing the classes
 [2018-05-31 20:23:27] <aniketp> Btw @somers__ , the process control and administrative syscalls don't return much in their audit records. I almost everytime have to use the PID to eliminate the false positives. Though it works but just that the records aren't much informative. Also, more often than not the auditing was easy since I had to provide hardcoded PIDs, addresses even for success case
 [2018-05-31 20:23:42] <aniketp> Have a look: https://github.com/aniketp/AuditTestSuite/blob/master/src/process-control.c
+[2018-05-31 22:42:05] <aniketp> Hi @somers__, will you be committing D15636?
+[2018-05-31 22:43:06] <somers__> yeah, after the build test passes
+[2018-05-31 22:51:01] <aniketp> Okay, also I was having an issue with the syscalls get/setaudit_addr(). Their second parameter is a "u_int length". Since this is not a pointer, I declared it and passed it to the function within the Kyua testcase. Now the compiler complains that I have not initialized the "length" parameter. But when I do assign it some value and then pass it to the function, the test fail the "setaudit_addr() != 0". 
+[2018-05-31 22:51:01] <aniketp> Interesting thing is it shows expected behaviour when passing an uninitialized length in an independent C program. But initializing it and passing npt only fails the test, but it also causes a "Bad tailq" panic, when auditd is running. https://pastebin.com/Eu1xZAz2
+[2018-05-31 22:51:07] <aniketp> @somers__ 
+[2018-05-31 23:07:14] <somers__> I believe the compiler when it says that length is uninitialized.
+[2018-05-31 23:07:21] <somers__> How did you initialize it?
+[2018-05-31 23:09:21] <aniketp> u_int length = 0;
+[2018-05-31 23:09:42] <aniketp> @somers__ as I did not have any particular value to give it to..
+[2018-05-31 23:46:03] <aniketp> Btw @somers__ are block devices not supported in FreeBSD anymore?
