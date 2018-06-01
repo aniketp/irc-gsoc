@@ -1975,3 +1975,12 @@
 [2018-06-01 17:41:36] <aniketp> @somers_: https://reviews.freebsd.org/D15647  {open(2) is also in this audit class}
 [2018-06-01 17:46:15] <somers_> I just remembered one thing: Kyua can run tests in parallel (though by default it doesn't).  Some tests use global resources, and would get screwed up if multiple test cases run in parallel
 [2018-06-01 17:46:33] <somers_> auditd is a global resource, so you need to mark all of your tests as exclusive, so they don't run in parallel
+[2018-06-01 18:41:51] <aniketp> @somers_ would that be through a test program metadata?
+[2018-06-01 18:46:15] <somers_> I think it can be done on the test program, or on individual test cases
+[2018-06-01 19:03:20] <aniketp> Well, doing it for all test cases would be repetitive, is there some test.metadata which I can include in the Makefile
+[2018-06-01 19:03:27] <aniketp> @somers_ 
+[2018-06-01 19:13:45] <somers_> I think so.  Check the man pages
+[2018-06-01 19:21:01] <aniketp> @somers_ something like this? "TEST_METADATA+= is_exclusive="true""
+[2018-06-01 19:21:13] <aniketp> I found this in one of the kyua releases
+[2018-06-01 19:21:28] <somers_> yeah
+[2018-06-01 19:24:39] <aniketp> @somers_ updated..
