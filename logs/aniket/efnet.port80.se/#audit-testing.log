@@ -1916,3 +1916,31 @@
 [2018-05-31 23:09:21] <aniketp> u_int length = 0;
 [2018-05-31 23:09:42] <aniketp> @somers__ as I did not have any particular value to give it to..
 [2018-05-31 23:46:03] <aniketp> Btw @somers__ are block devices not supported in FreeBSD anymore?
+[2018-06-01 00:21:11] * somers_ (~somers@63-224-81-39.hlrn.qwest.net) join
+[2018-06-01 00:27:31] * somers__ (~somers@63-224-81-77.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-06-01 00:53:11] <somers_> Correct.  All devices are now character devices
+[2018-06-01 00:53:28] <somers_> It looks like setaudit_addr needs an auditinfo data structure
+[2018-06-01 00:55:43] <aniketp> Okay, so can't test swapon(2) and swapoff(2) then.. @somers__ 
+[2018-06-01 00:55:43] <aniketp> Yeah, I declared an auditinfo struct. Used getaudit_addr() to fill it up, then passed it to setaudit_addr() so as not to change anything. But the issue was with getaudit_addr(0 actually. Here is the code: https://github.com/aniketp/AuditTestSuite/blob/master/src/administrative.c#L404
+[2018-06-01 00:55:48] <aniketp> @somers_ 
+[2018-06-01 01:04:47] <aniketp> Wait, it worked. I had not deferenced the length pointer earlier :D 
+[2018-06-01 01:08:28] <aniketp> Btw @somers_ all basic auditable syscalls have been tested. I just need to extract out some elusive one's and create their tests.. Though it will need some thorough research of the audit and bsm code. I have legitimately 501 tests now :D
+[2018-06-01 01:16:10] <aniketp> Total 159 syscalls yet :O
+[2018-06-01 01:31:14] <somers_> There's about 550 syscalls in init_sysent.c
+[2018-06-01 01:36:16] <aniketp> But are they even auditable? I think audit_token.c has very few compared to that
+[2018-06-01 01:36:35] <aniketp> @somers_ 
+[2018-06-01 01:37:48] <somers_> Dunno.  You'll have to check.
+[2018-06-01 01:39:43] <aniketp> Yes, will start that analysis tonight. After I wake up ofcourse :P
+[2018-06-01 01:40:15] <aniketp> But I think majority of them will not be auditable ..
+[2018-06-01 01:48:25] <aniketp> Also, @somers_ assuming there aren't much more syscalls to test (which I think should be the case), what would you suggest be the next best field related to audit(4) to test?
+[2018-06-01 01:48:59] <somers_> Next I would take a look at the syscalls from other ABI groups
+[2018-06-01 01:49:26] <somers_> There are the freebsd32 syscalls that you don't have to worry about
+[2018-06-01 01:49:34] <somers_> But there are also the linux syscalls and the cloudabi syscalls
+[2018-06-01 01:50:02] <somers_> I say you don't have to worry about the freebsd32 syscalls, because the easiest way to test those is to use an x86 jail; a 32-bit userland on a 64-bit kernel
+[2018-06-01 01:52:36] <aniketp> Btw @somers_ what are ABIs? I searched the net but  couldn't understand it. People seemed to be comparing it to APIs..
+[2018-06-01 01:53:10] <somers_> application binary interface
+[2018-06-01 01:53:19] <somers_> The API is you write to.  It's the stuff in /usr/include
+[2018-06-01 01:53:29] <somers_> But the ABI is how your compiled program talks to the kernel
+[2018-06-01 01:54:26] <somers_> It's the 32-bit compatibility syscalls, plus the 32-bit compatibility libraries, that allow x86 programs to run on an amd64 kernel
+[2018-06-01 01:55:04] <somers_> Also, don't forget the backwards compatibility syscalls, like freebsd10_pipe(2)
+[2018-06-01 01:59:44] <aniketp> Sure, will have a thorough look at these. But I'm supposed to test their audit, right? I don't think that there are any major groups of syscalls (auditable) defined here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c @somers_ 
