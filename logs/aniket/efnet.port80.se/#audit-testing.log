@@ -1956,3 +1956,22 @@
 [2018-06-01 12:05:25] <somers_> Here's an audit escape for you: fsync(2) is auditted in the fm class, but aio_fsync(2) isn't auditted at all.
 [2018-06-01 12:05:35] <somers_> those two should both be in the same class
 [2018-06-01 12:06:22] <somers_> Ditto with aio_mlock
+[2018-06-01 16:09:06] <aniketp> Yeah, AUE_AIO_MLOCK and AUE_AIO_SYNC are not even present in the "ar_event" switch case in audit_bsm.c 
+[2018-06-01 16:10:20] <aniketp> That is what I was referring to earlier, even though there are more than 500 syscalls in init_sysent.c, very few have actually been converted to audit events @somers_  
+[2018-06-01 16:11:00] <somers_> Some of them seem to be intentionally not auditted.  I don't think aio_sync is among those.
+[2018-06-01 16:11:16] <aniketp> Why would that be @somers_ ?
+[2018-06-01 16:12:37] <somers_> Many syscalls use AUE_NULL as their audit events
+[2018-06-01 16:12:54] <somers_> aio_fsync has an audit event: AUE_AIO_FSYNC.  But that event isn't defined in audit_events
+[2018-06-01 16:13:03] <aniketp> Is there something about asynchronous I/O that does not make them worthy of being audited.
+[2018-06-01 16:13:03] <aniketp> I guess there is a possibility that many more such syscalls can be converted to audit events. They could not be just because there are so many of them
+[2018-06-01 16:13:45] <somers_> Nope.  aio_fsync is just like fsync.  If one is auditted then so should the other.  aio_error and aio_return are different, though.  Those aren't worth auditting.
+[2018-06-01 16:26:27] <aniketp> Btw @somers_, I wasn't able to get revoke(2) to be audited in success mode. I tried looking up at how to create a pseudo terminal and it looked like a syscall, posix_prompt(2) does it. Would that be the right way to audit it?
+[2018-06-01 16:26:27] <aniketp> Although, I'm still not sure how I'd proceed after that
+[2018-06-01 16:27:09] <aniketp> SOrry posix_openpt(2)
+[2018-06-01 16:27:45] <somers_> That, or openpty
+[2018-06-01 17:35:53] <aniketp> @somers_, rename(2) and renameat(2) are in both file-create and file-delete. So no need to test them in file-delete too, right?
+[2018-06-01 17:36:34] <aniketp> That brings the total number of tests in file-delete to 6 (if excluding rename(2))
+[2018-06-01 17:41:12] <aniketp> Although I think it wouldn't hurt to test it at one more place if it matters in both file-create and file-delete
+[2018-06-01 17:41:36] <aniketp> @somers_: https://reviews.freebsd.org/D15647  {open(2) is also in this audit class}
+[2018-06-01 17:46:15] <somers_> I just remembered one thing: Kyua can run tests in parallel (though by default it doesn't).  Some tests use global resources, and would get screwed up if multiple test cases run in parallel
+[2018-06-01 17:46:33] <somers_> auditd is a global resource, so you need to mark all of your tests as exclusive, so they don't run in parallel
