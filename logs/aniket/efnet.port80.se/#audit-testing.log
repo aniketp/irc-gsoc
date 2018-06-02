@@ -1988,3 +1988,4 @@
 [2018-06-01 21:53:36] <somers_> Yes.  Close it just like any other file descriptor.
 [2018-06-01 21:55:58] <aniketp> Okay. Also I forgot one thing, in syscalls like ftruncate(2) for example, I forgot to close the file-descriptor too
 [2018-06-01 21:56:25] <aniketp> I guess I'll update that in the next revision
+[2018-06-01 22:44:30] <aniketp> @somers_ Here's the file-close test program: https://reviews.freebsd.org/D15650
