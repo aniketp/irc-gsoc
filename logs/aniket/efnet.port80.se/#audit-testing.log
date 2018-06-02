@@ -1989,3 +1989,20 @@
 [2018-06-01 21:55:58] <aniketp> Okay. Also I forgot one thing, in syscalls like ftruncate(2) for example, I forgot to close the file-descriptor too
 [2018-06-01 21:56:25] <aniketp> I guess I'll update that in the next revision
 [2018-06-01 22:44:30] <aniketp> @somers_ Here's the file-close test program: https://reviews.freebsd.org/D15650
+[2018-06-02 14:30:39] <aniketp> Hi @somers_, did you have a look at the latest differential?
+[2018-06-02 15:05:21] <aniketp> @somers_, fc was file-create, which was the first differential
+[2018-06-02 15:05:37] <aniketp> File close is cl
+[2018-06-02 15:08:53] <somers_> ok
+[2018-06-02 15:39:57] <aniketp> Also, @somers_, I tried auditing closefrom(2) but it looked like it was being audited as close(2). Although I'll try auditing it using syscall(2) [Just like I did for open(2)]
+[2018-06-02 15:47:02] <aniketp> Wait, it did!. I might have done something wrong earlier. I'll add the tests
+[2018-06-02 15:47:02] <aniketp> Also, @somers_, I didn't understand what you meant about no magic numbers, I had to give snprintf() a fixed length so I randomly chose one. Woudl you suggest something else? 
+[2018-06-02 15:47:40] <somers_> Yeah, but you hardcoded "60" or someplaces "80" in the snprintf call.  That's a no-no.  Better to use sizeof(destination).
+[2018-06-02 15:48:35] <aniketp> Okay, will do that
+[2018-06-02 15:50:13] <aniketp> Also, about malloc(2), I had to do something to initialize the ptyname pointer. So I thought about assigning it a byte of memory otherwise the compiler keeps complaining, @somers_ 
+[2018-06-02 15:50:39] <somers_> Yeah, the compiler was complaining because you were writing to uninitialized memory.
+[2018-06-02 15:50:56] <somers_> You still are, because you're only mallocing 1 byte, but openpty is doubtlessly writing more than that.
+[2018-06-02 15:55:24] <aniketp> So @somers_ you mean I should allocate enough memory so that openpty(3) doesn't overflow?
+[2018-06-02 15:55:24] <aniketp> Also, any way I can test failure mode of closefrom(2)? It looks like passing even the negative integers or the "SIZE_MAX" returns success.
+[2018-06-02 15:55:41] <aniketp> How much memory should be enough?
+[2018-06-02 15:55:58] <somers_> closefrom returns a void, which means it can never fail
+[2018-06-02 15:56:30] <somers_> openpty's man page doesn't say, so you'll have to figure it out.
