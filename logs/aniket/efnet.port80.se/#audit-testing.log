@@ -2006,3 +2006,27 @@
 [2018-06-02 15:55:41] <aniketp> How much memory should be enough?
 [2018-06-02 15:55:58] <somers_> closefrom returns a void, which means it can never fail
 [2018-06-02 15:56:30] <somers_> openpty's man page doesn't say, so you'll have to figure it out.
+[2018-06-02 16:10:58] <aniketp> @somers_ for the snprintf "size" parameter, can I declare a buffsize initially to be used everytime?  
+[2018-06-02 16:11:17] <aniketp> char extregex[BUFFSIZZE]
+[2018-06-02 16:11:35] <somers_> Yeah, but the best way is to use sizeof.  That way you can't get screwed if you later change the size of the dest.
+[2018-06-02 16:13:55] <aniketp> But I can't store the destination in a string first since some of it's elements are not yet known. 
+[2018-06-02 16:13:55] <aniketp> for ex, : "snprintf(extregex, 60, "closefrom.*0x%x.*return,success", filedesc);" Here, how'll I know the size of "closefrom.*0x%x.*return,success" when there is that hex format identifier in there
+[2018-06-02 16:14:27] <somers_> That's why you allocate sufficient space
+[2018-06-02 16:14:39] <somers_> You know what the maximum length of the "%0x" will be
+[2018-06-02 16:18:18] <aniketp> Okay, so I did it in this way, and it seemed to work. Will this be fine, @somers_ 
+[2018-06-02 16:18:18] <aniketp> 	int filedesc = 12;
+[2018-06-02 16:18:18] <aniketp> 	const char *regex = "closefrom.*0x%x.*return,success";
+[2018-06-02 16:18:18] <aniketp> 	snprintf(extregex, sizeof(regex), regex, filedesc);
+[2018-06-02 16:18:54] <somers_> NO!
+[2018-06-02 16:19:04] <somers_> Sorry, CAPSLOCK was on
+[2018-06-02 16:19:23] <somers_> The relevant size isn't the size of your format string, it's the size of your destination.  In this case, that's extregex.
+[2018-06-02 16:20:08] <aniketp> Oh, I see. Then It should be easy. Btw I thought "extregex" was source buffer, @somers_ 
+[2018-06-02 16:20:50] <somers_> How can it be the source buffer, if you haven't initialized it yet?
+[2018-06-02 16:22:05] <aniketp> Yeah, I got confused with the meanings 😃
+[2018-06-02 16:33:41] <aniketp> @somers_ I updated the diff, please have a look
+[2018-06-02 17:25:24] <aniketp> @somers_ what should I pass as the argument to closefrom(2)? That argument shows up in the audit record so I used a sample value of filedesc=12 to prepare the regex
+[2018-06-02 17:35:55] <aniketp> Ping @somers_ 
+[2018-06-02 17:49:48] <somers_> How do you know that you don't already have any file descriptors open that are above 12?  You don't.
+[2018-06-02 17:50:01] <somers_> You don't know how many files Kyua opened, for example.
+[2018-06-02 17:51:43] <aniketp> So shall I give it some really large number then? Else any other number would have the same consequences as 12, right @somers_ ?
+[2018-06-02 17:51:55] * somers_ (~somers@63-224-80-239.hlrn.qwest.net) quit Quit: Leaving
