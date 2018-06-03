@@ -2030,3 +2030,4 @@
 [2018-06-02 17:50:01] <somers_> You don't know how many files Kyua opened, for example.
 [2018-06-02 17:51:43] <aniketp> So shall I give it some really large number then? Else any other number would have the same consequences as 12, right @somers_ ?
 [2018-06-02 17:51:55] * somers_ (~somers@63-224-80-239.hlrn.qwest.net) quit Quit: Leaving
+[2018-06-03 21:40:45] * somers (~somers@2602:3f:e050:ef00:e23f:49ff:fe44:d7b6) join
