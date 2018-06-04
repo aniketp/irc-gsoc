@@ -2044,3 +2044,13 @@
 [2018-06-03 22:50:38] <aniketp> Like, I guess importing openbsm into FreeBSD src would definitely have required a make universe..
 [2018-06-03 22:50:49] <somers> It's really a judgement call.  As you gain experience, you'll get a feel for which changes are more likely to break the build
 [2018-06-03 23:03:43] <aniketp> Yeah, there are so many architectures defined here, https://github.com/freebsd/freebsd/blob/master/Makefile#L483
+[2018-06-04 17:41:13] <aniketp> Hi @somers, shouldn't we use MACROS to generate tests when it's possible that more can be added in the future? But for open.c test program there isn't any more condition left..
+[2018-06-04 17:42:34] <somers> I think they'll make it more maintaintable.  What happens if you need to make a change that affects every test case?  There's a jillion places you would need to modify
+[2018-06-04 17:47:33] <aniketp> Although I like the idea here, https://github.com/freebsd/freebsd/blob/master/libexec/tftpd/tests/functional.c#L217. You've shortened test-cases definitions by generating IPv4 and IPv6 for every test case. I'll have to think how I can do that with open(2). Maybe generating the combinations of opening modes.. 
+[2018-06-04 17:48:15] <somers> You could probably generate the success and failure tests from a single macro invocation
+[2018-06-04 17:48:39] <somers> And it would probably be much shorter than the current test case boilerplate
+[2018-06-04 17:48:51] <aniketp> But they take completely different set of arguments. i.e both success and failure modes
+[2018-06-04 17:49:33] <aniketp> No, just the path is different. Yes I think it can be done. I'll try
+[2018-06-04 17:52:25] <aniketp> Btw @somers, couldn't this have been a normal function? https://github.com/freebsd/freebsd/blob/master/libexec/tftpd/tests/functional.c#L64
+[2018-06-04 17:55:49] <somers> If it were a normal function, it couldn't do sizeof(hdr)
+[2018-06-04 17:55:58] <somers> There might be other reasons too; I don't remember exactly.
