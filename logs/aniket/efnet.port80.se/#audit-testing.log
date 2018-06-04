@@ -2062,3 +2062,6 @@
 [2018-06-04 19:19:19] <aniketp> Not sure how to check each test case's description, though
 [2018-06-04 19:56:42] * somers (~somers@2602:3f:e050:ef00:e23f:49ff:fe44:d7b6) quit Remote host closed the connection
 [2018-06-04 19:56:50] * somers (~somers@2602:3f:e050:ef00:e23f:49ff:fe44:d7b6) join
+[2018-06-04 21:33:13] <aniketp> @somers I tried creating a macro for all tests of a particular opening flag here: https://pastebin.com/QejR9rQR. But was facing some issues
+[2018-06-04 21:33:13] <aniketp> The tests compile but passing in any other flag apart from O_RDONLY, resulted in no test case being created. Also some tests don't behave as expected as well
+[2018-06-04 21:38:58] <somers> Sounds like you've still got some work to do, then
