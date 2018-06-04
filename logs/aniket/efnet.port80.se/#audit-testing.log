@@ -2031,3 +2031,16 @@
 [2018-06-02 17:51:43] <aniketp> So shall I give it some really large number then? Else any other number would have the same consequences as 12, right @somers_ ?
 [2018-06-02 17:51:55] * somers_ (~somers@63-224-80-239.hlrn.qwest.net) quit Quit: Leaving
 [2018-06-03 21:40:45] * somers (~somers@2602:3f:e050:ef00:e23f:49ff:fe44:d7b6) join
+[2018-06-03 22:34:17] <aniketp> Hi @somers, when will you commit D15650? I have the next batch ready for review 
+[2018-06-03 22:34:41] <somers> I'm build testing it now
+[2018-06-03 22:36:55] <aniketp> Okay, and for the test program concerned with open(2) and openat(2), I'll go forward with only "file-read" and "file-write" audit classes, as you said that randomizing the audit classes is not a good idea. So will that be fine? @somers 
+[2018-06-03 22:37:27] <somers> sure
+[2018-06-03 22:43:42] <aniketp> Btw @somers, how is the build testing done, is it through the "make universe" command?
+[2018-06-03 22:44:23] <somers> That's the most complete way to do it
+[2018-06-03 22:44:59] <somers> "make universe" builds world + kernel for every architecture.  It also builds quite a few specialty kernels for certain embedded systems.
+[2018-06-03 22:45:14] <somers> But for minor stuff like this, I take a shortcut and only build world for a few representative architectures
+[2018-06-03 22:45:22] <somers> 64-bit and 32-bit, clang and gcc, BE and LE
+[2018-06-03 22:49:50] <aniketp> Oh, so that is why you said earlier that "make universe" takes more than 8 or so hours on certain systems. So how frequent are such revisions which require the committer to do a "make universe", considering the amount of resource it can consume? @somers    
+[2018-06-03 22:50:38] <aniketp> Like, I guess importing openbsm into FreeBSD src would definitely have required a make universe..
+[2018-06-03 22:50:49] <somers> It's really a judgement call.  As you gain experience, you'll get a feel for which changes are more likely to break the build
+[2018-06-03 23:03:43] <aniketp> Yeah, there are so many architectures defined here, https://github.com/freebsd/freebsd/blob/master/Makefile#L483
