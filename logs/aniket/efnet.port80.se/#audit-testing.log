@@ -2065,3 +2065,9 @@
 [2018-06-04 21:33:13] <aniketp> @somers I tried creating a macro for all tests of a particular opening flag here: https://pastebin.com/QejR9rQR. But was facing some issues
 [2018-06-04 21:33:13] <aniketp> The tests compile but passing in any other flag apart from O_RDONLY, resulted in no test case being created. Also some tests don't behave as expected as well
 [2018-06-04 21:38:58] <somers> Sounds like you've still got some work to do, then
+[2018-06-04 22:12:24] <aniketp> @somers do I need to use O_WRONLY or can I simply use 0x0001 too? The later makes stuff easier
+[2018-06-04 22:14:45] <somers> No, definitely don't assume a specific value for those flags
+[2018-06-04 23:26:48] <aniketp> @somers Is there a way I can pass stringified "O_RDONLY" to the MACRO? I've been trying unsuccessfully for last hour
+[2018-06-04 23:28:09] <somers> Firstly, MACRO is not an acronym.  Secondly, macro expansion is purely textual.  You can stringify something within the macro if you like.
+[2018-06-04 23:31:00] <aniketp> But does it accept integers? I passed O_WRONLY as the argument and it didn't work. On the other hand, passing "0x0001" and then converting it into the integer before passing as flag worked. @somers 
+[2018-06-04 23:31:40] <somers> integer has nothing to do with it.  Macros are purely textual.
