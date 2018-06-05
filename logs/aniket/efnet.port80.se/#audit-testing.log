@@ -2071,3 +2071,9 @@
 [2018-06-04 23:28:09] <somers> Firstly, MACRO is not an acronym.  Secondly, macro expansion is purely textual.  You can stringify something within the macro if you like.
 [2018-06-04 23:31:00] <aniketp> But does it accept integers? I passed O_WRONLY as the argument and it didn't work. On the other hand, passing "0x0001" and then converting it into the integer before passing as flag worked. @somers 
 [2018-06-04 23:31:40] <somers> integer has nothing to do with it.  Macros are purely textual.
+[2018-06-05 01:06:31] <aniketp> Ping @somers, I'm not sure why it wasn't working earlier but this time I simply passed the flag, e.g "O_RDONLY | O_CREAT" without messing with strings or integers and it did work as expected. Please have a look at the updated diff
+[2018-06-05 01:07:53] <aniketp> Also, is it recommened that I mention something like, "Borrowed from /libexec/tftpd/tests/functional.c" since I kind of took idea from your macro declarations
+[2018-06-05 01:14:06] <somers> No need to credit the tftpd stuff
+[2018-06-05 01:22:09] <aniketp> @somers I thought about matching with the event specific regex for each test case. But I decided against it since I thought fileforaudit was already doing its job. (I questioned this decision in the earlier version but that implementation was no biggie so I just included extra regex). This would need additional arguments to be passed to the macro so I didn't do it. 
+[2018-06-05 01:22:09] <aniketp> However, if its recommended then I can add-back the regexes again, no issue
+[2018-06-05 01:22:42] <somers> It would certainly improve the test coverage
