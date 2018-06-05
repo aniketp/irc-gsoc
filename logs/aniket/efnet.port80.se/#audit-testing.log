@@ -2077,3 +2077,6 @@
 [2018-06-05 01:22:09] <aniketp> @somers I thought about matching with the event specific regex for each test case. But I decided against it since I thought fileforaudit was already doing its job. (I questioned this decision in the earlier version but that implementation was no biggie so I just included extra regex). This would need additional arguments to be passed to the macro so I didn't do it. 
 [2018-06-05 01:22:09] <aniketp> However, if its recommended then I can add-back the regexes again, no issue
 [2018-06-05 01:22:42] <somers> It would certainly improve the test coverage
+[2018-06-05 02:09:01] <aniketp> Also, @somers, after D15657, would it be right to create differential for execve(2), fexecve(2). Considering this is their success regex: "{f?}execve.*sample-argument.*Unknown error: 201"
+[2018-06-05 02:09:46] <aniketp> As we were getting unknown error on successful invocation of both
+[2018-06-05 02:31:49] <somers> Sure.  You can submit a change for them.
