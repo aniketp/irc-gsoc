@@ -2080,3 +2080,6 @@
 [2018-06-05 02:09:01] <aniketp> Also, @somers, after D15657, would it be right to create differential for execve(2), fexecve(2). Considering this is their success regex: "{f?}execve.*sample-argument.*Unknown error: 201"
 [2018-06-05 02:09:46] <aniketp> As we were getting unknown error on successful invocation of both
 [2018-06-05 02:31:49] <somers> Sure.  You can submit a change for them.
+[2018-06-05 18:33:12] <aniketp> Hi @somers, how should I display the flags in form of symbols? Replacing 0x%4x with simple %s does not even build the tests
+[2018-06-05 18:35:09] <aniketp> Would a "%d" format do?
+[2018-06-05 18:43:10] <somers> You need to stringify the argument
