@@ -2083,3 +2083,32 @@
 [2018-06-05 18:33:12] <aniketp> Hi @somers, how should I display the flags in form of symbols? Replacing 0x%4x with simple %s does not even build the tests
 [2018-06-05 18:35:09] <aniketp> Would a "%d" format do?
 [2018-06-05 18:43:10] <somers> You need to stringify the argument
+[2018-06-05 20:42:55] <aniketp> Btw @somers, can you please accept D15657 too? (Even though it has already been committed). I needed to mention that in my Project-Wiki. 
+[2018-06-05 20:43:16] <aniketp> It landed without being accepted
+[2018-06-05 20:43:31] <somers> oops, I forgot a step.  No worries, though.
+[2018-06-05 20:50:47] <aniketp> Okay. @somers here is the complete "ex" audit class https://reviews.freebsd.org/D15669 😃
+[2018-06-05 20:52:38] <somers> What's up with the double // notation?
+[2018-06-05 20:55:09] <aniketp> Which // ? In differential revisions?
+[2018-06-05 20:55:22] <somers> In the revision summary
+[2018-06-05 20:55:53] <aniketp> Oh, that is used for italicising the word @somers 
+[2018-06-05 20:56:58] <aniketp> @somers Here: https://secure.phabricator.com/book/phabricator/article/remarkup/#basic-styling
+[2018-06-05 21:05:46] <aniketp> Btw @asomers, how are you able to identify the presence of //? Isn't it processed by the phabricator first?
+[2018-06-05 21:05:53] <aniketp> @somers 
+[2018-06-05 21:06:53] <somers> I'm just looking at the email notification
+[2018-06-05 21:17:18] <aniketp> Btw @somers, while creating the differential via arcanist, it shows me a template to fill up the basic info but is not able to identify the repository, do I need to add some configs for that?
+[2018-06-05 21:19:10] <somers> what do you mean "not able to identify the repository"?  Is there an error message?
+[2018-06-05 21:22:07] <aniketp> No, not an error message but there is an option to specify "src", "port" or "docs" via the web interface. But no such option comes up while creating the diff via arcanist. It passes the "Linting" test but can't pass the "Unit tests" and shows a "Warning: No repository detected for this project"
+[2018-06-05 21:22:41] <somers> Are you using svn or git?
+[2018-06-05 21:22:52] <aniketp> I'm using the git fork
+[2018-06-05 21:22:55] <aniketp> @somers 
+[2018-06-05 21:23:11] <aniketp> A clone of my own fork of FreeBSD
+[2018-06-05 21:23:12] <somers> Then you'll have to debug arcanist on your own.  I use SVN.
+[2018-06-05 21:24:15] <aniketp> Okay. I think in the base .arcconfig in the git repository, I need to add a "repository.callsign" for it to work. I'll try that in the next revision
+[2018-06-05 21:24:33] <somers> The svn repo's .arcconfig file has no such field.
+[2018-06-05 21:25:23] <aniketp> Yeah, @somers. But here it shows how to detect the repository: https://secure.phabricator.com/book/phabricator/article/arcanist_new_project/#advanced-arcconfig
+[2018-06-05 21:25:58] <aniketp> I guess it's not configured cause FreeBSD has 3 repositories
+[2018-06-05 21:26:34] <aniketp> But since I'll only work with "src". I'll try to add it in my own clone to see if it works
+[2018-06-05 21:49:37] <aniketp> Btw @somers, why was the MFC after 2 weeks in every revision that I've created?
+[2018-06-05 21:49:47] <somers> personal preference
+[2018-06-05 21:50:48] <aniketp> Like I know it means "Merge From Current" (hopefully). But I couldn't understand it's literal meaning. What is being merged where?
+[2018-06-05 21:51:30] <somers> to stable/11
