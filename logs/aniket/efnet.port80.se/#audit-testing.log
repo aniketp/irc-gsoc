@@ -2116,3 +2116,6 @@
 [2018-06-06 00:05:55] <somers> I haven't read it yet
 [2018-06-06 00:07:49] <aniketp> Okay
 [2018-06-06 03:33:47] * aniketp (~aniketp41@159.65.149.37) join
+[2018-06-06 17:31:07] <aniketp> Hi @somers, by fixing the bug you meant setting the "ar_errno" for AUE_EXECVE as something equivalent to successful in the audit_bsm.c, right?
+[2018-06-06 17:31:07] <aniketp> But afaicu, it would require me to check that execve, succeded
+[2018-06-06 17:31:36] <somers> Yeah.
