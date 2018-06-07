@@ -2148,3 +2148,17 @@
 [2018-06-06 21:43:57] <aniketp> Hopefully that would work
 [2018-06-06 22:59:08] <aniketp> Hi @somers_, I had created a diff about the above issue, https://reviews.freebsd.org/D15681. Please have a look at it..
 [2018-06-06 23:03:24] <somers_> k
+[2018-06-07 00:08:29] * mpts_ (~mpts@boston-packets.hackerspace.pl) join
+[2018-06-07 00:08:40] * mpts (~mpts@boston-packets.hackerspace.pl) quit Ping timeout: 360 seconds
+[2018-06-07 00:17:05] <aniketp> Btw @somers_ what else could I use for a sure shot check whether execve(2) succeded? At that point in the code, I only have access to all tokens of the audit record.
+[2018-06-07 00:17:28] <somers_> Can you rule out that it failed?
+[2018-06-07 00:19:17] <aniketp> I observed that there wasn't anything deterministic in the audit record. 
+[2018-06-07 00:19:17] <aniketp> I can rule out that it failed in the test program. If the code beyond execve(2) executes then it obviously failed. if it didn't then it succeded.
+[2018-06-07 00:19:17] <aniketp> I mean if the new process overwrites the calling one then it obviously succeeded. But I can't think of a way to do that within the bsm_audit.c
+[2018-06-07 00:19:22] <aniketp> @somers_ 
+[2018-06-07 00:19:40] <somers_> I mean, can you rule out that it failed from within the kernel?
+[2018-06-07 00:23:34] <aniketp> @somers_ not sure if I understood you correctly, do you mean like checking its source code? 
+[2018-06-07 00:24:09] <somers_> Read the source.  Figure out what happens on failure.  If that doesn't happen, then the call must've been successful.
+[2018-06-07 00:24:56] <aniketp> Oh, so you mean check all the possible ERRNOs that can be returned (that are mentioned in the source) @somers_ 
+[2018-06-07 00:25:35] <somers_> something like that
+[2018-06-07 00:25:42] <aniketp> Okay will do that
