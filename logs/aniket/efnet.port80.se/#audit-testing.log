@@ -2146,3 +2146,5 @@
 [2018-06-06 21:40:23] <somers_> But be_bsm_errno is only set one place, in bsm_lookup_errno_bsm, and it's set from a u_char.  So it can't actually overflow.
 [2018-06-06 21:43:38] <aniketp> Okay, @somers_, but I found another workaround that does not involve me storing the return values. I'll create a revision just now
 [2018-06-06 21:43:57] <aniketp> Hopefully that would work
+[2018-06-06 22:59:08] <aniketp> Hi @somers_, I had created a diff about the above issue, https://reviews.freebsd.org/D15681. Please have a look at it..
+[2018-06-06 23:03:24] <somers_> k
