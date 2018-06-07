@@ -2166,3 +2166,5 @@
 [2018-06-07 02:17:17] <aniketp> So it doesn't look to me that return of execve() would ever mean anything apart from successful return if "Unknown error" shoes up. As all possible errnos are present in the list  
 [2018-06-07 02:17:36] <aniketp> *shows up
 [2018-06-07 03:17:11] <aniketp> Ping @somers_ 
+[2018-06-07 13:40:19] <somers_> Good.  But better yet would be if you used a sentinel value when exeve starts
+[2018-06-07 13:40:56] <somers_> You could set ar_errno to something that will never, ever get used as a real errno.  Then, when completing the audit record, the presence of that errno would indicate that execve was successful.
