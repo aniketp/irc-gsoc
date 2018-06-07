@@ -2162,3 +2162,7 @@
 [2018-06-07 00:24:56] <aniketp> Oh, so you mean check all the possible ERRNOs that can be returned (that are mentioned in the source) @somers_ 
 [2018-06-07 00:25:35] <somers_> something like that
 [2018-06-07 00:25:42] <aniketp> Okay will do that
+[2018-06-07 02:17:17] <aniketp> Hi @somers_, I had been looking at the code of kern_exec.c and tracked all the Errnos that were being returned from various functions. And verified that each one was present in the bsm_errno.c in sys/security/audit. But it was mentioned in the comment description (and from code flow) that do_execve() might never return.
+[2018-06-07 02:17:17] <aniketp> So it doesn't look to me that return of execve() would ever mean anything apart from successful return if "Unknown error" shoes up. As all possible errnos are present in the list  
+[2018-06-07 02:17:36] <aniketp> *shows up
+[2018-06-07 03:17:11] <aniketp> Ping @somers_ 
