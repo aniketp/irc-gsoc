@@ -2203,3 +2203,16 @@
 [2018-06-07 23:31:38] <aniketp> Hi @somers_, I think I figured out where all the big stuff happens. Within the same directory there is a source file audit_worker.c, where the function audit_worker() initializes the kernel audit structure "struct kaudit_record", and then it kind of waits for some records to show up in the global queue. If it finds some, transfers them to a local thread queue and processes them one by one. The processing is done by the function, "audit_worker_process_record(ar)" which takes the kernel record and calls our kaudit_to_bsm() function and then writes the obtained BSM form of the audit record to either trail files or auditpipe. 
 [2018-06-07 23:31:38] <aniketp> So I think I can check if "ar->kar.ar_event" (where struct kaudit_record *ar) is either AUE_EXECVE or AUE_FEXECVE, then set ar->kar.ar_errno = 0 in one of those functions in audit_worker.c
 [2018-06-07 23:32:45] <somers_> that sounds promising
+[2018-06-08 00:13:02] <aniketp> Btw @somers_ I had an issue with where exactly I should initialize the ar_errno and ar_retval. Here https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_worker.c#L440 , the kaudit_record pointer is created, but not initialized yet.
+[2018-06-08 00:13:02] <aniketp> It looks to me that in the two while() loops within that function, audit records are first extracted one by one out of the queue and inserted in the "ar_worklist", then in the second while loop, all records are processed and freed till "&worklist" is empty.
+[2018-06-08 00:13:02] <aniketp> So I couldn't find the best place to initialize the ar_errno. Would that be between the while loops, considering "ar" might have some space allocated to it by then?
+[2018-06-08 00:21:30] <aniketp> Or maybe we can allocate sufficient memory to "ar" but then again the question is how much exactly would be sufficient
+[2018-06-08 00:35:16] <aniketp> Ping @somers_ 
+[2018-06-08 00:37:21] <aniketp> I think at every step in the function, they are playing around with the pointers. Don't think there is a way to normally set the "ar_errno" to 0
+[2018-06-08 00:44:38] <somers_> No, I think you're way off.  audit_worker looks like it's responsible for sending complete audit records to userland.  Something else must be initializing them.
+[2018-06-08 01:04:24] <aniketp> Yeah, but it picks up the audit records from a global audit_q. There is an extern declaration of audit_q in audit_private.h and it is initialized in audit.c. I think that is where the records get initialized, I just need to find it @somers_  
+[2018-06-08 01:11:13] <aniketp> @somers_ here I think: https://github.com/freebsd/freebsd/blob/82974662ad9f9ece5f8374d2c898e83bd03aece9/sys/security/audit/audit.c#L244
+[2018-06-08 01:15:45] <aniketp> @somers_, would it make sense to initialize the ar_errno after this? 
+[2018-06-08 01:15:45] <aniketp> "ar->k_ar.ar_magic = AUDIT_RECORD_MAGIC;"
+[2018-06-08 01:52:44] <aniketp> Btw @rwatson, @somers_ should it not be 0x0000000000800000ULL here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_private.h#L278
+[2018-06-08 01:52:59] <aniketp> Instead of 0x0000000000400000ULL
