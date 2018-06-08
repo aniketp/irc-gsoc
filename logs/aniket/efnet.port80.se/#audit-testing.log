@@ -2247,3 +2247,9 @@
 [2018-06-08 03:28:50] <somers_> yep, sounds right
 [2018-06-08 03:31:56] <aniketp> And I think, I need to update the retval, else if "errno" is 0, retval is picked from here: https://github.com/freebsd/freebsd/blob/7c423a65c91bf1b002e8f1f6f0f8bfa9beefcc9c/sys/security/audit/audit.c#L694
 [2018-06-08 03:31:56] <aniketp> and we don't know what value might be there if execve(2) did not return. Better to set it to 0 as it would be updated by "returning" syscalls anyway
+[2018-06-08 04:36:29] <aniketp> Btw @somers_ is it worth creating atf-sh(3) test cases for checking the integrity of audit_control config file? Like the allowed values are set or not.
+[2018-06-08 04:36:29] <aniketp> And basic smoke tests for audit viewer applications like praudit(1) and auditreduce(1)?
+[2018-06-08 04:45:17] * somers_ (~somers@2602:3f:e050:ef00:e23f:49ff:fe44:d7b6) quit Remote host closed the connection
+[2018-06-08 04:47:15] * somers_ (~somers@63.224.80.239) join
+[2018-06-08 04:53:49] * somers (~somers@2602:3f:e050:ef00:e23f:49ff:fe44:d7b6) join
+[2018-06-08 04:54:52] * somers_ (~somers@63.224.80.239) quit hub.efnet.us hub.dk
