@@ -2216,3 +2216,34 @@
 [2018-06-08 01:15:45] <aniketp> "ar->k_ar.ar_magic = AUDIT_RECORD_MAGIC;"
 [2018-06-08 01:52:44] <aniketp> Btw @rwatson, @somers_ should it not be 0x0000000000800000ULL here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_private.h#L278
 [2018-06-08 01:52:59] <aniketp> Instead of 0x0000000000400000ULL
+[2018-06-08 03:04:28] <somers_> good catch!
+[2018-06-08 03:04:36] <somers_> Is that symbol used anywhere in userland?
+[2018-06-08 03:06:19] <aniketp> Yeah, here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c#L681
+[2018-06-08 03:06:38] <somers_> that's a kernel file
+[2018-06-08 03:07:08] <aniketp> Oh, yes. Haven't encountered it in Userspace yet
+[2018-06-08 03:07:41] <somers_> Because if it is part of the public API, then it can't be changed
+[2018-06-08 03:08:18] <aniketp> No, actually I guess there are only 3 instances of that arg (Using the inbuilt Github search)
+[2018-06-08 03:08:36] <somers_> Go ahead and open a bug.  Looks like it was introduced by r168688
+[2018-06-08 03:08:43] <aniketp> sys/security/audit/audit_arg.c
+[2018-06-08 03:08:43] <aniketp> sys/security/audit/audit_private.h
+[2018-06-08 03:08:43] <aniketp> sys/security/audit/audit_bsm.c
+[2018-06-08 03:11:32] <aniketp> @somers_ was it intentional? Naming it '4' instead of '8'?
+[2018-06-08 03:11:51] <somers_> No.  Looks like a copy/paste error.  Check r168688
+[2018-06-08 03:12:05] <aniketp> Yeah, I checked that, the review by csjp
+[2018-06-08 03:13:56] <aniketp> Okay will open the bug.
+[2018-06-08 03:13:56] <aniketp> Btw about ar_errno, I think it should be placed here: https://github.com/freebsd/freebsd/blob/7c423a65c91bf1b002e8f1f6f0f8bfa9beefcc9c/sys/security/audit/audit.c#L243
+[2018-06-08 03:14:11] <aniketp> @somers_, while constructing the audit record
+[2018-06-08 03:15:12] <aniketp> And I think we don't need to specify ar_retval as it is handled by the value of "error" here: https://github.com/freebsd/freebsd/blob/7c423a65c91bf1b002e8f1f6f0f8bfa9beefcc9c/sys/security/audit/audit.c#L691
+[2018-06-08 03:15:24] <somers_> When does that function get called relative to the start of a syscall?
+[2018-06-08 03:21:33] <aniketp> @somers_ its after the syscall. Basically, they receive a syscall via audit_syscall_enter(), use the syscall code to get the audit event, use the event to get its audit class, then decide if it is supposed to be audited or not. If so, then they call audit_new(), which allocates the "audit_record_zone" which creates the constructor and destructor by initializing basic values in the audit record.
+[2018-06-08 03:21:33] <aniketp> Then here the ar_event value is assigned: https://github.com/freebsd/freebsd/blob/7c423a65c91bf1b002e8f1f6f0f8bfa9beefcc9c/sys/security/audit/audit.c#L406
+[2018-06-08 03:21:42] <aniketp> rest of the process is normal
+[2018-06-08 03:22:07] <somers_> after the syscall exits?  After it begins?
+[2018-06-08 03:27:24] <aniketp> After it begins, before it exits
+[2018-06-08 03:27:24] <aniketp> After the exit of a syscall, this function "audit_syscall_exit" checks the return status, updates ar_errno and calls audit_commit() to commit the syscall along with the return status
+[2018-06-08 03:27:27] <aniketp> @somers_ 
+[2018-06-08 03:28:19] <aniketp> So, if execve(2) did not exit, or did not have any return status, it should leave the earlier ar_errno unchanges
+[2018-06-08 03:28:25] <aniketp> *unchanged
+[2018-06-08 03:28:50] <somers_> yep, sounds right
+[2018-06-08 03:31:56] <aniketp> And I think, I need to update the retval, else if "errno" is 0, retval is picked from here: https://github.com/freebsd/freebsd/blob/7c423a65c91bf1b002e8f1f6f0f8bfa9beefcc9c/sys/security/audit/audit.c#L694
+[2018-06-08 03:31:56] <aniketp> and we don't know what value might be there if execve(2) did not return. Better to set it to 0 as it would be updated by "returning" syscalls anyway
