@@ -2255,3 +2255,20 @@
 [2018-06-08 04:54:52] * somers_ (~somers@63.224.80.239) quit hub.efnet.us hub.dk
 [2018-06-08 15:22:38] <somers> tests for praudit and auditreduce would be great.  But I don't think we should be using ATF to sanity check /etc/security/audit_control.  Sysadmins can do with that as they like.  If it is to be sanity checked, then it should be sanity-checked at runtime by auditd(8)
 [2018-06-08 18:21:30] <aniketp> Okay, btw @somers, to check if the fix for execve(2) is legitimate, should I build the world again or would building the kernel do?
+[2018-06-08 20:07:58] <aniketp> @somers, I did a {build,install}kernel only and installworld without building the world initially. The changes did not take place as expected
+[2018-06-08 20:08:36] <aniketp> Would building the world make any difference?
+[2018-06-08 20:59:59] * somers (~somers@2602:3f:e050:ef00:e23f:49ff:fe44:d7b6) quit Ping timeout: 252 seconds
+[2018-06-08 21:06:46] * somers (~somers@63-224-80-22.hlrn.qwest.net) join
+[2018-06-08 21:07:08] <somers> No, building world shouldn't make a difference
+[2018-06-08 21:37:25] <aniketp> @somers, the "Unknown error" persists even on rebuilding the kernel
+[2018-06-08 21:42:10] <somers> then I guess you've got some more work to do
+[2018-06-08 21:45:40] <aniketp> Okay. 
+[2018-06-08 21:46:32] <aniketp> Meanwhile can we review the other test cases, e.g the ones in file-attribute-access/modify, network, IPC and ioctl?
+[2018-06-08 21:46:35] <aniketp> @somers_ 
+[2018-06-08 21:46:41] <aniketp> @somers 
+[2018-06-08 21:49:06] <somers> Yep
+[2018-06-08 21:56:44] <aniketp> Okay, also next time while trying to check if my change works or not, will this order by fine: "make -j kernel" > "reboot" > "mergemaster -p -U" > "make installworld" > "mergemaster -U" > "reboot"? @somers 
+[2018-06-08 21:57:15] <somers> -j takes an argument, and you don't need to installworld if you didn't build it.
+[2018-06-08 21:57:20] <somers> However, you _do_ need to installkernel
+[2018-06-08 21:57:52] <somers> So it's more like "make -j4 -DKERNFAST buildkernel; sudo make installkernel; sudo reboot"
+[2018-06-08 21:58:18] <somers> The KERNFAST part can only be used if you've recently had a successful build
