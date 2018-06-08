@@ -2193,3 +2193,13 @@
 [2018-06-07 21:53:21] <aniketp> But ar_errno is a member of "struct audit_record". How will that be transmitted across? I see that ar pointer is initialized here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c#L480
 [2018-06-07 21:53:30] <aniketp> @somers_ 
 [2018-06-07 21:54:09] <somers_> You will have to set ar_errno either when the audit record is constructed, or when execve starts
+[2018-06-07 22:01:37] <aniketp> So @somers_, am I not doing exactly that in D15681? Like, if there are no errors then set it to 0, in the switch case. Infact that function is basically intializing the BSM record so aren't we setting errno to 0 at the right place already?
+[2018-06-07 22:02:59] <somers_> No, it isn't initializing the audit record.  It's reading the audit record.  You need to figure out where ar_errno gets initialized
+[2018-06-07 22:03:36] <aniketp> Okay. It that part of the code would be in a different directory, right @somers_ ?
+[2018-06-07 22:03:59] <aniketp> I think maybe in contrib/openbsm maybe?
+[2018-06-07 22:04:40] <somers_> I don't know
+[2018-06-07 22:04:43] <somers_> Learn to use cscope
+[2018-06-07 22:33:10] <aniketp> Yeah I started using it yesterday when working on the execve(2)'s ar_errno issue. 😃. I'll try to figure out where audit record is initialized
+[2018-06-07 23:31:38] <aniketp> Hi @somers_, I think I figured out where all the big stuff happens. Within the same directory there is a source file audit_worker.c, where the function audit_worker() initializes the kernel audit structure "struct kaudit_record", and then it kind of waits for some records to show up in the global queue. If it finds some, transfers them to a local thread queue and processes them one by one. The processing is done by the function, "audit_worker_process_record(ar)" which takes the kernel record and calls our kaudit_to_bsm() function and then writes the obtained BSM form of the audit record to either trail files or auditpipe. 
+[2018-06-07 23:31:38] <aniketp> So I think I can check if "ar->kar.ar_event" (where struct kaudit_record *ar) is either AUE_EXECVE or AUE_FEXECVE, then set ar->kar.ar_errno = 0 in one of those functions in audit_worker.c
+[2018-06-07 23:32:45] <somers_> that sounds promising
