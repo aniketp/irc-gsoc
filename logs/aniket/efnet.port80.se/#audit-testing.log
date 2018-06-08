@@ -2254,3 +2254,4 @@
 [2018-06-08 04:53:49] * somers (~somers@2602:3f:e050:ef00:e23f:49ff:fe44:d7b6) join
 [2018-06-08 04:54:52] * somers_ (~somers@63.224.80.239) quit hub.efnet.us hub.dk
 [2018-06-08 15:22:38] <somers> tests for praudit and auditreduce would be great.  But I don't think we should be using ATF to sanity check /etc/security/audit_control.  Sysadmins can do with that as they like.  If it is to be sanity checked, then it should be sanity-checked at runtime by auditd(8)
+[2018-06-08 18:21:30] <aniketp> Okay, btw @somers, to check if the fix for execve(2) is legitimate, should I build the world again or would building the kernel do?
