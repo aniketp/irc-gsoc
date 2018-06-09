@@ -2314,3 +2314,7 @@
 [2018-06-09 15:09:38] <aniketp> I created a function which does the lookup of "bsm_errnos" if successful returns 0 else 1. So on invoking this function from the switch case statement, I got 0. Which means the lookup didn't fail.
 [2018-06-09 15:09:38] <aniketp> Also, to see which errno is matching, I passed ar_errno to ar_retval and in the audit record I got "return,success,4294967294" which is "-2"
 [2018-06-09 15:10:20] <aniketp> Now how come the lookup is successful while it's value is not a positive integer is kind of confusing
+[2018-06-09 20:00:57] <aniketp> Ping @somers, did you have a look at the D15709, about fa audit class?
+[2018-06-09 21:35:37] <somers> not yet
+[2018-06-09 21:36:41] <aniketp> Okay. Btw about execve(2). There is a whole lot of mystery that I need to figure out. It didn't work as expected when I added the errno lookup condition. 
+[2018-06-09 21:37:08] <aniketp> Also, its returning an errno whose value is -2 :/
