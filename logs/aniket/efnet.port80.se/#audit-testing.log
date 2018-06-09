@@ -2309,3 +2309,4 @@
 [2018-06-08 23:51:38] <somers> So sa->callp->sy_call returns this unknown errno in the case of exeve?
 [2018-06-08 23:59:03] <aniketp> No, @somers, I don't think it returns anything. The "Unknown error" is probably due to the  BSM_UNKNOWN_ERRNO when it doesn't match anything in the table
 [2018-06-08 23:59:38] <somers> It must return something, or else never return.
+[2018-06-09 02:14:50] * aniketp (~aniketp41@159.65.149.37) join
