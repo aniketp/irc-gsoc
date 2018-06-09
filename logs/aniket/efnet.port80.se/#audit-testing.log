@@ -2272,3 +2272,40 @@
 [2018-06-08 21:57:20] <somers> However, you _do_ need to installkernel
 [2018-06-08 21:57:52] <somers> So it's more like "make -j4 -DKERNFAST buildkernel; sudo make installkernel; sudo reboot"
 [2018-06-08 21:58:18] <somers> The KERNFAST part can only be used if you've recently had a successful build
+[2018-06-08 22:18:13] <aniketp> Yeah, by make -j kernel I meant: make -j4 buildkernel installkernel. 
+[2018-06-08 22:18:13] <aniketp> Now I accidentally rebuilt the world and it's consuming so much of my main machine's CPU and ram. Now I'll have to wait till it finishes
+[2018-06-08 22:25:24] <aniketp> Also, @somers, to test auditreduce(1) and praudit(1) I'll need to have a trail file. So would it be right to have an "input" sample audit-trail in the same directory and access it using "atf_get_srcdir"
+[2018-06-08 22:25:49] <somers> Yep.
+[2018-06-08 22:25:57] <somers> But let's get all the syscalls covered before we move onto that.
+[2018-06-08 22:26:06] <aniketp> Okay
+[2018-06-08 22:57:09] <aniketp> Btw @somers, have a look: header,123,11,execve(2),0,Fri Jun  8 22:56:49 2018, + 154 msec,exec arg,wc,-l,path,/usr/bin/wc,attribute,555,root,0,77,828753,1832032,subject,root,root,0,root,0,1305,1183,53078,10.0.2.2,return,success,0,trailer,123,
+[2018-06-08 23:00:07] <somers> nice!
+[2018-06-08 23:00:30] <aniketp> No it didn't work actually :P
+[2018-06-08 23:01:46] <aniketp> Since the build time was quite fast so I just played around with the audit_commit() function to debug the issue. Just to check if my build was actually working.
+[2018-06-08 23:01:46] <aniketp> I made it so that no record would ever fail 
+[2018-06-08 23:10:01] <aniketp> @somers I tried setting ar_errno at various places and none of them work correctly. I think the issue is with audit_syscall_exit(). When it doesn't get any return value it simply passes "error".
+[2018-06-08 23:10:38] <aniketp> For _exit() they have explicitely set the return value to 0 here: https://github.com/freebsd/freebsd/blob/a8cb340144294b1db646271aba2923d36245b030/sys/kern/kern_exit.c#L311
+[2018-06-08 23:11:57] <aniketp> Or maybe an expect_fail() would be a better thing to do since the feature with _exit() has not been implemented for execve() too
+[2018-06-08 23:11:59] <somers> Well, can you prove that there's no other way to get no return value besides a successful call to one of the exec syscalls?
+[2018-06-08 23:15:14] <aniketp> Yes, of all the errnos that were being returned in the sys_execve() of "kern_exec.c", none were absent in the errno lookup table. Suggesting that if the lookup failed then nothing was returned actually.
+[2018-06-08 23:15:14] <aniketp> Also, by common intuition. A general "ex" audit class shows "Unknown Error" almost everytime I type any command in the shell. Now if all of them failed then I can't see how the system works without execve(2) ever executing successfully 
+[2018-06-08 23:15:17] <aniketp> @somers 
+[2018-06-08 23:16:32] <aniketp> I guess the very first update of the D15681 should actually work
+[2018-06-08 23:16:37] <aniketp> I'll try that out now
+[2018-06-08 23:18:15] <somers> It's not enough to see that sys_execve never sets the unknown errno.  You have to know that there are no other code paths, including from other syscalls, that lead to audit_syscall_exit not getting no return value
+[2018-06-08 23:20:49] <aniketp> But @somers, why do I need to check other syscall codes for execve(2). Isn't only the source code for execve relevant here
+[2018-06-08 23:21:21] <somers> It's whatever code paths lead to the place where you infer a successful exit status
+[2018-06-08 23:27:19] <aniketp> But @somers, even if the exit condition due to some other syscall was successful, it wouldn't change the errno since we're basically setting it to 0 for execve(2) if it returned nothing  
+[2018-06-08 23:28:47] <somers> I'm asking you to prove that, at the place where you infer that the syscall was a successful execve, there's no other code path that could've resulted in an unknown return status
+[2018-06-08 23:34:11] <aniketp> Right, so I'm inferring the successful execution of execve(2) at the audit_bsm.c switch case event where "case AUE_EXECVE" eliminates every other possibility of returning Unknwon Error apart from the case when ar_event = AUE_EXECVE. And since we know that execve(2) never returns any unknown errnos, we can say that if the unknown errno was returned for AUE_EXECVE, it was due to no return status. @somers  
+[2018-06-08 23:36:13] <somers> And do you know that nothing other than sys_execve will ever set AUE_EXECVE ?
+[2018-06-08 23:39:24] <aniketp> Like, "sys_execve" calls other functions within kern_exec.c which all can set AUE_EXECVE (In fact, the issue of execve(2) not returning anything is due to do_execve() function). But I checked that all the functions invoked by sys_execve() return a bunch of errnos which were already present in the errno list 
+[2018-06-08 23:39:27] <aniketp> @somers 
+[2018-06-08 23:45:43] <somers> Ok.  And how is the return value communicated to audit_syscall_exit?  Through a variable that's always defined, or does something have to add a return value token to the audit trail?
+[2018-06-08 23:50:06] <aniketp> I think here it is done: https://github.com/freebsd/freebsd/blob/a38d172e9526735ba5eac479800255054be078de/sys/kern/subr_syscall.c#L135
+[2018-06-08 23:51:20] <aniketp> But I'm not sure what this piece of code means: "error = (sa->callp->sy_call)(td, sa->args);"
+[2018-06-08 23:51:20] <aniketp> It looks to me that it's extracting the return status of every syscall and passing it to AUDIT_SYSCALL_EXIT(error, td)
+[2018-06-08 23:51:23] <aniketp> @somers 
+[2018-06-08 23:51:38] <somers> So sa->callp->sy_call returns this unknown errno in the case of exeve?
+[2018-06-08 23:59:03] <aniketp> No, @somers, I don't think it returns anything. The "Unknown error" is probably due to the  BSM_UNKNOWN_ERRNO when it doesn't match anything in the table
+[2018-06-08 23:59:38] <somers> It must return something, or else never return.
