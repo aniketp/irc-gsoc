@@ -2318,3 +2318,7 @@
 [2018-06-09 21:35:37] <somers> not yet
 [2018-06-09 21:36:41] <aniketp> Okay. Btw about execve(2). There is a whole lot of mystery that I need to figure out. It didn't work as expected when I added the errno lookup condition. 
 [2018-06-09 21:37:08] <aniketp> Also, its returning an errno whose value is -2 :/
+[2018-06-10 07:24:21] * somers (~somers@63-224-80-22.hlrn.qwest.net) quit Read error: Connection reset by peer
+[2018-06-10 07:25:39] * somers (~somers@63.224.80.22) join
+[2018-06-10 07:39:15] * somers (~somers@63.224.80.22) quit Read error: Connection reset by peer
+[2018-06-10 07:41:57] * somers (~somers@63-224-80-22.hlrn.qwest.net) join
