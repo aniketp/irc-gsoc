@@ -2322,3 +2322,7 @@
 [2018-06-10 07:25:39] * somers (~somers@63.224.80.22) join
 [2018-06-10 07:39:15] * somers (~somers@63.224.80.22) quit Read error: Connection reset by peer
 [2018-06-10 07:41:57] * somers (~somers@63-224-80-22.hlrn.qwest.net) join
+[2018-06-10 16:14:38] <aniketp> Hi @somers, is there a specific name for the master branch of FreeBSD src tree? Like, can be called something related to 12-CURRENT?
+[2018-06-10 16:17:05] <somers> you can call it head, or 12-CURRENT, or just CURRENT
+[2018-06-10 16:52:55] <aniketp> @somers I was thinking of adding them in batches so that it will be easier for reviewing. There are about 30 system calls in this class
+[2018-06-10 16:53:44] <aniketp> Sorry 25
