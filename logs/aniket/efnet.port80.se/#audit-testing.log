@@ -2328,3 +2328,24 @@
 [2018-06-10 16:53:44] <aniketp> Sorry 25
 [2018-06-10 18:32:44] <aniketp> Ping @somers 
 [2018-06-10 19:29:46] <somers> yeah, that's fine
+[2018-06-10 20:31:29] <aniketp> Btw @somers I was having trouble with the test-case for praudit(1). Kyua always says that the exit status is not 0 for what looks like a legitimate command:
+[2018-06-10 20:31:29] <aniketp> "atf_check -s exit:0 -o ignore praudit -r $(atf_get_srcdir)/trail"
+[2018-06-10 20:31:29] <aniketp> Executing command [ praudit -r /root/test/./trail ]
+[2018-06-10 20:31:29] <aniketp> Fail: incorrect exit status: 1, expected: 0
+[2018-06-10 20:31:29] <aniketp> stdout:
+[2018-06-10 20:31:29] <aniketp> 20,56,11,45000,0,1528649207,241
+[2018-06-10 20:31:29] <aniketp> 40,auditd::Audit startup
+[2018-06-10 20:31:29] <aniketp> 39,0,0
+[2018-06-10 20:31:29] <aniketp> 19,56
+[2018-06-10 20:32:02] <aniketp> Is there something wrong with my approach. I've tried variations but none of the praudit command success
+[2018-06-10 20:32:08] <aniketp> *succeed
+[2018-06-10 20:33:08] <aniketp> While changing it to exit:1 passes the test...
+[2018-06-10 20:44:30] <aniketp> Hmm, on independent analysis. It looks like every praudit command is returning 1 as an exit status:
+[2018-06-10 20:44:30] <aniketp> praudit -l trail > /dev/null; echo $? 
+[2018-06-10 20:44:30] <aniketp> 1
+[2018-06-10 21:13:40] <aniketp> Ping @somers, I created the diff from a separate branch. Did you try to apply the patch after one of my earlier unmerged diffs?
+[2018-06-10 21:17:56] <somers> Oh, my bad.  I didn't "svn up" first
+[2018-06-10 21:18:11] <somers> I forgot that my WC was out of date because I had last committed from a different machine
+[2018-06-10 21:31:22] <aniketp> Hi @somers, I created a test-program for "praudit" and placed it in "usr.sbin/praudit" . The tests were passing
+[2018-06-10 21:31:22] <aniketp> https://github.com/aniketp/AuditTestSuite/tree/master/praudit
+[2018-06-10 21:55:27] * somers_ (~somers@63-224-80-238.hlrn.qwest.net) join
