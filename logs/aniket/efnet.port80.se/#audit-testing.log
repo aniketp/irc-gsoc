@@ -2349,3 +2349,21 @@
 [2018-06-10 21:31:22] <aniketp> Hi @somers, I created a test-program for "praudit" and placed it in "usr.sbin/praudit" . The tests were passing
 [2018-06-10 21:31:22] <aniketp> https://github.com/aniketp/AuditTestSuite/tree/master/praudit
 [2018-06-10 21:55:27] * somers_ (~somers@63-224-80-238.hlrn.qwest.net) join
+[2018-06-10 22:02:05] * somers (~somers@63-224-80-22.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-06-10 22:58:42] <aniketp> Hi @somers, shall I also create an independent revision for praudit(1)? There is just one test case with several atf_check statements
+[2018-06-10 22:58:46] <aniketp> @somers_ 
+[2018-06-10 22:59:46] <somers_> Yeah, go ahead and create a revision for it
+[2018-06-10 23:00:25] <aniketp> Okay. Btw I've added the next 3 syscalls, @somers_ 
+[2018-06-10 23:11:21] <aniketp> Btw @somers_, when I try to do "make install" from usr.sbin/praudit/tests (to install the tests in /usr/tests) I get:
+[2018-06-10 23:11:21] <aniketp>  "install: /usr/tests/usr.sbin/praudit/praudit_test: No such file or directory"
+[2018-06-10 23:11:21] <aniketp> Even though I did register that directory within etc/mtree/BSD.tests.dist 
+[2018-06-10 23:12:01] <somers_> "make install" doesn't create directories.  You need to either do it manually, or do a full installworld
+[2018-06-10 23:12:47] <aniketp> Okay, I did create it myself manually. I just wondered if this was supposed to happen. But I guess installworld does it so no issues
+[2018-06-10 23:47:29] <aniketp> Btw @somers_, exit status of 1 is not a successful return right?
+[2018-06-10 23:47:40] <somers_> correct
+[2018-06-10 23:48:09] <aniketp> Well, I had a look at the source code of praudit(2). It looks like it never returns 0: https://github.com/openbsm/openbsm/blob/master/bin/praudit/praudit.c#L248
+[2018-06-10 23:48:15] <aniketp> *praudit(1)
+[2018-06-10 23:48:18] <aniketp> @somers_ 
+[2018-06-10 23:48:47] <somers_> That sounds dumb.  Can you do some SVN archaeology to figure out why?
+[2018-06-10 23:49:32] * mpts_ nick mpts
+[2018-06-10 23:51:49] <aniketp> @somers_ the whole file was introduced at once. And the return value was never touched again, according to this git blame: https://github.com/openbsm/openbsm/commit/8297e0f04c3c421101040a77f4e89e3bed359f13#diff-d242c6d00428020d2da7131ea1d5a625R161
