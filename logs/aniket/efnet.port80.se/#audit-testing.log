@@ -2376,3 +2376,9 @@
 [2018-06-11 02:02:05] * somers_ (~somers@63-224-80-238.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-06-11 08:21:29] * mpts_ (~mpts@boston-packets.hackerspace.pl) join
 [2018-06-11 08:26:48] * mpts (~mpts@boston-packets.hackerspace.pl) quit se.hub efnet.portlane.se
+[2018-06-11 10:35:46] <aniketp> @somers__, praudit -p option doesn't seem to be too useful for this case. It simply prints the last few audit records in a trail. And for the sample trail that I have in the test program directory, it doesn't change anything
+[2018-06-11 10:45:01] <aniketp> Also, @somers__ for auditreduce(2), since it basically selects certain records from audit trails, to actually see any difference in the output, I'll have to have sufficiently large audit trail which has events from multiple users, processes, different dates etc according to the specific command line arguments.
+[2018-06-11 10:45:01] <aniketp> So regarding that would it be better if I use the same audit trail as the one I've used for praudit(1). Although note that, the output will be same since I'm selecting a record from a trail which only contains that particular record
+[2018-06-11 10:45:13] <aniketp> *auditreduce(1)
+[2018-06-11 11:11:13] <aniketp> Also @somers__, it looks like the "-c" functionality has not been implemented for auditreduce(1): https://github.com/openbsm/openbsm/blob/master/bin/auditreduce/auditreduce.c#L664
+[2018-06-11 11:12:08] <aniketp> It does print the exception case for "incorrect flag" but nothing is output on correct flag, unlike what man-page says
