@@ -2382,3 +2382,5 @@
 [2018-06-11 10:45:13] <aniketp> *auditreduce(1)
 [2018-06-11 11:11:13] <aniketp> Also @somers__, it looks like the "-c" functionality has not been implemented for auditreduce(1): https://github.com/openbsm/openbsm/blob/master/bin/auditreduce/auditreduce.c#L664
 [2018-06-11 11:12:08] <aniketp> It does print the exception case for "incorrect flag" but nothing is output on correct flag, unlike what man-page says
+[2018-06-11 13:21:42] <somers__> If the behavior doesn't match the man page, then that's a bug
+[2018-06-11 13:47:59] <aniketp> Sure, and about the -p option? @somers__ 
