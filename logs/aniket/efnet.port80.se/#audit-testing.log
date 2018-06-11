@@ -2373,3 +2373,4 @@
 [2018-06-11 00:27:35] <aniketp> Okay It worked! I simply did a "make && make install" from usr.sbin/praudit/ 
 [2018-06-11 00:27:52] <aniketp> I'll add a new revision and update the tests for praudit @somers_ 
 [2018-06-11 01:54:30] * somers__ (~somers@63.224.80.201) join
+[2018-06-11 02:02:05] * somers_ (~somers@63-224-80-238.hlrn.qwest.net) quit Read error: Operation timed out
