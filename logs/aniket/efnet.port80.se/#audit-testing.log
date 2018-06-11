@@ -2386,3 +2386,9 @@
 [2018-06-11 13:47:59] <aniketp> Sure, and about the -p option? @somers__ 
 [2018-06-11 14:16:32] <somers__> It would be good to test that.
 [2018-06-11 14:16:48] <somers__> Perhaps it makes a difference if the input file begins with an incomplete record?
+[2018-06-11 17:34:18] <mpts_> aniketp: actually, you may take a look at the old perforce repositories
+[2018-06-11 17:34:29] <mpts_> there are commit histories for openbsm repos
+[2018-06-11 17:34:44] <mpts_> trustedbsd: https://p4web.freebsd.org/@md=d&cd=//depot/projects/trustedbsd/openbsm/bin/auditdistd/&c=QJt@//depot/projects/trustedbsd/openbsm/?ac=83
+[2018-06-11 17:34:55] <mpts_> pjd: https://p4web.freebsd.org/@md=d&cd=//depot/projects/trustedbsd/openbsm/bin/auditdistd/&c=ngV@//depot/user/pjd/openbsm/?ac=83
+[2018-06-11 17:35:08] <mpts_> maybe you can find something interesting there ;)
+[2018-06-11 17:36:12] * mpts_ nick mpts
