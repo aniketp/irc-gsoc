@@ -2384,3 +2384,5 @@
 [2018-06-11 11:12:08] <aniketp> It does print the exception case for "incorrect flag" but nothing is output on correct flag, unlike what man-page says
 [2018-06-11 13:21:42] <somers__> If the behavior doesn't match the man page, then that's a bug
 [2018-06-11 13:47:59] <aniketp> Sure, and about the -p option? @somers__ 
+[2018-06-11 14:16:32] <somers__> It would be good to test that.
+[2018-06-11 14:16:48] <somers__> Perhaps it makes a difference if the input file begins with an incomplete record?
