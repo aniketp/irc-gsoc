@@ -2405,3 +2405,11 @@
 [2018-06-11 23:13:56] * somers__ (~somers@63.224.80.201) quit Read error: Operation timed out
 [2018-06-12 14:31:47] <aniketp> Hi @somers_, when will D15750 be landed?
 [2018-06-12 14:32:34] <somers_> After I review it again
+[2018-06-12 16:57:42] * rwatson (robert@fledge.watson.org) quit Read error: No route to host
+[2018-06-12 17:08:00] <aniketp> @somers_ in the report I guess all those open(2) statements are causing the issue since I did not close their file descriptor. Actually I did not need any file-descriptor for many tests so might have forgotten to close them
+[2018-06-12 17:09:06] <aniketp> Yup, it looks like they are all unclosed file descriptors
+[2018-06-12 17:09:09] <somers_> yep.  you have to close them
+[2018-06-12 17:10:38] <aniketp> Okay, Btw how critical are these issues? Like, how sooner should they be fixed. I was actually involved with something so might not be able to look at them for another hour or two. @somers_ 
+[2018-06-12 17:10:52] <somers_> Oh, that's fine
+[2018-06-12 17:10:58] <somers_> they're not critical at all.
+[2018-06-12 17:22:21] * rwatson (robert@fledge.watson.org) join
