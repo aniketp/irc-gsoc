@@ -2392,3 +2392,14 @@
 [2018-06-11 17:34:55] <mpts_> pjd: https://p4web.freebsd.org/@md=d&cd=//depot/projects/trustedbsd/openbsm/bin/auditdistd/&c=ngV@//depot/user/pjd/openbsm/?ac=83
 [2018-06-11 17:35:08] <mpts_> maybe you can find something interesting there ;)
 [2018-06-11 17:36:12] * mpts_ nick mpts
+[2018-06-11 22:24:36] <aniketp> Sure @mpts, I'll take a look.
+[2018-06-11 22:24:36] <aniketp> Btw @somers__, I'd updated the statfs(2) and friends' test cases. The previous build failure was due to erroneous variable name.
+[2018-06-11 22:25:35] <somers__> Ok
+[2018-06-11 22:25:43] <somers__> BTW, is mpts_ Mariusz?
+[2018-06-11 22:28:16] <aniketp> Yes Mateusz is @mpts_ 
+[2018-06-11 22:28:27] <aniketp> Sorry @mpts 
+[2018-06-11 22:33:41] <aniketp> Also, @somers__, shall I create a revision for the paudit(1)'s return and the man-page? As @mpts has accepted the PR in openBSM. Or should I wait till it is merged with OpenBSM? https://github.com/openbsm/openbsm/pull/32 
+[2018-06-11 22:34:15] <somers__> Better to wait
+[2018-06-11 23:01:11] <mpts> I'm 0mp@
+[2018-06-11 23:07:46] * somers_ (~somers@63-224-81-78.hlrn.qwest.net) join
+[2018-06-11 23:13:56] * somers__ (~somers@63.224.80.201) quit Read error: Operation timed out
