@@ -2403,3 +2403,5 @@
 [2018-06-11 23:01:11] <mpts> I'm 0mp@
 [2018-06-11 23:07:46] * somers_ (~somers@63-224-81-78.hlrn.qwest.net) join
 [2018-06-11 23:13:56] * somers__ (~somers@63.224.80.201) quit Read error: Operation timed out
+[2018-06-12 14:31:47] <aniketp> Hi @somers_, when will D15750 be landed?
+[2018-06-12 14:32:34] <somers_> After I review it again
