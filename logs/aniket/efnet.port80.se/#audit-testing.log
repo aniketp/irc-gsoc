@@ -2413,3 +2413,12 @@
 [2018-06-12 17:10:52] <somers_> Oh, that's fine
 [2018-06-12 17:10:58] <somers_> they're not critical at all.
 [2018-06-12 17:22:21] * rwatson (robert@fledge.watson.org) join
+[2018-06-12 18:01:00] <aniketp> Btw @somers_ , for the resource leak issue, I can either add code snippets for each test case which close the file-descriptors. But that will increase the SLOC by a huge margin for the currently merged tests and the ones to come.
+[2018-06-12 18:01:00] <aniketp> Or I was thinking of passing an additional (optional) argument to check_audit() which will close the descriptor is passed. Which one would you recommend?
+[2018-06-12 18:01:24] <aniketp> *if passed
+[2018-06-12 18:02:52] <somers_> Which do you think would be more maintainable?
+[2018-06-12 18:03:02] <aniketp> The second one I think
+[2018-06-12 18:03:32] <somers_> You can try that, then.  Just try not to let check_audit get too unwieldy.
+[2018-06-12 18:14:48] <aniketp> Yeah, just a single if condition added in check_audit(). Which also happens to be a wrapper to check_auditpipe(). So just 5 SLOC in total
+[2018-06-12 18:37:19] <aniketp> @somers_ I did not know that default arguments were not supported in C. I guess I'll stick to the first method. Else, would have to change every check_audit() invocation
+[2018-06-12 19:53:00] <aniketp> @somers_, I've made the corrections and some improvements which I thought were appropriate. Shall I create a new revision?
