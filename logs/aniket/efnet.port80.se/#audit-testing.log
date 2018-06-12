@@ -2422,3 +2422,4 @@
 [2018-06-12 18:14:48] <aniketp> Yeah, just a single if condition added in check_audit(). Which also happens to be a wrapper to check_auditpipe(). So just 5 SLOC in total
 [2018-06-12 18:37:19] <aniketp> @somers_ I did not know that default arguments were not supported in C. I guess I'll stick to the first method. Else, would have to change every check_audit() invocation
 [2018-06-12 19:53:00] <aniketp> @somers_, I've made the corrections and some improvements which I thought were appropriate. Shall I create a new revision?
+[2018-06-12 20:05:28] <somers_> yeah
