@@ -2427,3 +2427,8 @@
 [2018-06-12 22:14:00] * somers_ (~somers@63-224-81-78.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-06-13 05:27:44] <aniketp> Btw @somers__ what to do with the execve(2) issue? I did some more digging and it looks like the intrinsic behaviour of what execve(2) returns cannot be changed. Like for _exit(2) we know that it will always be successful so we don't need any condition check, hence an extra AUDIT_SYSCALL_EXIT() could be applied. But same cannot be said for execve(2): which does return failures too 
 [2018-06-13 07:32:12] <aniketp> Hi @gnn, first evaluation has started. Hope you have completed it from your side..
+[2018-06-13 08:35:15] <gnn> aniketp: Yup, completed it this morning my time (Taipei)
+[2018-06-13 09:10:38] <aniketp> Sure, thanks!
+[2018-06-13 09:16:42] <aniketp> Btw @gnn, I thought you lived in Brooklyn?
+[2018-06-13 09:53:34] <gnn> I do.
+[2018-06-13 09:53:41] <gnn> I spend 1/2 of my time in Asia.
