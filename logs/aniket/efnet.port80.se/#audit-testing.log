@@ -2432,3 +2432,8 @@
 [2018-06-13 09:16:42] <aniketp> Btw @gnn, I thought you lived in Brooklyn?
 [2018-06-13 09:53:34] <gnn> I do.
 [2018-06-13 09:53:41] <gnn> I spend 1/2 of my time in Asia.
+[2018-06-13 16:04:41] <aniketp> Btw @somers__ shall I abandon the execve(2) test case or can we commit it as expected failure (or let it be like it is)
+[2018-06-13 16:04:44] <aniketp> ?
+[2018-06-13 16:05:31] <somers__> It sounds to me like you still don't fully understand how the audit record gets its return value
+[2018-06-13 16:09:23] <aniketp> Yeah, I tried implementing the code which looks up the errno in the table and if not found then changes their value to 0. But the audit record still showed "Unknown error", which means the errno was actually found within the table. But when I try to print "errno" as "retval" just to see which errno is being returned, I get "-2". This is confusing as to how can an errno be -2.. @somers__ 
+[2018-06-13 16:10:57] <somers__> Errno is a signed int.  It's certainly possible for it to be -2.  But I think the problem is that you don't understand where it's coming from.  You figured it out for the case of normal syscalls.  But exec(2) doesn't ever return.  In that case, what completes the audit record?
