@@ -2465,3 +2465,5 @@
 [2018-06-14 15:43:33] <aniketp> Currently it looks so ugly
 [2018-06-14 15:43:36] <somers__> You'll get an email when I do
 [2018-06-14 15:43:48] <aniketp> Okay
+[2018-06-14 19:53:43] <rwatson> aniketp: Can you remind me of the pointer to your general SoC status page? I've fallen a bit behind and would like to catch up on your progress.
+[2018-06-14 19:54:13] <rwatson> aniketp: I'll also soon prod the CADETS folks to start using your test suite. Although we're using the DTrace audit provider to extract data rather than the pipe or trail mechanisms, we very much rely on the correctness of the code you are testing.
