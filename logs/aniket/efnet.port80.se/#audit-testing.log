@@ -2437,3 +2437,15 @@
 [2018-06-13 16:05:31] <somers__> It sounds to me like you still don't fully understand how the audit record gets its return value
 [2018-06-13 16:09:23] <aniketp> Yeah, I tried implementing the code which looks up the errno in the table and if not found then changes their value to 0. But the audit record still showed "Unknown error", which means the errno was actually found within the table. But when I try to print "errno" as "retval" just to see which errno is being returned, I get "-2". This is confusing as to how can an errno be -2.. @somers__ 
 [2018-06-13 16:10:57] <somers__> Errno is a signed int.  It's certainly possible for it to be -2.  But I think the problem is that you don't understand where it's coming from.  You figured it out for the case of normal syscalls.  But exec(2) doesn't ever return.  In that case, what completes the audit record?
+[2018-06-14 03:06:24] <aniketp> Hi @asomers, what should I do in the test program for praudit(1)?
+[2018-06-14 03:06:24] <aniketp> The first atf_check assertion was to ensure that normal praudit command does not print out anything to STDOUT.
+[2018-06-14 03:06:24] <aniketp> Second one does so
+[2018-06-14 03:06:30] <aniketp> @somers__ 
+[2018-06-14 03:08:32] <somers__> There's no requirement that praudit doesn't print anything absent "-p"
+[2018-06-14 03:08:38] <somers__> So you should just remove that assertion
+[2018-06-14 03:13:02] <aniketp> Okay, so the 'corrupted' record has extra redundant information initially. So praudit(1) simply ignored this when called with -p command. How can we make this obvious? (That there is indeed a difference in what praudit can do with -p) @somers_  
+[2018-06-14 03:13:07] <aniketp> @somers__ 
+[2018-06-14 03:13:50] <somers__> A better question is, why shouldn't praudit always behave as though "-p" is set?
+[2018-06-14 03:14:21] <aniketp> True, even I wondered that
+[2018-06-14 03:15:43] <aniketp> Actually praudit -p always takes out the later part of the audit record. If I add quite a lot of weird symbols in the end of audit record then even '-p' can't do anything. @somers__ 
+[2018-06-14 03:16:13] <aniketp> I had corrupted the record in the beginning for the test case
