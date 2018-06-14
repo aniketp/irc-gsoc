@@ -2449,3 +2449,11 @@
 [2018-06-14 03:14:21] <aniketp> True, even I wondered that
 [2018-06-14 03:15:43] <aniketp> Actually praudit -p always takes out the later part of the audit record. If I add quite a lot of weird symbols in the end of audit record then even '-p' can't do anything. @somers__ 
 [2018-06-14 03:16:13] <aniketp> I had corrupted the record in the beginning for the test case
+[2018-06-14 13:33:07] <rwatson> BTW, there's a known long-standing problem with auditdistd that has prevented it from working in the FreeBSD.org cluster. When we get to auditdistd tests, it would be nice to produce a suitable test and fix :-)
+[2018-06-14 13:33:26] <rwatson> On a print/XML-related output: right now, I don't think we adequately escape audit data that interferes with XML (etc) syntax
+[2018-06-14 13:33:35] <rwatson> It might be nice to have some tests that illustrate that in various ways to encourage fixing
+[2018-06-14 13:36:39] <rwatson> (Really, really pleased to see all the audit testing work moving forward! It's very overdue.)
+[2018-06-14 13:44:55] <aniketp> Btw @somers__, the content of the "corrupted" is some binary data? Should I simply copy paste it into comments :P
+[2018-06-14 13:46:36] <somers__> No; I'm just looking for a description of how it's different than trail.
+[2018-06-14 13:48:13] <aniketp> Okay, I'll add that. Btw what I did was copy half of the "legit" audit trail and paste it above it. So that successfully printed the final part of audit trail with "-p" but nothing without any options
+[2018-06-14 13:49:18] <aniketp> I guess praudit exits as soon as it encounters buggy audit trails, while the "-p" options directly jumps to the ending of audit trail @somers__ 
