@@ -2457,3 +2457,11 @@
 [2018-06-14 13:46:36] <somers__> No; I'm just looking for a description of how it's different than trail.
 [2018-06-14 13:48:13] <aniketp> Okay, I'll add that. Btw what I did was copy half of the "legit" audit trail and paste it above it. So that successfully printed the final part of audit trail with "-p" but nothing without any options
 [2018-06-14 13:49:18] <aniketp> I guess praudit exits as soon as it encounters buggy audit trails, while the "-p" options directly jumps to the ending of audit trail @somers__ 
+[2018-06-14 14:11:56] <aniketp> Btw @somers__ I had created a revision for the formatting in open(2). D15797
+[2018-06-14 15:41:59] <aniketp> Ping @somers__ 
+[2018-06-14 15:42:23] <somers__> pong
+[2018-06-14 15:43:13] <aniketp> There was this diff on formatting open(2)'s macro definition. D15797. Did you have a look at it?
+[2018-06-14 15:43:27] <somers__> no, not yet
+[2018-06-14 15:43:33] <aniketp> Currently it looks so ugly
+[2018-06-14 15:43:36] <somers__> You'll get an email when I do
+[2018-06-14 15:43:48] <aniketp> Okay
