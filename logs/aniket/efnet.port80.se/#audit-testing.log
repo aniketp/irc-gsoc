@@ -2467,3 +2467,14 @@
 [2018-06-14 15:43:48] <aniketp> Okay
 [2018-06-14 19:53:43] <rwatson> aniketp: Can you remind me of the pointer to your general SoC status page? I've fallen a bit behind and would like to catch up on your progress.
 [2018-06-14 19:54:13] <rwatson> aniketp: I'll also soon prod the CADETS folks to start using your test suite. Although we're using the DTrace audit provider to extract data rather than the pipe or trail mechanisms, we very much rely on the correctness of the code you are testing.
+[2018-06-15 01:07:11] <aniketp> Hi @rwatson, I've completed almost all auditable system calls in FreeBSD (I'm using this switch case here as the reference: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c#L532) to keep track of all audit events. 
+[2018-06-15 01:07:11] <aniketp> Currently I'd made about 504 independent test-cases for 165 syscalls, A lot of open(2) and openat(2) audit events have been cutoff since each open(2)ing mode was a separate auditable event and they all passed multiple audit class filters.
+[2018-06-15 01:07:11] <aniketp> Here is my Project Wiki: https://wiki.freebsd.org/SummerOfCode2018Projects/RegressionTestSuiteForAuditFramework   (Some of it might not be updated, I'll make sure to get it done soon)
+[2018-06-15 01:07:11] <aniketp> Here is the project repository: https://github.com/aniketp/AuditTestSuite  (The stuff within audit subdirectory needs to be placed in "tests/sys/audit" and after some tweaks to the parent Makefile, the tests can be installed at /usr/test/sys/audit). 
+[2018-06-15 01:07:11] <aniketp> Also, with the help of @somers__ , some of the tests of "fc", "fd", "fr", "fw", "fd", "cl", "fa", "fm" have been merged in the HEAD https://github.com/freebsd/freebsd/tree/master/tests/sys/audit
+[2018-06-15 01:07:11] <aniketp> Also, @rwatson, I also had a regression test for praudit(1) utility which is currently awaiting review: https://github.com/aniketp/AuditTestSuite/tree/master/praudit
+[2018-06-15 01:07:58] <aniketp> Btw @rwatson, I've been sending weekly mails (and /cc'ing them to you too), so you might have looked at those mails?
+[2018-06-15 01:10:49] <aniketp> The one major issue I'm currently having is that I can't understand why execve(2),fexecve(2) returns "Unknown error : 201" even though the execution was successful. I'm working on this but it looks like there is some element regarding this which I'm missing out, and would try to fix this hopefully..
+[2018-06-15 01:15:48] <aniketp> @rwatson, this part here: " https://github.com/aniketp/AuditTestSuite/blob/master/utils/utils.c " does most of the hard work of extracting audit records out of the auditpipe.
+[2018-06-15 01:48:58] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) join
+[2018-06-15 01:55:55] * somers__ (~somers@63-224-81-123.hlrn.qwest.net) quit Read error: Operation timed out
