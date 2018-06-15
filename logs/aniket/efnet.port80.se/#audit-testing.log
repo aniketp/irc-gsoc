@@ -2513,3 +2513,7 @@
 [2018-06-15 15:48:30] <somers_> I don't know.
 [2018-06-15 15:48:45] <somers_> Have a look at contrib/openbsm/lib/bsm_io.c if you want to know.
 [2018-06-15 15:54:21] <aniketp> @somers_, cool! Two revisions in one commit 😝
+[2018-06-15 16:00:13] <aniketp> Btw @somers_ the "0x0" is the third argument of socketpair(PF_UNIX, SOCK_STREAM, 0, sv)
+[2018-06-15 16:00:35] <somers_> You should make that clear in the test
+[2018-06-15 16:47:09] <aniketp> @somers_ I was tired to going for a quick nap. I'll create about 3 more revision after I wake up after some time
+[2018-06-15 16:47:23] <somers_> ok
