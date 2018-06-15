@@ -2480,3 +2480,36 @@
 [2018-06-15 01:55:55] * somers__ (~somers@63-224-81-123.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-06-15 05:19:40] * mpts_ (~mpts@boston-packets.hackerspace.pl) join
 [2018-06-15 05:25:46] * mpts (~mpts@boston-packets.hackerspace.pl) quit se.hub irc.underworld.no
+[2018-06-15 14:23:53] <aniketp> Hi @somers_ , would you be reviewing the diffs? Currently there are 5 of them
+[2018-06-15 14:26:14] <somers_> Yeah, I'm doing it now
+[2018-06-15 14:26:46] <somers_> I still don't see why praudit's "-p" behavior shouldn't be the default.  But that's a separate issue.
+[2018-06-15 14:34:41] <aniketp> Yeah, I'll have another look at the source code of praudit
+[2018-06-15 14:35:27] <aniketp> I think it is doing the same stuff as I did initially, skipping a record if au_read_rec retusn -1 if no option is specified
+[2018-06-15 14:35:51] <aniketp> @somers_ 
+[2018-06-15 14:36:37] <somers_> No, not exactly.  It doesn't even call au_read_rec until it's detected the start of a record
+[2018-06-15 15:38:06] <aniketp> @somers_, the network_success audit record is something like this:
+[2018-06-15 15:38:06] <aniketp> Looking for 'socket.*0xffffffff.*ret.*failure' in 'header,113,11,socket(2),0,Fri Jun 15 15:37:18 2018, + 609 msecargument,1,0xffffffff,domainargument,2,0x1,typeargument,3,0x0,protocolsubject,root,root,wheel,root,wheel,1449,761,47018,10.0.2.2return,failure : Address family not supported by protocol family,4294967295trailer,113'
+[2018-06-15 15:38:51] <aniketp> (-1), which is the supposed "socket descriptor" is converted to hex(-1)
+[2018-06-15 15:38:54] <somers_> And what are the meanings of those 0xffffffff fields?
+[2018-06-15 15:39:01] <aniketp> sockfd
+[2018-06-15 15:39:04] <aniketp> @somers__ 
+[2018-06-15 15:39:12] <aniketp> @somers_ 
+[2018-06-15 15:39:57] <somers_> Then -1 is a confusing choice of argument, because it's also the return value.  Could you use a different argument instead?
+[2018-06-15 15:40:07] <aniketp> Okay
+[2018-06-15 15:40:25] <somers_> Also, the test shouldn't expect -1 to be printed as 0xffffffff.  It should expect it to be printed as -1, and we should fix the code to actually print it as -1.
+[2018-06-15 15:41:56] <aniketp> But @somers_, we earlier saw that the audit record never prints negative numbers. For ex, (-1) as return was printed as 2^32 -1
+[2018-06-15 15:42:08] <aniketp> Its just being converted to hex in this case
+[2018-06-15 15:42:33] <somers_> Why not?
+[2018-06-15 15:42:47] <somers_> Is there a fundamental reason why negative numbers cannot be auditted?
+[2018-06-15 15:44:02] <aniketp> @somers_ have a look at the data type of the return value here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/bsm_token.c#L860
+[2018-06-15 15:44:14] <aniketp> Its unsigned
+[2018-06-15 15:44:24] <aniketp> Probably this might explain the observations?
+[2018-06-15 15:44:40] <aniketp> It happens for the return of _every_ failed audit record
+[2018-06-15 15:45:14] <somers_> Hm.  It looks like there aren't separately defined token types for signed vs unsigned args.  In sys/bsm/audit_record.h
+[2018-06-15 15:45:34] <somers_> That could be fixed, but it would require a lot more code.  Probably out of the scope of what you're doing.
+[2018-06-15 15:47:44] <aniketp> Btw @somers_ this is probably the first time I've encountered hex values in audit records. Why is it hex again?
+[2018-06-15 15:48:14] <aniketp> Also the "domain" of struct sockaddr_info is normal "int": https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_private.h#L124
+[2018-06-15 15:48:24] <aniketp> Not sure why hex is being printed in the audit record
+[2018-06-15 15:48:30] <somers_> I don't know.
+[2018-06-15 15:48:45] <somers_> Have a look at contrib/openbsm/lib/bsm_io.c if you want to know.
+[2018-06-15 15:54:21] <aniketp> @somers_, cool! Two revisions in one commit 😝
