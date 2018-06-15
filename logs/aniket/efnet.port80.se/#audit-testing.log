@@ -2478,3 +2478,5 @@
 [2018-06-15 01:15:48] <aniketp> @rwatson, this part here: " https://github.com/aniketp/AuditTestSuite/blob/master/utils/utils.c " does most of the hard work of extracting audit records out of the auditpipe.
 [2018-06-15 01:48:58] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) join
 [2018-06-15 01:55:55] * somers__ (~somers@63-224-81-123.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-06-15 05:19:40] * mpts_ (~mpts@boston-packets.hackerspace.pl) join
+[2018-06-15 05:25:46] * mpts (~mpts@boston-packets.hackerspace.pl) quit se.hub irc.underworld.no
