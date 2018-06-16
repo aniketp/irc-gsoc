@@ -2527,3 +2527,38 @@
 [2018-06-16 03:41:52] <aniketp> @somers_ 
 [2018-06-16 09:21:29] <aniketp> @somers_, so here they are formatting it as hex : https://github.com/openbsm/openbsm/blob/master/libbsm/bsm_io.c#L4173
 [2018-06-16 09:22:45] <aniketp> Everything before it has been printed as unsigned int before it but suddenly format changed to hex
+[2018-06-16 14:56:18] <aniketp> Ping @somers_, the 'failur' instead of 'failure' was due to the 80 character constraint. I thought it served it's purpose so I let it be like this
+[2018-06-16 15:16:33] <somers_> What 80 character constraint?
+[2018-06-16 15:17:02] <aniketp> That I can't exceed 80 chars in a line. @somers_ 
+[2018-06-16 15:17:23] <somers_> But you can split string constants across lines
+[2018-06-16 15:17:57] <aniketp> Okay, I thought It wasn't worth it just for completing that too a regex, so I didn't do it. @somers_ 
+[2018-06-16 15:19:19] <aniketp> Can I instead use "fail" if not "failur" @somers_? I'm feel reluctant to split strings in this case.
+[2018-06-16 15:23:44] <somers_> sure
+[2018-06-16 15:44:12] <aniketp> Btw @somers_ would the timeout of 2 seconds in case of praudit(1)'s test program be fine?
+[2018-06-16 15:44:21] <aniketp> Since they all execute quickly
+[2018-06-16 15:44:52] <aniketp> Btw I don't see a reason for timeout either. The current form passes all the time
+[2018-06-16 15:48:33] <somers_> No it doesn't.  It failed for me.  And it failed for you when you ran it by hand.  That means it's intermittent.
+[2018-06-16 15:48:54] <somers_> 2 seconds is insufficient.  Remember, you have to consider that these tests may run on crappy hardware, like Raspberry Pi.
+[2018-06-16 15:49:24] <aniketp> No @somers_, it only failed for me when I did "tail corrupted | praudit -p"
+[2018-06-16 15:49:35] <aniketp> It doesn't ever fail for me in its current state
+[2018-06-16 15:49:38] <somers_> Yeah, exactly.  That's normal usage
+[2018-06-16 15:50:16] <aniketp> Yeah, so I'm wondering that, is piping even allowed in atf_check test cases? @somers_ 
+[2018-06-16 15:50:27] <somers_> Of course it is
+[2018-06-16 15:50:39] <aniketp> Okay, so that's weird.
+[2018-06-16 15:51:16] <aniketp> Btw doing that in the command line does it's job, while fails in Kyua test case. I'll try to figure it out
+[2018-06-16 15:51:20] <aniketp> @somers_ 
+[2018-06-16 15:51:50] <somers_> I think you'd be better off simply fixing the bug.  praudit is a pretty simple program
+[2018-06-16 15:52:31] <somers_> If I were you, I would get praudit into the spinning state, then attach gdb and print a stacktrace.  That will most likely reveal exactly where the problem is.
+[2018-06-16 15:52:46] <aniketp> Is that a bug? @somers_ 
+[2018-06-16 15:52:46] <aniketp> It works in a normal shell process, but not inside a Kyua test case. How can it be related to praudit(1)'s code here?
+[2018-06-16 15:53:01] <aniketp> I think I need to tweak the test case a bit
+[2018-06-16 15:53:24] <somers_> I think it probably has nothing to do with Kyua.  It's probably just an intermittent bug.  You'll know once you find the root cause.
+[2018-06-16 15:53:35] <aniketp> Okay, will try
+[2018-06-16 15:54:29] <aniketp> Btw @somers_, if I don't cast the samplemsg to (char), the compiler complains:
+[2018-06-16 15:54:38] <aniketp> TEST_METADATA+= timeout="30"
+[2018-06-16 15:54:55] <aniketp>       conversion initializing 'char' with an expression of type 'char [80]'
+[2018-06-16 15:54:55] <aniketp>       [-Werror,-Wint-conversion]
+[2018-06-16 15:54:55] <aniketp>         msgstr_t msg1 = {1, {samplemsg}};
+[2018-06-16 15:55:37] <somers_> Yeah, because casting a pointer to a char is an invalid conversion.  But the explicit (char) overrides the compiler's better judgement.  "Full speed ahead, and damn the torpedoes!"
+[2018-06-16 15:58:40] <aniketp> But @somers_, "msgstr_t msg1 = {1, {(char)samplemsg}};" is the only tweak that works. Rest all fail to compile
+[2018-06-16 15:59:21] <somers_> I doesn't compile because it's correct.  It compiles because you're silencing the compiler's warning.
