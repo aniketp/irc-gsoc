@@ -2525,3 +2525,5 @@
 [2018-06-16 03:40:49] <aniketp> It did for me with the tail(1) approach.
 [2018-06-16 03:41:40] <aniketp> But with simply passing the trail to praudit -p it works
 [2018-06-16 03:41:52] <aniketp> @somers_ 
+[2018-06-16 09:21:29] <aniketp> @somers_, so here they are formatting it as hex : https://github.com/openbsm/openbsm/blob/master/libbsm/bsm_io.c#L4173
+[2018-06-16 09:22:45] <aniketp> Everything before it has been printed as unsigned int before it but suddenly format changed to hex
