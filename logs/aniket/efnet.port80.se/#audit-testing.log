@@ -2520,3 +2520,8 @@
 [2018-06-16 01:56:19] <aniketp> Ping @somers_ : The "praudit -p" did the same for me "spinning CPU and getting stuck" when I passed the tail(1)'s output to it. Like:
 [2018-06-16 01:56:19] <aniketp> "tail corrupted | praudit -p"
 [2018-06-16 01:56:30] <aniketp> Normally It works
+[2018-06-16 02:02:05] <aniketp> @somers_ https://pastebin.com/YXgTT0tj
+[2018-06-16 03:05:57] <somers_> Normally it works, but one time it spun the cpu?
+[2018-06-16 03:40:49] <aniketp> It did for me with the tail(1) approach.
+[2018-06-16 03:41:40] <aniketp> But with simply passing the trail to praudit -p it works
+[2018-06-16 03:41:52] <aniketp> @somers_ 
