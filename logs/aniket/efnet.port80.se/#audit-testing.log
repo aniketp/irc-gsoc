@@ -2562,3 +2562,11 @@
 [2018-06-16 15:55:37] <somers_> Yeah, because casting a pointer to a char is an invalid conversion.  But the explicit (char) overrides the compiler's better judgement.  "Full speed ahead, and damn the torpedoes!"
 [2018-06-16 15:58:40] <aniketp> But @somers_, "msgstr_t msg1 = {1, {(char)samplemsg}};" is the only tweak that works. Rest all fail to compile
 [2018-06-16 15:59:21] <somers_> I doesn't compile because it's correct.  It compiles because you're silencing the compiler's warning.
+[2018-06-16 16:00:20] <somers_> What you probably want to do is more like "msgstr_t msg1; memset(msg1.msg, 0, sizeof(msg1.msg));"
+[2018-06-16 16:12:34] <aniketp> Oh, now I understand. While declaring msg1, the mtext already had a length of BUFFLEN assigned. I was probably overwriting something or with my approach, changing the data type in some way.
+[2018-06-16 16:12:34] <aniketp> No wonder it kept suggesting me to enclose "samplemsg" with {}. I had never encountered such error/warning before. 
+[2018-06-16 16:36:28] <aniketp> ping @somers_, I updated the IPC diff
+[2018-06-16 16:38:19] <somers_> there's no length to assign to mtext.  It's statically declared to have a length of BUFFLEN.  The problem is that "samplemsg" is a pointer type, and you were casting it to a char
+[2018-06-16 16:42:10] <aniketp> Oh, I see.. I thought normal (char *) could be converted to (char) without any hassle. I had already declared struct msgstr with 'char' so that might've conflicted the data types.
+[2018-06-16 17:18:12] <aniketp> Ping @somers_ can you please commit the IPC and attribute access syscall tests (if they are correct)? I wanted to create further diffs for these two audit classes before the battery runs out 
+[2018-06-16 17:18:59] <somers_> Don't worry, I'll do it
