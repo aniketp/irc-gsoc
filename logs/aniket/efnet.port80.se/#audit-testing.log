@@ -2517,3 +2517,6 @@
 [2018-06-15 16:00:35] <somers_> You should make that clear in the test
 [2018-06-15 16:47:09] <aniketp> @somers_ I was tired to going for a quick nap. I'll create about 3 more revision after I wake up after some time
 [2018-06-15 16:47:23] <somers_> ok
+[2018-06-16 01:56:19] <aniketp> Ping @somers_ : The "praudit -p" did the same for me "spinning CPU and getting stuck" when I passed the tail(1)'s output to it. Like:
+[2018-06-16 01:56:19] <aniketp> "tail corrupted | praudit -p"
+[2018-06-16 01:56:30] <aniketp> Normally It works
