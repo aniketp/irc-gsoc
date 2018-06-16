@@ -2570,3 +2570,5 @@
 [2018-06-16 16:42:10] <aniketp> Oh, I see.. I thought normal (char *) could be converted to (char) without any hassle. I had already declared struct msgstr with 'char' so that might've conflicted the data types.
 [2018-06-16 17:18:12] <aniketp> Ping @somers_ can you please commit the IPC and attribute access syscall tests (if they are correct)? I wanted to create further diffs for these two audit classes before the battery runs out 
 [2018-06-16 17:18:59] <somers_> Don't worry, I'll do it
+[2018-06-16 19:39:40] <rwatson> aniketp: BTW, have you done tests for auditpipe(4) itself -- i.e., to check that the filter mechanism works, that tuning the record queue limit works, etc?
+[2018-06-16 19:40:22] * rwatson action quite pleased with the depth of testing we are ending up with
