@@ -2585,3 +2585,5 @@
 [2018-06-16 23:25:43] <aniketp> Expected failures all wait for 10 seconds to timeout and fail
 [2018-06-16 23:25:49] <somers_> If you want to wait to add chflagsat, that's ok.
 [2018-06-17 00:49:13] <aniketp> Okay. Btw @somers_, I added created more revisions. PLease have a look
+[2018-06-17 06:01:51] * somers (~somers@63-224-80-127.hlrn.qwest.net) join
+[2018-06-17 06:04:42] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) quit Ping timeout: 633 seconds
