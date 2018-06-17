@@ -2587,3 +2587,45 @@
 [2018-06-17 00:49:13] <aniketp> Okay. Btw @somers_, I added created more revisions. PLease have a look
 [2018-06-17 06:01:51] * somers (~somers@63-224-80-127.hlrn.qwest.net) join
 [2018-06-17 06:04:42] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) quit Ping timeout: 633 seconds
+[2018-06-17 08:40:11] <aniketp> @somers_ I think if we remove this part, both "praudit -p" and the default one should work equally
+[2018-06-17 08:40:14] <aniketp> https://github.com/openbsm/openbsm/blob/master/bin/praudit/praudit.c#L94
+[2018-06-17 08:40:22] <aniketp> @somers 
+[2018-06-17 08:41:57] <aniketp> That part waits till it encounters the Header token while the default invocation starts from the beginning and exits if the au_fetch_tok() outputs bad record
+[2018-06-17 09:10:08] <rwatson> somers: agreed, it's not an enourmously fun thing to test (auditpipe)
+[2018-06-17 09:10:24] <rwatson> somers: especially the filter mechanism
+[2018-06-17 09:10:29] <rwatson> somers: you really want unit tests for that
+[2018-06-17 09:10:46] <rwatson> somers: but for the queue behaviours, careful configuration of audit, the audit pipe mechanism, and use of audit(2), probably does the trick?
+[2018-06-17 09:11:17] <rwatson> aniketp: btw, if you find missing auditing, you might look in the cadets branch. we're a bit behind freebsd current right now, but have a bunch of additional argument auditing, system-call auditing, etc.
+[2018-06-17 09:11:26] <rwatson> aniketp: I stalled on merging things at some point about two years ago
+[2018-06-17 09:11:35] <rwatson> aniketp: we also have some crazy new features that I need to think about whether to merge or not
+[2018-06-17 09:11:52] <rwatson> aniketp: e.g., the kernel maintains UUIDs on most kernel object types to give them unique names for auditing purposes
+[2018-06-17 09:12:01] <aniketp> @rwatson Yeah, quite a lot of syscalls don't get audited. Even though they are mentioned in the audit_events list
+[2018-06-17 09:12:18] <rwatson> aniketp: the audit_events list is basically the union of system calls in freebsd, mac os x, solaris, and linux, as of about 2-3 years ago.
+[2018-06-17 09:12:29] <rwatson> aniketp: in the cadets branch, we try to audit almost all system calls
+[2018-06-17 09:12:43] <rwatson> aniketp: in particular, we need auditing of i/o system calls to allow more provenance tracing
+[2018-06-17 09:13:12] <rwatson> when I escape dissertation marking for the term (another week and a half? two?) then I hope to get back to merging some of those features
+[2018-06-17 09:13:33] * rwatson action is currently staring at a pile of 12 masters dissertations that need marking
+[2018-06-17 09:13:56] <rwatson> down from 16 yesterday though :-)
+[2018-06-17 09:14:04] <aniketp> @rwatson do the terms at cambridge so late? I'm halfway through my summer breaks
+[2018-06-17 09:14:08] <aniketp> *end
+[2018-06-17 09:26:17] <aniketp> Btw @somers, I replaced the "partial" condition with universal truth in the print_tokens() function in praudit.c
+[2018-06-17 09:26:17] <aniketp> Now praudit and "praudit -p" work exactly similar.
+[2018-06-17 09:26:17] <aniketp> Although I wonder if it is necessary to do so. It looks to me that it was intentionally done so.
+[2018-06-17 09:26:53] <aniketp> * Differentiating the two invocations of praudit
+[2018-06-17 09:29:30] <aniketp> Btw @rwatson, can you have a look at the simple change in praudit(1)'s source? https://github.com/openbsm/openbsm/pull/32
+[2018-06-17 09:29:30] <aniketp> It is blocking the regression tests for praudit(1): https://reviews.freebsd.org/D15751
+[2018-06-17 09:33:16] <rwatson> aniketp: We finish at the very end of June, and restart at the very start of October
+[2018-06-17 09:34:29] <aniketp> Woah! That's a two month shift from my university..
+[2018-06-17 09:34:57] <rwatson> aniketp: That change looks reasonable, but it would be useful to glance at the Solaris documentaiton for their praudit and see what they do?
+[2018-06-17 09:35:09] <rwatson> (I don't mind if we do a different thing but I want to do it on purpose rather than by mistake)
+[2018-06-17 09:37:47] <rwatson> FYI, the main sources of non-auditing in system calls are most likely (a) it wasn't required by the Orange Book / CAPP; (b) it relates to new system calls that arrived after audit was introduced; or (c) where there are substantial differences from Mac OS X and we mucked up the merge.
+[2018-06-17 09:37:56] <rwatson> (a) is a good reason, and (b)/(c) are poor reasons
+[2018-06-17 09:38:06] <rwatson> CADETS changes (a) quite a lot because we needed I/O tracing
+[2018-06-17 09:38:35] <rwatson> it tried to help with (b) and (c), but we're working in the context of a larger programme that tends to be less interested in FreeBSD/Mac OS X-specific functionality (since they are more into POSIX), which means gaps relating to (b) and (c) may not have been noticed.
+[2018-06-17 09:44:31] <aniketp> @rwatson I had a look at the Solaris "praudit" docs but couldn't find any reference to the final return value. Although all the other options for the command were similar. 
+[2018-06-17 09:45:53] <rwatson> I believe that their praudit was open sourced as part of open solaris at one point, so that might offer more insight.
+[2018-06-17 09:46:27] <rwatson> (the BSD/OS X OpenBSM was implemented clean room from the Solaris code, as it was before Solaris was open sourced. so one wouldn't want to borrow any code, but understanding the return value seems OK..)
+[2018-06-17 09:52:48] <rwatson> Once you've drawn conclusions on that, and assuming you're happy to proceed stil, add a note to the OpenBSM github pull request, I can go ahead and approve it.
+[2018-06-17 09:52:59] <rwatson> BTW, have you done any build testing on Linux with your OpenBSM changes?
+[2018-06-17 09:53:23] <aniketp> No @rwatson, haven't done that in Linux.
+[2018-06-17 09:53:36] <aniketp> But yeah, it worked fine in 12-CURRENT
