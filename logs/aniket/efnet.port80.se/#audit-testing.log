@@ -2572,3 +2572,15 @@
 [2018-06-16 17:18:59] <somers_> Don't worry, I'll do it
 [2018-06-16 19:39:40] <rwatson> aniketp: BTW, have you done tests for auditpipe(4) itself -- i.e., to check that the filter mechanism works, that tuning the record queue limit works, etc?
 [2018-06-16 19:40:22] * rwatson action quite pleased with the depth of testing we are ending up with
+[2018-06-16 22:20:27] <somers_> @rwatson all of aniket's tests rely on auditpipe.  But they don't explicitly test it directly.  I couldn't find any good way to test it without kind of injection mechanism to give userland full control over the audit trail.
+[2018-06-16 23:16:18] <aniketp> Btw @somers_, aren't msgget(2), msgsnd(2), msgrcv(2), msgctl(2) all Sys V APIs?
+[2018-06-16 23:16:37] <aniketp> I thought the posix one's were mq_open(2) and friends
+[2018-06-16 23:18:10] <somers_> Yep, you're right.
+[2018-06-16 23:19:58] <aniketp> Btw none of them are audited. e.g mq_open(2) and friends.
+[2018-06-16 23:19:58] <aniketp> Also, about chflagsat(2): I was thinking of adding all "expected failures" in the end. As there are a _lot_ of them and would uselessly take up a lot of time to "timeout" 
+[2018-06-16 23:20:01] <aniketp> @somers_ 
+[2018-06-16 23:21:24] <somers_> Since these tests are all fast, maybe you should set the timeout for all of them?  I think you can do it in the Makefile, like you did for is_exclusive
+[2018-06-16 23:25:25] <aniketp> But @somers_, the timeout for ppoll(2) of 10 seconds is already in place. And there is a TEST_METADATA timeout of 30 seconds for every test program. 
+[2018-06-16 23:25:41] <somers_> Ok, that should be good
+[2018-06-16 23:25:43] <aniketp> Expected failures all wait for 10 seconds to timeout and fail
+[2018-06-16 23:25:49] <somers_> If you want to wait to add chflagsat, that's ok.
