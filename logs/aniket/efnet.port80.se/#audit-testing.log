@@ -2639,3 +2639,12 @@
 [2018-06-17 10:15:29] <aniketp> There are a few exit(1) statement prior to final return statement, for incorrect usage i think
 [2018-06-17 10:24:47] <aniketp> Btw @rwatson, this change is so funny! https://github.com/kofemann/opensolaris/commit/982aa43c6f050ff8aa30f738a8ac77ea63c38f4e#diff-bd7a9b98e0483152666a6c31d0aebaacL109
 [2018-06-17 10:24:47] <aniketp> Look at how they change "retstat" in order to return 0 [before change]
+[2018-06-17 12:59:56] <rwatson> Can you remind me of the wiki (or similar) page on your overall project? (I think I asked this the other day and have probably missed your reply courtesy IRC...)
+[2018-06-17 13:30:18] <aniketp> Sure @rwatson, here: https://wiki.freebsd.org/SummerOfCode2018Projects/RegressionTestSuiteForAuditFramework
+[2018-06-17 13:30:47] <aniketp> And here is my Project Resository: https://github.com/aniketp/AuditTestSuite
+[2018-06-17 13:33:56] <aniketp> Some elements might not be updated. I'll do that as soon as possible. For ex, Install and test instructions for New users
+[2018-06-17 13:48:24] * mpts_ nick mpts
+[2018-06-17 13:53:03] <somers> aniketp: yes, if you remove that part from praudit, then "-p" won't work anymore.
+[2018-06-17 13:55:54] <aniketp> @somers @rwatson, would it be better to remove that part "-p" from the code itself (And remove the references from manaual pages). Cause -p option does should be implemented as a default case. 
+[2018-06-17 13:56:13] <aniketp> *cause what -p option
+[2018-06-17 13:59:41] <somers> OpenBSM automatically builds PRs on Linux via Travis
