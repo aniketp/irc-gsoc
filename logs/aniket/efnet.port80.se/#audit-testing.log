@@ -2584,3 +2584,4 @@
 [2018-06-16 23:25:41] <somers_> Ok, that should be good
 [2018-06-16 23:25:43] <aniketp> Expected failures all wait for 10 seconds to timeout and fail
 [2018-06-16 23:25:49] <somers_> If you want to wait to add chflagsat, that's ok.
+[2018-06-17 00:49:13] <aniketp> Okay. Btw @somers_, I added created more revisions. PLease have a look
