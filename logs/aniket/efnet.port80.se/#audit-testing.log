@@ -2629,3 +2629,13 @@
 [2018-06-17 09:52:59] <rwatson> BTW, have you done any build testing on Linux with your OpenBSM changes?
 [2018-06-17 09:53:23] <aniketp> No @rwatson, haven't done that in Linux.
 [2018-06-17 09:53:36] <aniketp> But yeah, it worked fine in 12-CURRENT
+[2018-06-17 10:03:45] <aniketp> @rwatson, I followed the instructions here: https://github.com/openbsm/openbsm/blob/master/INSTALL to build OpenBSM in my Ubuntu machine. It did build successfullt
+[2018-06-17 10:04:01] <rwatson> excellent. I don't check all the time, but it's good in general to keep that working.
+[2018-06-17 10:04:14] <rwatson> Ideally any userspace OpenBSM tests (e.g., of the OpenBSM APIs, parsing/printing/etc) would work on Linux as well as FreeBSD
+[2018-06-17 10:05:10] <rwatson> For the purposes of the OpenBSM CREDITS file, what is the preferred spelling and formatting of your name?
+[2018-06-17 10:07:58] <aniketp> @rwatson Its Aniket Pandey. Although I doubt I have contributed enough. (Compared to others) 😅
+[2018-06-17 10:09:10] <rwatson> We prefer to be generous on these things. And perhaps it will encourage future contributions :-)
+[2018-06-17 10:14:30] <aniketp> @rwatson I had a look at one of the archived OpenSolaris repositories. It looks like they follow the normal convention (0 on success and 1 on every exception) for return status: https://github.com/kofemann/opensolaris/blob/80192cd83bf665e708269dae856f9145f7190f74/usr/src/cmd/praudit/main.c#L110
+[2018-06-17 10:15:29] <aniketp> There are a few exit(1) statement prior to final return statement, for incorrect usage i think
+[2018-06-17 10:24:47] <aniketp> Btw @rwatson, this change is so funny! https://github.com/kofemann/opensolaris/commit/982aa43c6f050ff8aa30f738a8ac77ea63c38f4e#diff-bd7a9b98e0483152666a6c31d0aebaacL109
+[2018-06-17 10:24:47] <aniketp> Look at how they change "retstat" in order to return 0 [before change]
