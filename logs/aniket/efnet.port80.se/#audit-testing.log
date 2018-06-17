@@ -2648,3 +2648,16 @@
 [2018-06-17 13:55:54] <aniketp> @somers @rwatson, would it be better to remove that part "-p" from the code itself (And remove the references from manaual pages). Cause -p option does should be implemented as a default case. 
 [2018-06-17 13:56:13] <aniketp> *cause what -p option
 [2018-06-17 13:59:41] <somers> OpenBSM automatically builds PRs on Linux via Travis
+[2018-06-17 14:02:23] <aniketp> Yeah, this config here: https://github.com/openbsm/openbsm/blob/master/.travis.yml#L11 , which was later modified by @mpts 
+[2018-06-17 14:02:41] <aniketp> Btw @somers about "-p" option, shall we remove it?
+[2018-06-17 14:03:07] <aniketp> Solaris did not have this option in their documentation
+[2018-06-17 14:03:35] <somers> I think "-p" should be removed from the documentation and accepted (but ignored) from the program.  That behavior should always be enabled.  HOWEVER, we can't do that before we fix the spinning problem.  Have you tried that yet?
+[2018-06-17 14:11:20] <aniketp> @somers Do you mean passing the output to tail(1) or the default "praudit -p trail" implementation?
+[2018-06-17 14:11:36] <aniketp> Cause the current state of D15651 never spins the CPU for me
+[2018-06-17 14:14:48] <aniketp> I think the reason it does so is that with tail(1), it is supposedly waiting for more input (since tail checks the last certain parts of the record)
+[2018-06-17 14:24:53] <mpts> FWIW, I'm working on a project the goal of which is to be able to push logs from Linux and receive them with auditdistd on FreeBSD: https://github.com/0mp/audisp-auditdistd
+[2018-06-17 14:24:58] <mpts> you might find it interesting
+[2018-06-17 14:25:29] <mpts> (there are also some Vagrantfiles to set up some FreeBSD and Linux machines)
+[2018-06-17 14:30:30] <aniketp> @mpts I haven't looked at how auditdistd(8) works, yet. Sure, I'll take a look at your project when I'm testing it..
+[2018-06-17 14:31:48] <somers> aniketp, praudit shouldn't spin the cpu when waiting for input from tail; it should block instead.
+[2018-06-17 15:23:30] <rwatson> tail -f may be a useful reference
