@@ -2690,3 +2690,5 @@
 [2018-06-17 17:57:26] <aniketp> Thing is, I'm sitting in the part of lab where a lot of people are working. Building the world for long time might frustrate people. 😅 
 [2018-06-17 17:58:16] <aniketp> Also, I had initially type casted it to (intptr_t)addr and it did not match the regex
 [2018-06-17 17:58:35] <aniketp> So I reset it to (int). @somers 
+[2018-06-17 19:03:50] <somers> It depends on what kind of hardware you have.  20 minutes is reasonable on a decent machine
+[2018-06-17 19:05:18] <somers> Casting to int in order to match the regex is back asswards.  You should fix the regex instead.
