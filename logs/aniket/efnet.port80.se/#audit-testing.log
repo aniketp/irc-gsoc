@@ -2661,3 +2661,32 @@
 [2018-06-17 14:30:30] <aniketp> @mpts I haven't looked at how auditdistd(8) works, yet. Sure, I'll take a look at your project when I'm testing it..
 [2018-06-17 14:31:48] <somers> aniketp, praudit shouldn't spin the cpu when waiting for input from tail; it should block instead.
 [2018-06-17 15:23:30] <rwatson> tail -f may be a useful reference
+[2018-06-17 16:39:43] <aniketp> @rwatson, man-page says that "-f" is ignored when the standard input is a pipe
+[2018-06-17 16:40:05] <aniketp> Also, it does not change anything. The test still hangs up
+[2018-06-17 16:41:56] <aniketp> Btw @somers, I had been incorrectly saying that my CPU is spinning. I just noticed that the CPU performance was consistent throughout while the test was stuck
+[2018-06-17 16:42:13] <aniketp> I really think it's just waiting for more trail
+[2018-06-17 16:43:00] <somers> definitely not.  My cpu goes to 100%.
+[2018-06-17 16:48:32] <aniketp> I just set the timeout to 30s. The test got stuck for praudit -p while the CPU performance (Of my Linux Host) varied bw 2.6% to 4.0%
+[2018-06-17 17:04:17] <aniketp> @somers, yeah I noticed that too. While creating/updating the revision, arcanist specially mentioned presence of binary files in the patch
+[2018-06-17 17:05:41] <aniketp> Since @rwatson and @mpts accepted the PR, I'll create a revision regarding the return status. Also, about the "-p" option. Shall we implement its functionality as the default one?
+[2018-06-17 17:05:47] <aniketp> @somers 
+[2018-06-17 17:06:08] <somers> Don't bother; I'm merging that change right now
+[2018-06-17 17:06:19] <aniketp> Which one?
+[2018-06-17 17:06:26] <aniketp> return status?
+[2018-06-17 17:06:38] <somers> If you want to make "-p" the default, you'll need approval of @rwatson or the other openbsm guys.  So start the conversation over there.
+[2018-06-17 17:06:42] <somers> Yeah, praudit's return status
+[2018-06-17 17:07:41] <aniketp> Okay, I'll try to put forward my argument about it as a PR. Btw @somers, would you suggest that it is a good idea? Although I'll take their approval too
+[2018-06-17 17:08:00] <somers> Yeah, I think it's a good idea.
+[2018-06-17 17:08:50] <aniketp> Okay I'll create a PR then, explaining the benefits, maybe @rwatson can have some suggestions regarding it then.
+[2018-06-17 17:12:09] <somers> For the praudit tests, do you mind if I increase the timeout to 10 seconds?
+[2018-06-17 17:12:48] <aniketp> Yeah sure, Not an issue. Even I don't recall why I set it to 2 seconds in first place
+[2018-06-17 17:12:54] <aniketp> @somers 
+[2018-06-17 17:13:05] <aniketp> Maybe to timeout the tests earlier
+[2018-06-17 17:19:24] <aniketp> Btw @somers, with extattr_{get/list}_{file/link/fd}, file-attribute-access is finished
+[2018-06-17 17:19:36] <somers> cool
+[2018-06-17 17:44:09] <aniketp> Btw @somers why is it that to list the extended attributes we don't need any , but to delete extended attributes we need atleast one. Like, can't we delete "nothing"? 😅
+[2018-06-17 17:44:31] <somers> Good question.
+[2018-06-17 17:57:26] <aniketp> Also, @somers, how much time will this take? "ARCH=i386 TARGET_ARCH=i386 make -j6 buildworld" (approx)
+[2018-06-17 17:57:26] <aniketp> Thing is, I'm sitting in the part of lab where a lot of people are working. Building the world for long time might frustrate people. 😅 
+[2018-06-17 17:58:16] <aniketp> Also, I had initially type casted it to (intptr_t)addr and it did not match the regex
+[2018-06-17 17:58:35] <aniketp> So I reset it to (int). @somers 
