@@ -2694,3 +2694,5 @@
 [2018-06-17 19:05:18] <somers> Casting to int in order to match the regex is back asswards.  You should fix the regex instead.
 [2018-06-17 20:49:15] <aniketp> Okay. Btw @somers I've created 5 more revisions for {io, fm, ad, nt, ip}. Please have a look. 
 [2018-06-17 20:49:15] <aniketp> I guess post this only one more revision from each class will be left
+[2018-06-18 20:34:33] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) join
+[2018-06-18 20:36:59] * somers (~somers@63-224-80-127.hlrn.qwest.net) quit Ping timeout: 252 seconds
