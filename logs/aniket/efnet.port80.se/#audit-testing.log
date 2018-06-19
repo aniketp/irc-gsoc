@@ -2719,3 +2719,34 @@
 [2018-06-19 15:41:30] <aniketp> It looked like explicit_bzero() is more robust against compiler optimization.
 [2018-06-19 15:41:48] <somers_> Nah, bzero is fine
 [2018-06-19 15:42:16] <somers_> explicit_bzero is only needed for cases where you aren't going to use the buffer again.  You use it for things like erasing crypto keys before you free memory.
+[2018-06-19 16:38:40] <aniketp> @somers_, is this order right?
+[2018-06-19 16:38:40] <aniketp> #define _WANT_SEMUN
+[2018-06-19 16:38:40] <aniketp> #include <sys/sem.h>
+[2018-06-19 16:38:47] <somers_> yeah
+[2018-06-19 16:39:30] <aniketp> Cause I get same set of errors whether I #define _WANT_SEMUN or not. @somers_ 
+[2018-06-19 16:39:47] <aniketp> A lot of them say "forward declaration of union semun"
+[2018-06-19 16:40:16] <somers_> Maybe sem.h is getting included by some other header file
+[2018-06-19 16:47:18] <aniketp> I think union semun is not being brought into the program by the definition of _WANT_SEMUN. Cause is sem.h is included in some other program then removing it should work but it gives the familiar "implicit declaration error" @somers_ 
+[2018-06-19 16:47:18] <aniketp> Can't we define union semun ourselves? Like linux suggests defining it ourselves
+[2018-06-19 16:47:40] <aniketp> s/is/if
+[2018-06-19 16:49:01] <somers_> It's definitely in there.  You can see it clearly in sys/sem.h line 79.
+[2018-06-19 16:50:27] <aniketp> Yeah I saw, and also the #if defined(_KERNEL) || defined(_WANT_SEMUN) guard
+[2018-06-19 16:51:59] <somers_> You know, it should be possible to mount unionfs during the undelete test
+[2018-06-19 16:52:06] <somers_> There are many other ATF tests that do mount filesystems
+[2018-06-19 16:54:11] <aniketp> Okay, I'll try to do something like that
+[2018-06-19 17:00:11] <aniketp> Btw @somers_, This _WANT_SEMUN looks like a recent change. Also it mentions something about the portability. Can it be trusted?
+[2018-06-19 17:00:11] <aniketp> https://github.com/freebsd/freebsd/commit/da9d8a0895b658f4ee6d32cc956ecf56d83574c4
+[2018-06-19 17:00:46] <aniketp> Cause the "union semun" is not being defined for sure using the _WANT_SEMUN approach
+[2018-06-19 17:02:17] <somers_> The portability problem is irrelevant here.  Your tests are among the least portable programs that it is possible to write.
+[2018-06-19 17:06:09] <somers_> BTW, the weekly Coverity report came out.  Have you signed up for access yet?
+[2018-06-19 17:08:15] <somers_> There are 26 more Coverity issues
+[2018-06-19 17:20:15] <aniketp> No @somers_, I haven't. How would I do that?
+[2018-06-19 17:20:29] <somers_> Email uqs@freebsd.org
+[2018-06-19 17:20:35] <somers_> Ulrich Sporlein
+[2018-06-19 17:24:21] <somers_> Ok, I've finished triaging them now.  As soon as you get an account, you can login to Coverity and see them.
+[2018-06-19 17:24:38] <somers_> There were 26 issues.  Many were intentional (like calling fsync with fd=-1)
+[2018-06-19 17:24:51] <somers_> But there were several real bugs too
+[2018-06-19 17:40:43] <aniketp> Sure, I'll mail him.
+[2018-06-19 17:41:29] <aniketp> Btw @somers_, why sendmsg though? 
+[2018-06-19 17:41:54] <aniketp> Till now, I dislike execve(2) the most :/
+[2018-06-19 17:42:07] <somers_> You never tried to use msghdr.msg_control
