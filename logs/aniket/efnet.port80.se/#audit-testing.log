@@ -2698,3 +2698,16 @@
 [2018-06-18 20:36:59] * somers (~somers@63-224-80-127.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-06-19 00:37:01] <aniketp> Ping @somers_, should I mention the reason for not testing the success mode of undelete(2) in test program? i.e, it's used in unionfs
 [2018-06-19 00:46:37] <somers_> Yeah.  If you're leaving something out, you should certainly explain why.
+[2018-06-19 04:01:31] <aniketp> Btw @somers_, does the system wide setting of audit class, i.e "flag" in "/etc/security/audit_control" affect what happens to the local auditpipe with local mode auditing?
+[2018-06-19 04:02:15] <aniketp> For example, when flag is set as "pc" globally, half of my process-control syscall tests fail intermittently (at random)
+[2018-06-19 04:03:14] <aniketp> On trying to debug one to get an idea of what is happening, I encounter a "wait4(2)" audit event which times-out the test
+[2018-06-19 05:17:30] <somers_> I don't believe the global flags are supposed to effect auditpipe in local mode
+[2018-06-19 05:17:59] <somers_> what do you mean, that a "wait4(2)" audit event times out the test?  Doesn't the test ignore all events except for the one of interest?
+[2018-06-19 05:18:14] <aniketp> I'll check again. Though this has been happening quite frequently. That is why I haven't created a revision for "pc" yet
+[2018-06-19 05:19:17] <aniketp> Yeah, but auditpipe will contain all process control audit events. The debug output showed "looking for 'my regex' is ...... wait4(2)......." 
+[2018-06-19 05:19:28] <aniketp> s/is/in
+[2018-06-19 05:22:18] <aniketp> Btw @somers_ is exiting for an empty file in case of praudit(1) a good idea?
+[2018-06-19 05:22:18] <aniketp> Whenever open /dev/auditpipe with praudit, it exits saying that "file is empty". [With the current state of PR]
+[2018-06-19 05:22:26] <aniketp> *I
+[2018-06-19 05:37:26] <aniketp> Also, @asomers, would it be safe to open a new audit trail log file while testing auditctl(2) and then later close it? As in, if it does not affect the already opened logs in /var/audit
+[2018-06-19 05:37:31] <aniketp> @somers_ 
