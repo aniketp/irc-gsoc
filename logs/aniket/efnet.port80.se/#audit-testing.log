@@ -2711,3 +2711,11 @@
 [2018-06-19 05:22:26] <aniketp> *I
 [2018-06-19 05:37:26] <aniketp> Also, @asomers, would it be safe to open a new audit trail log file while testing auditctl(2) and then later close it? As in, if it does not affect the already opened logs in /var/audit
 [2018-06-19 05:37:31] <aniketp> @somers_ 
+[2018-06-19 14:03:38] <somers_> praudit should certainly exit when it opens an empty plain file.  But it's a problem if it does that when opening a pipe or special device like /dev/auditpipe
+[2018-06-19 15:31:28] <aniketp> Ping @somers_, the "addres" instead of "address" was to let the function header be in the single line. Is it not acceptable?
+[2018-06-19 15:31:28] <aniketp> Else, I can move it to next line.
+[2018-06-19 15:33:51] <somers_> It does look wrong.  Splitting lines is fine.  So is "addr", a common abbreviation.
+[2018-06-19 15:41:30] <aniketp> Okay, "addr" seems better. Also @somers_, there were two functions in the man-page, bzero() and explicit_bzero(). Does it matter which one I use?
+[2018-06-19 15:41:30] <aniketp> It looked like explicit_bzero() is more robust against compiler optimization.
+[2018-06-19 15:41:48] <somers_> Nah, bzero is fine
+[2018-06-19 15:42:16] <somers_> explicit_bzero is only needed for cases where you aren't going to use the buffer again.  You use it for things like erasing crypto keys before you free memory.
