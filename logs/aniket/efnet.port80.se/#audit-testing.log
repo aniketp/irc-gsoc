@@ -2696,3 +2696,5 @@
 [2018-06-17 20:49:15] <aniketp> I guess post this only one more revision from each class will be left
 [2018-06-18 20:34:33] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) join
 [2018-06-18 20:36:59] * somers (~somers@63-224-80-127.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-19 00:37:01] <aniketp> Ping @somers_, should I mention the reason for not testing the success mode of undelete(2) in test program? i.e, it's used in unionfs
+[2018-06-19 00:46:37] <somers_> Yeah.  If you're leaving something out, you should certainly explain why.
