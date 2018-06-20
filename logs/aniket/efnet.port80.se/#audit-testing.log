@@ -2752,3 +2752,11 @@
 [2018-06-19 17:42:07] <somers_> You never tried to use msghdr.msg_control
 [2018-06-20 03:32:21] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) quit Read error: Connection reset by peer
 [2018-06-20 03:33:19] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) join
+[2018-06-20 04:18:45] * gnn (~quassel@f373.x.rootbsd.net) quit Read error: Connection reset by peer
+[2018-06-20 04:19:41] * gnn (~quassel@f373.x.rootbsd.net) join
+[2018-06-20 04:26:25] * gnn_ (~quassel@f373.x.rootbsd.net) join
+[2018-06-20 04:28:50] * gnn (~quassel@f373.x.rootbsd.net) quit Read error: Operation timed out
+[2018-06-20 04:33:19] * gnn_ (~quassel@f373.x.rootbsd.net) quit Read error: Connection reset by peer
+[2018-06-20 04:33:24] * gnn (~quassel@f373.x.rootbsd.net) join
+[2018-06-20 04:37:20] * gnn_ (~quassel@f373.x.rootbsd.net) join
+[2018-06-20 04:38:09] * gnn (~quassel@f373.x.rootbsd.net) quit Ping timeout: 268 seconds
