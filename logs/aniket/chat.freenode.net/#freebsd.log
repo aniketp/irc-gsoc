@@ -672,3 +672,15 @@
 [2018-05-23 16:23:07] * cpape (~user@cpape.eu) quit Ping timeout: 245 seconds
 [2018-05-23 16:28:06] * longshot (~nobody@2001:470:f0f4:a0a:75f8:fa77:c4ca:2d86) join
 [2018-05-23 16:28:54] <shanth> drougge: is the lame library where you think it is?
+[2018-06-20 09:27:34] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-06-20 09:27:34] * undefined topic Welcome to #FreeBSD! :: Have fun, be civilized, respect others :: On-topic only, otherwise /join #freebsd-social :: /join #freebsd-irc for channel assistance | Speculative Execution Vulnerability Status: https://wiki.freebsd.org/SpeculativeExecutionVulnerabilities
+[2018-06-20 09:27:34] * debdrup topic_set_by
+[2018-06-20 09:27:39] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) quit Ping timeout: 256 seconds
+[2018-06-20 09:28:47] * conta1 (~Thunderbi@cst-prg-89-153.cust.vodafone.cz) quit Ping timeout: 256 seconds
+[2018-06-20 09:29:18] * MBS_ (~MBS@2601:282:a00:dae::1000) quit Ping timeout: 260 seconds
+[2018-06-20 09:29:59] <aniketp41> Hi! I was supposed to use the quotactl(2) system call for which I needed a path to mounted ufs. But I am not able to figure it out.  Can somebody suggest me a way to get absolute path to ufs mount point?
+[2018-06-20 09:36:42] * blodan-work (~daniel@office-se.mytaste.name) quit Remote host closed the connection
+[2018-06-20 09:39:28] * UxL7X (~UxL7X@223.223.203.184) join
+[2018-06-20 09:42:49] * bijan-e (~bijan-e@unaffiliated/bijan-e) quit Read error: Connection reset by peer
+[2018-06-20 09:54:14] * conta (~Thunderbi@cz4.datarail.eu) join
+[2018-06-20 09:57:16] * rennj (~rennj@174-24-109-241.clsp.qwest.net) join
