@@ -2765,3 +2765,44 @@
 [2018-06-20 15:57:33] <somers_> I don't see how; they're different structures
 [2018-06-20 15:58:59] <somers_> But I think that if you set timex.modes = 0, then the kernel won't update any of the other things.  So bzeroing the whole structure would probably work
 [2018-06-20 15:59:26] <aniketp> Okay, will try it.
+[2018-06-20 16:09:13] <aniketp> Also, @somers_ , in the cleanup of auditctl(2), shall I add something like this?
+[2018-06-20 16:09:13] <aniketp> If the auditd(8) is not running, then don't do anything. Since after auditctl(2) tests were executed, auditd(8) was stopped and started multiple times.
+[2018-06-20 16:09:13] <aniketp> If it is running, then stop and start it?
+[2018-06-20 16:09:58] <somers_> Yeah
+[2018-06-20 16:17:36] <aniketp> @somers_ defining _WANT_SEMUN and removing the union semun definitions results in 20+ fatal errors: Most of them pointing to forward declaration of union semun, means the defined macro didn't do anything
+[2018-06-20 16:19:06] <somers_> That probably means you're defining _WANT_SEMUN in the wrong place
+[2018-06-20 16:19:41] <aniketp> I did it above all kernel header includes :/
+[2018-06-20 16:23:47] <aniketp> Also @somers_, is this cleanup fine: https://pastebin.com/4HucXpSV
+[2018-06-20 16:26:05] <somers_> why did you inline the common cleanup function?
+[2018-06-20 16:26:20] <somers_> Oh i see.  You inverted the condition
+[2018-06-20 16:27:27] <somers_> Yeah, that should be ok.  But it's confusing, so make sure you document it.
+[2018-06-20 16:27:45] <aniketp> Okay, will do that.
+[2018-06-20 16:31:14] <aniketp> Btw @somers_, I got the same "Invalid argument" on using Q_SYNC
+[2018-06-20 16:35:06] <somers_> darn.
+[2018-06-20 16:35:26] <aniketp> Also confirmed the ufs mountpoint using, mount -t ufs
+[2018-06-20 16:35:42] <aniketp> It outputs: "/dev/ada0p2 on / (ufs, local, journaled soft-updates)"
+[2018-06-20 16:35:46] <aniketp> @somers_ 
+[2018-06-20 16:36:08] <somers_> what are you doing with ufs?
+[2018-06-20 16:37:05] <aniketp> Man page said: " Currently quotas are supported only for the “ufs” file system." @somers_ 
+[2018-06-20 16:37:19] <aniketp> Besides, I only have UFS mounted
+[2018-06-20 16:37:29] <somers_> Hm, I don't think that's true.  ZFS also supports them.
+[2018-06-20 16:37:50] <aniketp> But I'm too "noob" to use ZFS :P
+[2018-06-20 16:37:58] <aniketp> Seeing from the installation
+[2018-06-20 16:38:08] <somers_> For VMs, UFS is better.
+[2018-06-20 16:38:23] <aniketp> So what are we gonna do about quotactl(2)?
+[2018-06-20 16:38:52] <somers_> I guess we just have to forget about the success case, and only test the error case
+[2018-06-20 16:39:06] <somers_> If tmpfs supported quotas, then we could use it.
+[2018-06-20 16:39:14] <somers_> But it doesn't.
+[2018-06-20 16:54:24] <aniketp> Okay, although how would I know whether accounting was enabled/disabled from within the program?
+[2018-06-20 16:54:24] <aniketp> For ex: This code always prints out 0: https://pastebin.com/66WHPkmk
+[2018-06-20 16:54:27] <aniketp> @somers_ 
+[2018-06-20 16:55:38] <somers_> You're looking at sysctl's return status, not its standard output
+[2018-06-20 16:56:27] <aniketp> Yeah, the standard output was 0 or 1 accordingly. But how would I get that from within the program? @somers_ 
+[2018-06-20 16:57:01] <somers_> Best to use sysctl(2)
+[2018-06-20 16:57:35] <aniketp> There wasn't any sysctl(2) @somers_ :/
+[2018-06-20 16:57:51] <somers_> Actually sysctl(3)
+[2018-06-20 16:58:26] <aniketp> Woah, there are so many arguments...
+[2018-06-20 17:04:33] * somers__ (~somers@63-224-81-84.hlrn.qwest.net) join
+[2018-06-20 17:07:03] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-20 17:41:06] <aniketp> @somers_ I was having a hard time understanding different approaches to using the sysctl(3). Can you please point to the right argument values I should use for kern.acct_configured case?
+[2018-06-20 17:53:01] <aniketp> @somers__ 
