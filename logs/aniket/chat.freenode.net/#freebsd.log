@@ -684,3 +684,47 @@
 [2018-06-20 09:42:49] * bijan-e (~bijan-e@unaffiliated/bijan-e) quit Read error: Connection reset by peer
 [2018-06-20 09:54:14] * conta (~Thunderbi@cz4.datarail.eu) join
 [2018-06-20 09:57:16] * rennj (~rennj@174-24-109-241.clsp.qwest.net) join
+[2018-06-20 10:01:20] * vdamewood (~vdamewood@unaffiliated/vdamewood) quit Ping timeout: 255 seconds
+[2018-06-20 10:02:22] * cur8or_ (~cur8or@72canterbury.cybersmart.co.za) join
+[2018-06-20 10:04:02] * cur8or (~cur8or@72canterbury.cybersmart.co.za) quit Ping timeout: 256 seconds
+[2018-06-20 10:04:55] <crest> aniketp41: what information do you have to start your lookup?
+[2018-06-20 10:05:37] * Paul-muadib (~ludo@2a01:e34:ed45:8a70:3443:5076:233a:3f25) quit Ping timeout: 256 seconds
+[2018-06-20 10:05:57] * Paul-muadib (~ludo@2a01:e34:ed45:8a70:3443:5076:233a:3f25) join
+[2018-06-20 10:07:00] * kusuriya (~kusuriya@2601:603:1b80:319:fcca:2dff:fee1:9b31) quit Ping timeout: 256 seconds
+[2018-06-20 10:09:45] * kusuriya (~kusuriya@2601:603:1b80:319:fcca:2dff:fee1:9b31) join
+[2018-06-20 10:18:16] <aniketp41> crest: I don't have anything to start with. I just need a successful invocation of a standalone quotactl(2) system call. And the man-page said it currently only works with UFS.
+[2018-06-20 10:18:51] <crest> in that case look at the output of mount -t ufs
+[2018-06-20 10:19:39] * vdamewood (~vdamewood@unaffiliated/vdamewood) join
+[2018-06-20 10:22:33] * conta (~Thunderbi@cz4.datarail.eu) quit Quit: conta
+[2018-06-20 10:23:27] * Dani-hp (~dani@2001:1620:2048:3b41:9a90:96ff:fecd:f69e) join
+[2018-06-20 10:29:39] * conta (~Thunderbi@cz4.datarail.eu) join
+[2018-06-20 10:30:26] <aniketp41> crest: the output was: "/dev/ada0p2 on / (ufs, local, journaled soft-updates)"
+[2018-06-20 10:30:26] <aniketp41> But passing /dev/ada0p2 to the "path" argument of quotactl(2) resulted in "Operation not supported" error
+[2018-06-20 10:30:26] <aniketp41> Here is the snippet: "quotactl("/dev/ada0p2", Q_GETQUOTASIZE, 0, &size)"
+[2018-06-20 10:35:30] <crest> /dev/ada0p1 is the device not the mountpoint
+[2018-06-20 10:35:40] <crest> the mountpoint would be "/"
+[2018-06-20 10:35:46] <crest> *p2
+[2018-06-20 10:38:38] * Ridout (~coffee@unaffiliated/ridout) join
+[2018-06-20 10:39:53] * conta (~Thunderbi@cz4.datarail.eu) quit Quit: conta
+[2018-06-20 10:45:33] * lesta (~lesta@unaffiliated/jimlesta) join
+[2018-06-20 10:52:34] * HarveyPwca (~HarveyPwc@99-89-221-140.lightspeed.cicril.sbcglobal.net) join
+[2018-06-20 10:52:43] * AfroThundr (~AfroThund@pool-100-16-254-51.bltmmd.fios.verizon.net) quit Remote host closed the connection
+[2018-06-20 10:57:12] * well_laid_lawn (~Jean-luc@203.221.215.140) quit Ping timeout: 260 seconds
+[2018-06-20 10:57:46] <aniketp41> crest: Okay got it, thanks.
+[2018-06-20 11:04:00] * UxL7X (~UxL7X@223.223.203.184) quit Ping timeout: 245 seconds
+[2018-06-20 11:05:05] * DTZUZO (~DTZUZO@S0106bcd16584b0aa.vs.shawcable.net) quit Ping timeout: 240 seconds
+[2018-06-20 11:13:01] * silver (~silver@mm-59-60-85-93.mgts.dynamic.pppoe.byfly.by) join
+[2018-06-20 11:15:20] * Paul-muadib (~ludo@2a01:e34:ed45:8a70:3443:5076:233a:3f25) quit Remote host closed the connection
+[2018-06-20 11:17:42] * Paul-muadib (~ludo@2a01:e34:ed45:8a70:3443:5076:233a:3f25) join
+[2018-06-20 11:18:13] * cur8or_ (~cur8or@72canterbury.cybersmart.co.za) quit Quit: My MacBook has gone to sleep. ZZZzzz…
+[2018-06-20 11:18:59] * xj (~xj@221x245x212x92.ap221.ftth.ucom.ne.jp) quit Read error: Connection reset by peer
+[2018-06-20 11:23:33] * electro33 (uid613@gateway/web/irccloud.com/x-nwlsjhplypufbppj) quit Quit: Connection closed for inactivity
+[2018-06-20 11:23:57] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) join
+[2018-06-20 11:28:33] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) quit Ping timeout: 264 seconds
+[2018-06-20 11:37:56] * cur8or (~cur8or@72canterbury.cybersmart.co.za) join
+[2018-06-20 11:38:02] * UxL7X (~UxL7X@223.223.203.184) join
+[2018-06-20 11:42:04] * aaro (aaro@gateway/shell/xshellz/x-inlufelhsgfixfyo) quit Ping timeout: 256 seconds
+[2018-06-20 11:42:57] * UxL7X (~UxL7X@223.223.203.184) quit Ping timeout: 240 seconds
+[2018-06-20 11:45:06] * UxL7X (~UxL7X@223.223.203.184) join
+[2018-06-20 11:48:48] * aaro (aaro@gateway/shell/xshellz/x-ukcbxurpxbgkiypr) join
+[2018-06-20 11:59:50] * haso2 (~Thunderbi@162.79-160-5.customer.lyse.net) join
