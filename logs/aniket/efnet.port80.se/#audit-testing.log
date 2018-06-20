@@ -2806,3 +2806,6 @@
 [2018-06-20 17:07:03] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-06-20 17:41:06] <aniketp> @somers_ I was having a hard time understanding different approaches to using the sysctl(3). Can you please point to the right argument values I should use for kern.acct_configured case?
 [2018-06-20 17:53:01] <aniketp> @somers__ 
+[2018-06-20 19:16:01] <somers__> Firstly, it's probably more convenient to use sysctlbyname
+[2018-06-20 19:18:16] <somers__> I think the value is going to be an int
+[2018-06-20 19:18:35] <somers__> But you can double check by checking the value of newlen after sysctlbyname returns
