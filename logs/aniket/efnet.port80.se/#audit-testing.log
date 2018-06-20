@@ -2760,3 +2760,8 @@
 [2018-06-20 04:33:24] * gnn (~quassel@f373.x.rootbsd.net) join
 [2018-06-20 04:37:20] * gnn_ (~quassel@f373.x.rootbsd.net) join
 [2018-06-20 04:38:09] * gnn (~quassel@f373.x.rootbsd.net) quit Ping timeout: 268 seconds
+[2018-06-20 15:56:53] <aniketp> Btw @somers_, ntp_adjtime(2) uses struct timex which has so many members, how can I initialize them all?
+[2018-06-20 15:56:53] <aniketp> Is there a way to manipulate the return structure of "ntp_gettime(2)" (which uses struct ntptimeval)
+[2018-06-20 15:57:33] <somers_> I don't see how; they're different structures
+[2018-06-20 15:58:59] <somers_> But I think that if you set timex.modes = 0, then the kernel won't update any of the other things.  So bzeroing the whole structure would probably work
+[2018-06-20 15:59:26] <aniketp> Okay, will try it.
