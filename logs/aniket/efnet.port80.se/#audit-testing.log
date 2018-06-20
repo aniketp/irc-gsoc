@@ -2750,3 +2750,5 @@
 [2018-06-19 17:41:29] <aniketp> Btw @somers_, why sendmsg though? 
 [2018-06-19 17:41:54] <aniketp> Till now, I dislike execve(2) the most :/
 [2018-06-19 17:42:07] <somers_> You never tried to use msghdr.msg_control
+[2018-06-20 03:32:21] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) quit Read error: Connection reset by peer
+[2018-06-20 03:33:19] * somers_ (~somers@63-224-81-55.hlrn.qwest.net) join
