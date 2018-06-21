@@ -2814,3 +2814,4 @@
 [2018-06-21 06:05:37] <aniketp> If is was disabled before, I don't even turn it on by passing NULL as the path argument.
 [2018-06-21 06:05:37] <aniketp> I also verified that, if the accouting was already running, it resumed normally in /var/account/acct
 [2018-06-21 06:05:37] <aniketp> Here is the test: https://pastebin.com/Eeg5b7x3   @somers__ 
+[2018-06-21 08:39:39] <aniketp> Also, @somers__, I again got "operation not supported" with normal/forced mount(2) of "nullfs" and "tmpfs" 
