@@ -2815,3 +2815,36 @@
 [2018-06-21 06:05:37] <aniketp> I also verified that, if the accouting was already running, it resumed normally in /var/account/acct
 [2018-06-21 06:05:37] <aniketp> Here is the test: https://pastebin.com/Eeg5b7x3   @somers__ 
 [2018-06-21 08:39:39] <aniketp> Also, @somers__, I again got "operation not supported" with normal/forced mount(2) of "nullfs" and "tmpfs" 
+[2018-06-21 14:27:47] <somers__> Why are you doing all of that stuff in the test body instead of the cleanup?
+[2018-06-21 14:28:46] <somers__> aniketp: restarting auditd must be done in the cleanup phase.  Where it is right now, it might not run, if the test fails
+[2018-06-21 14:44:00] <aniketp> @somers__ I'm starting/stopping the accounting in test body. auditd(8) is normally handled in the cleanup() function. 
+[2018-06-21 14:44:45] <aniketp> Also, I need access to auditinfo variable so couldn't do the accounting stuff in cleanup, as you said we can't share state between test case parts
+[2018-06-21 14:48:15] <somers__> You can share state via the filesystem, just as you do for the common code that starts and stops auditd
+[2018-06-21 14:54:32] <aniketp> Okay, can I make the variable acctinfo global, as a simpler solution? Like, initialize it as 0, and if accounting was enabled already, change it to 1 which can be used by the cleanup part. Also, acctinfo is only being used by acct_success case so we can be sure that no other test case would modify it
+[2018-06-21 14:54:36] <aniketp> @somers__ 
+[2018-06-21 14:55:23] <somers__> Nope.  Cleanup runs in a separate process
+[2018-06-21 14:55:46] <aniketp> Okay, I'll create a file then.
+[2018-06-21 15:08:16] <aniketp> Btw @somers__ I'm creating a file "fileforacctaudit" for passing it to acct(2) in case it is already enabled. Can I use it as the file?
+[2018-06-21 15:08:51] <somers__> No, because I don't think that file should be conditional.
+[2018-06-21 15:08:56] <aniketp> Here: https://pastebin.com/MH71Z0Z4
+[2018-06-21 15:09:21] <aniketp> But we only stop, start accounting when it was already enabled
+[2018-06-21 15:09:32] <aniketp> Else we don't tamper with it
+[2018-06-21 15:09:37] <aniketp> @somers__ \
+[2018-06-21 15:11:03] <somers__> Yes you do.  Switching to a different accounting file is just as disruptive as stopping accounting altogether.
+[2018-06-21 15:12:13] <aniketp> But I'm stopping it only when it was already stopped.. @somers__ 
+[2018-06-21 15:12:13] <aniketp> I switch the accounting file when it was already enabled, and that is when we need to reset everything
+[2018-06-21 15:12:31] <aniketp> For the first case, I didn't even need to create the file
+[2018-06-21 15:13:55] <somers__> What are you talking about?  The cleanup phase or the test phase?
+[2018-06-21 15:15:46] <aniketp> I was talking about when we need to create the "fileforacctaudit" file. It is only created when accounting was already enabled. For the other case, we don't create the file so it doesn't exist and hence, the cleanup of accounting doesn't even happen. Because atf_utils_file_exists() returns false 
+[2018-06-21 15:15:50] <aniketp> @somers__ 
+[2018-06-21 15:20:01] <somers__> Ok, I see that.  But I'm not sure what advantage that approach would have over the straightforward approach of creating a separate file to indicate acct status, and unconditionally calling acct("fileforaudit") in the body
+[2018-06-21 15:23:31] <aniketp> Okay, so you mean, creating a file with something like: system("sysctl kern.acct_configured && touch acct_enabled")? @somers__ 
+[2018-06-21 15:24:21] <somers__> That would be the clumsy way to do it.  The better way would be to use sysctlbyname like you're currently doing, and then create the file with open("acct_enabled", O_CREAT)
+[2018-06-21 15:28:11] <aniketp> That will essentially create two files for similar code.. That is how I'm creating "fileforacctaudit" . If the sysctlbyname(3) returns acctinfo as 1.
+[2018-06-21 15:28:11] <aniketp> What you suggested would have two open(2) calls within same if condition, @somers__ 
+[2018-06-21 15:28:40] <somers__> No, I'm suggesting that you create fileforacctaudit unconditionally
+[2018-06-21 15:30:50] <aniketp> I didn't understand @somers__ . fileforacctaudit is the path where accounting would be shifted, why should it be created unconditionally?
+[2018-06-21 15:31:40] <somers__> Because that's simpler than providing acct(2) with different arguments based on whether accounting was already enabled.
+[2018-06-21 15:54:54] <aniketp> Ok @somers__, is this fine: https://pastebin.com/rXp1AJj6
+[2018-06-21 15:55:37] <aniketp> Oops, need to close(filedesc2)
+[2018-06-21 15:56:25] <somers__> Yeah, that's more like what I had in mind
