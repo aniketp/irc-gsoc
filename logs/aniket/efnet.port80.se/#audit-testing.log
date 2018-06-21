@@ -2848,3 +2848,5 @@
 [2018-06-21 15:54:54] <aniketp> Ok @somers__, is this fine: https://pastebin.com/rXp1AJj6
 [2018-06-21 15:55:37] <aniketp> Oops, need to close(filedesc2)
 [2018-06-21 15:56:25] <somers__> Yeah, that's more like what I had in mind
+[2018-06-21 16:02:13] <aniketp> Okay, updated D15898. Btw @somers__, about mount(2), nmount(2) issue? I again got "operation not supported" with normal/forced mount(2) of "nullfs" and "tmpfs" 
+[2018-06-21 16:03:19] <somers__> You may find it easier to play with mount(8) first before you try doing it with mount(2)
