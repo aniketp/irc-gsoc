@@ -2809,3 +2809,8 @@
 [2018-06-20 19:16:01] <somers__> Firstly, it's probably more convenient to use sysctlbyname
 [2018-06-20 19:18:16] <somers__> I think the value is going to be an int
 [2018-06-20 19:18:35] <somers__> But you can double check by checking the value of newlen after sysctlbyname returns
+[2018-06-21 06:05:37] <aniketp> Thanks! I was able to get the tests to work for acct_success using sysctlbyname(2)
+[2018-06-21 06:05:37] <aniketp> The approach I'm using is to check if the accounting was enabled. If it was, then we switch it to our path, and reset it back to original path at /var/account/acct after the tests complete.
+[2018-06-21 06:05:37] <aniketp> If is was disabled before, I don't even turn it on by passing NULL as the path argument.
+[2018-06-21 06:05:37] <aniketp> I also verified that, if the accouting was already running, it resumed normally in /var/account/acct
+[2018-06-21 06:05:37] <aniketp> Here is the test: https://pastebin.com/Eeg5b7x3   @somers__ 
