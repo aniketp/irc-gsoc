@@ -2850,3 +2850,6 @@
 [2018-06-21 15:56:25] <somers__> Yeah, that's more like what I had in mind
 [2018-06-21 16:02:13] <aniketp> Okay, updated D15898. Btw @somers__, about mount(2), nmount(2) issue? I again got "operation not supported" with normal/forced mount(2) of "nullfs" and "tmpfs" 
 [2018-06-21 16:03:19] <somers__> You may find it easier to play with mount(8) first before you try doing it with mount(2)
+[2018-06-21 23:05:04] * somers_ (~somers@63-224-81-65.hlrn.qwest.net) join
+[2018-06-21 23:07:23] * somers__ (~somers@63-224-81-84.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-21 23:59:56] <aniketp> Ping @somers_, I was able to get #define _WANT_SEMUN to work.
