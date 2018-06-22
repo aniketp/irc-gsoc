@@ -2985,3 +2985,32 @@
 [2018-06-22 15:19:30] * somers (~somers@63-224-80-171.hlrn.qwest.net) join
 [2018-06-22 15:35:27] * somers_ (~somers@63-224-80-122.hlrn.qwest.net) join
 [2018-06-22 15:35:44] * somers (~somers@63-224-80-171.hlrn.qwest.net) quit Ping timeout: 600 seconds
+[2018-06-22 16:23:46] <aniketp> Ping @somers_, those tests were all I could audit for IPC. message queue POSIX syscalls were not auditable. 
+[2018-06-22 16:24:19] <aniketp> Probably the most interesting audit class
+[2018-06-22 16:24:31] <somers_> why not?
+[2018-06-22 16:25:56] <aniketp> I tried out a sample program to confirm their audit, For eg, mq_open(2) did not show up in the auditpipe. Also, I later confirmed that ar->ar_event switch case in audit_bsm.c did not have any case for AUE_MQ_OPEN (or something similar)
+[2018-06-22 16:26:06] <aniketp> And same for its friends @somers_ 
+[2018-06-22 16:26:38] <aniketp> Although, I'll give another run down once these basic syscalls are merged
+[2018-06-22 16:26:54] <somers_> It's in /etc/security/audit_event.  So it's supposed to be auditted.  If it isn't, then that's a bug.
+[2018-06-22 16:27:21] <somers_> Go ahead and open a PR, and commit a test case with atf_tc_expect_fail
+[2018-06-22 16:27:51] <aniketp> @rwatson said about this issue earlier. "FYI, the main sources of non-auditing in system calls are most likely (a) it wasn't required by the Orange Book / CAPP; (b) it relates to new system calls that arrived after audit was introduced; or (c) where there are substantial differences from Mac OS X and we mucked up the merge."
+[2018-06-22 16:27:59] <aniketp> @somers_ 
+[2018-06-22 16:28:45] <somers_> this is none of those
+[2018-06-22 16:29:10] <somers_> rwatson was referring to syscalls that are explicitly in the "no" class, or that aren't in audit_event at all.
+[2018-06-22 16:32:24] <somers_> If AUE_MQ_OPEN isn't handled in kaudit_to_bsm, then it should print something like "BSM conversion requested for unknown event" to dmesg.  Did it?
+[2018-06-22 16:39:25] <aniketp> Weird, its not showing up now. But it did show up for lgetfh(2) and chflagsat(2) @somers_ 
+[2018-06-22 16:39:42] <aniketp> Maybe there is an issue with my implementation
+[2018-06-22 16:42:43] <somers_> The "unknown event" message showed up for lgetfh and chflagsat?
+[2018-06-22 16:44:35] <aniketp> Yeah, lgetfh(2): BSM conversion requested for unknown event 43061
+[2018-06-22 16:44:53] <aniketp> chflagsat: BSM conversion requested for unknown event 43209
+[2018-06-22 16:45:14] <aniketp> @somers_ , I recorded them as I thought it could be useful
+[2018-06-22 16:45:35] <aniketp> But it should also show similar message for mq_open(2)
+[2018-06-22 16:45:42] <aniketp> Not sure why it isn't showing up
+[2018-06-22 16:46:01] <somers_> Are you filtering out that audit class?
+[2018-06-22 16:46:46] <aniketp> Yeah, I set "ip" in /etc/security/audit_class "flag"
+[2018-06-22 16:47:08] <aniketp> I'll try creating an expected failure test and see if I get it them
+[2018-06-22 16:47:38] <aniketp> *That is how I got those messages for lgetfh(2) and chflagsat(2) @somers_ : https://github.com/aniketp/AuditTestSuite/commit/e1189c4e563f034202f6bc28bf2a44a4ed935edc
+[2018-06-22 16:48:04] <somers_> Make sure you open PRs for those
+[2018-06-22 16:48:58] <aniketp> Already there: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228374
+[2018-06-22 16:49:02] <aniketp> @somers_ 
+[2018-06-22 16:49:43] <aniketp> I'll try to find out the event number for mq_open(2) and friends and open their PR too
