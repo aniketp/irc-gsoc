@@ -2853,3 +2853,15 @@
 [2018-06-21 23:05:04] * somers_ (~somers@63-224-81-65.hlrn.qwest.net) join
 [2018-06-21 23:07:23] * somers__ (~somers@63-224-81-84.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-06-21 23:59:56] <aniketp> Ping @somers_, I was able to get #define _WANT_SEMUN to work.
+[2018-06-22 00:00:18] <somers_> cool.  what was the trick?
+[2018-06-22 00:00:48] <aniketp> I guess I should have defined _WANT_SEMUN right above the sem.h include. I was including it way above the first include. I think probably some #endif might have closed it up 
+[2018-06-22 00:01:41] <aniketp> @somers_ 
+[2018-06-22 00:03:58] <aniketp> Wait, it even works on defining _WANT_SEMUN at the top. Not sure what made it work.. 😅
+[2018-06-22 00:13:18] * somers__ (~somers@63-224-81-82.hlrn.qwest.net) join
+[2018-06-22 00:15:13] * somers_ (~somers@63-224-81-65.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 00:36:08] * somers__ (~somers@63-224-81-82.hlrn.qwest.net) quit Read error: Connection reset by peer
+[2018-06-22 00:37:01] * somers__ (~somers@63-224-81-82.hlrn.qwest.net) join
+[2018-06-22 01:47:59] * somers__ (~somers@63-224-81-82.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 01:51:53] * somers (~somers@63-224-81-208.hlrn.qwest.net) join
+[2018-06-22 01:56:25] * somers (~somers@63-224-81-208.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 01:57:55] * somers (~somers@63-224-80-21.hlrn.qwest.net) join
