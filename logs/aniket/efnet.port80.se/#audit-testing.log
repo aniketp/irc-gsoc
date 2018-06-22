@@ -2966,3 +2966,22 @@
 [2018-06-22 12:59:45] * somers (~somers@63-224-81-165.hlrn.qwest.net) quit Ping timeout: 600 seconds
 [2018-06-22 13:08:15] * somers_ (~somers@63-224-81-188.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-06-22 13:09:03] * somers__ (~somers@63-224-80-174.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-06-22 14:11:16] * somers (~somers@63-224-81-37.hlrn.qwest.net) join
+[2018-06-22 14:35:03] * somers (~somers@63-224-81-37.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 14:42:53] * somers (~somers@63-224-80-147.hlrn.qwest.net) join
+[2018-06-22 14:44:11] * somers (~somers@63-224-80-147.hlrn.qwest.net) quit Remote host closed the connection
+[2018-06-22 14:45:40] * somers (~somers@63-224-80-147.hlrn.qwest.net) join
+[2018-06-22 14:51:19] * somers (~somers@63-224-80-147.hlrn.qwest.net) quit Quit: Leaving
+[2018-06-22 14:52:43] * somers (~somers@63-224-80-147.hlrn.qwest.net) join
+[2018-06-22 15:10:28] <aniketp> Ping @somers_, I was trying to audit setpgrp(2). According to the man-page, calling setpgrp(0,0) attaches current process to its own process group, essentially changing nothing. An independent program worked but setpgrp_success test-case always failed saying "setpgrp(0,0) != 0"
+[2018-06-22 15:10:33] <aniketp> @somers 
+[2018-06-22 15:11:15] <somers> did you check the errno?
+[2018-06-22 15:11:30] <aniketp> From within the test case?
+[2018-06-22 15:12:13] <aniketp> @somers 
+[2018-06-22 15:12:21] <somers> yeah
+[2018-06-22 15:12:35] <aniketp> Okay, will do that
+[2018-06-22 15:17:50] <aniketp> @somers, it was EPERM: "return,failure : Operation not permitted"
+[2018-06-22 15:19:03] * somers (~somers@63-224-80-147.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 15:19:30] * somers (~somers@63-224-80-171.hlrn.qwest.net) join
+[2018-06-22 15:35:27] * somers_ (~somers@63-224-80-122.hlrn.qwest.net) join
+[2018-06-22 15:35:44] * somers (~somers@63-224-80-171.hlrn.qwest.net) quit Ping timeout: 600 seconds
