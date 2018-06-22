@@ -3014,3 +3014,21 @@
 [2018-06-22 16:48:58] <aniketp> Already there: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228374
 [2018-06-22 16:49:02] <aniketp> @somers_ 
 [2018-06-22 16:49:43] <aniketp> I'll try to find out the event number for mq_open(2) and friends and open their PR too
+[2018-06-22 18:58:10] * somers_ (~somers@63-224-80-122.hlrn.qwest.net) quit Ping timeout: 633 seconds
+[2018-06-22 18:58:33] * somers (~somers@63-224-81-16.hlrn.qwest.net) join
+[2018-06-22 19:02:04] * somers_ (~somers@63-224-80-203.hlrn.qwest.net) join
+[2018-06-22 19:03:05] * somers (~somers@63-224-81-16.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 19:06:06] * somers__ (~somers@63-224-81-244.hlrn.qwest.net) join
+[2018-06-22 19:07:51] * somers_ (~somers@63-224-80-203.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 19:09:10] * somers_ (~somers@63-224-81-249.hlrn.qwest.net) join
+[2018-06-22 19:10:25] * somers__ (~somers@63-224-81-244.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 19:18:07] * somers_ (~somers@63-224-81-249.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 19:25:45] * somers (~somers@63-224-80-113.hlrn.qwest.net) join
+[2018-06-22 19:30:57] * somers (~somers@63-224-80-113.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 19:32:01] * somers (~somers@63-224-80-221.hlrn.qwest.net) join
+[2018-06-22 19:36:27] * somers (~somers@63-224-80-221.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-22 19:40:58] * somers (~somers@63-224-80-42.hlrn.qwest.net) join
+[2018-06-22 19:49:28] * somers_ (~somers@63-224-81-189.hlrn.qwest.net) join
+[2018-06-22 19:52:45] * somers (~somers@63-224-80-42.hlrn.qwest.net) quit Ping timeout: 600 seconds
+[2018-06-22 19:57:20] * somers__ (~somers@63-224-81-65.hlrn.qwest.net) join
+[2018-06-22 19:59:33] * somers_ (~somers@63-224-81-189.hlrn.qwest.net) quit Ping timeout: 252 seconds
