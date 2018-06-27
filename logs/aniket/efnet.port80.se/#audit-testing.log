@@ -3045,3 +3045,23 @@
 [2018-06-22 20:17:53] * somers (~somers@63-224-80-58.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-06-27 05:19:18] * mpts (~mpts@boston-packets.hackerspace.pl) quit Read error: Operation timed out
 [2018-06-27 05:19:19] * mpts_ (~mpts@boston-packets.hackerspace.pl) join
+[2018-06-27 14:13:22] * somers (~somers@63-224-81-57.hlrn.qwest.net) join
+[2018-06-27 14:15:04] <aniketp> Ping @somers, I added swapon(2), swapoff(2) and auditon(2) in the D15898 for administrative syscalls. swapon(2) and swapoff(2) required block devices so couldn't test them in success mode. 
+[2018-06-27 14:15:36] <somers> can you use them with a swap file?
+[2018-06-27 14:17:33] <aniketp> The manpage explicitely mentioned "special" block device. Did not try it with a swap file
+[2018-06-27 14:18:00] <aniketp> But is there a way to create the swap file from the program? @somers 
+[2018-06-27 14:18:12] <somers> dunno.  I've never tried
+[2018-06-27 14:19:08] <aniketp> I saw some command line methods in the FreeBSD forum. Don't think they mentioned doing that with some syscall or library function
+[2018-06-27 14:21:41] <aniketp> @somers, I tried swapon(2) with my swap partition listed in /etc/fstab: got "return,failure : Device busy"
+[2018-06-27 14:21:55] <aniketp> maybe swapoff(2) would work
+[2018-06-27 14:23:39] <aniketp> Yeah, turning it off and then on worked. 
+[2018-06-27 14:42:26] <aniketp> Btw @somers, can the current state of D15898 be committed? (After you review the new tests)
+[2018-06-27 14:42:26] <aniketp> I'll add mount(2) and nmount(2) success as soon as I get it to execute successfully. 
+[2018-06-27 14:42:26] <aniketp> Also, adding tests for clock_settime(2)
+[2018-06-27 14:43:41] <somers> I haven't reviewed the latest version yet.  But it's ok if you want to do mount in a separate commit
+[2018-06-27 14:45:11] <aniketp> Sure. Also about swap{on/off}(2). I tried them with my swap device "/dev/ada0p3". They both worked. I'll see if I can create a swap file from within the program and pass them as the argument. @somers 
+[2018-06-27 15:01:39] <somers> I'll wait on D15898 while you work with swapon and swapoff
+[2018-06-27 15:01:54] <aniketp> Okay
+[2018-06-27 15:02:33] <aniketp> Btw I can add them with mount(2) later on too. Now sure how easy/difficult it would be.
+[2018-06-27 15:03:35] <aniketp> Btw @somers, Is it fine if I create a separate revision specifically for them later on? D15898 already has quite a lot of syscalls. 
+[2018-06-27 15:05:30] <somers> ok
