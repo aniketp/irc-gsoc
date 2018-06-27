@@ -3065,3 +3065,56 @@
 [2018-06-27 15:02:33] <aniketp> Btw I can add them with mount(2) later on too. Now sure how easy/difficult it would be.
 [2018-06-27 15:03:35] <aniketp> Btw @somers, Is it fine if I create a separate revision specifically for them later on? D15898 already has quite a lot of syscalls. 
 [2018-06-27 15:05:30] <somers> ok
+[2018-06-27 16:25:15] <aniketp> Btw @somers, "./process-control setsid_failure " was passing the tests for me
+[2018-06-27 16:26:46] <aniketp> I think the second statement of EPERM might be the reason for failure "The calling process is already a process group leader, or the process group ID of a process other than the calling process matches the process ID of the calling process."
+[2018-06-27 16:27:17] <aniketp> some other process might have the same process ID as the calling process
+[2018-06-27 16:27:47] <aniketp> @somers did the tests fail for you with ./process-control setsid_failure 
+[2018-06-27 16:29:17] <somers> No.  No two processes will ever have the same PID at the same time.
+[2018-06-27 16:29:32] <aniketp> No I meant process group ID
+[2018-06-27 16:29:35] <somers> Yes, that command fails for me
+[2018-06-27 16:29:59] <aniketp> Like the child and parent process do have same process group ID
+[2018-06-27 16:30:17] <somers> It's easy to check for pgid.  Just do "ps -ax -O pgid -d"
+[2018-06-27 16:31:14] <somers> Hm, I've found a bug in auditd.  It's not reaping its children.
+[2018-06-27 16:31:16] <somers> 21642 21642  -  Is      0:01.58 |-- /usr/sbin/auditd
+[2018-06-27 16:31:16] <somers> 21643 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:16] <somers> 21644 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:16] <somers> 21645 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:16] <somers> 21648 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:17] <somers> 21649 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:19] <somers> 21650 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:21] <somers> 21652 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:23] <somers> 21653 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:25] <somers> 21654 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:27] <somers> 21655 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:31] <somers> 21656 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:33] <somers> 21657 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:35] <somers> 21659 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:37] <somers> 21660 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:39] <somers> 21662 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:41] <somers> 21663 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:43] <somers> 21665 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:45] <somers> 21667 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:47] <somers> 21668 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:49] <somers> 21670 21642  -  Z       0:00.00 | |-- <defunct>
+[2018-06-27 16:31:51] <somers> 21671 21642  -  Z       0:00.00 | `-- <defunct>
+[2018-06-27 16:32:50] <aniketp> Ooh zombie processes?
+[2018-06-27 16:33:04] <somers> Yeah.  I don't know what they were
+[2018-06-27 16:34:38] <somers> I wonder if it's related to the 76,036 files I have in /var/audit
+[2018-06-27 16:35:41] <aniketp> Woah! I just have 10. And I never delete them... 
+[2018-06-27 16:35:41] <aniketp> Btw @somers, in one of the mails earlier you said that they expire after some time?
+[2018-06-27 16:35:50] <somers> what expires?
+[2018-06-27 16:35:59] <aniketp> the stuff in /var/audit
+[2018-06-27 16:36:27] <somers> Yeah.  The expiration policy is set in /etc/security/audit_control
+[2018-06-27 16:46:31] <aniketp> Btw @somers, what if I call setsid() twice?
+[2018-06-27 16:46:31] <aniketp> The second time it is bound to fail, right? Like. the first time it will create a new session with same process group Id as the PID of calling process. The second time EPERM will start shouting because of two same PGIDS?
+[2018-06-27 16:47:27] <somers> Yep, that should work
+[2018-06-27 16:49:06] <aniketp> Btw the tests don't fail for me so I can't confirm it that worked :/. Cause the failure test passed for me even by just one setsid().
+[2018-06-27 16:58:39] <aniketp> Also @somers, wouldn't A_GETCLASS fill up the evclass buffer with the event-class mapping? 
+[2018-06-27 16:58:50] <aniketp> I thought every "GET" commands worked like this
+[2018-06-27 16:59:08] <somers> For A_GETCLASS, the argument is both input and output
+[2018-06-27 16:59:26] <aniketp> So bzeroing would work? @somers 
+[2018-06-27 17:00:19] <somers> No.  It should be a valid input
+[2018-06-27 17:42:13] <somers> When you're running tests, do you leave auditd running all the time?
+[2018-06-27 17:42:55] <somers> I just got a total failure of my VM because all those zombies hit the process limit
+[2018-06-27 17:47:32] <somers> I can see from the audit trail that one of the zombies is a grep process.  None of the other zombies showed up
+[2018-06-27 17:57:47] <somers> Hm.  Ktrace shows that all zombies are running /etc/security/audit_warn
