@@ -3118,3 +3118,11 @@
 [2018-06-27 17:42:55] <somers> I just got a total failure of my VM because all those zombies hit the process limit
 [2018-06-27 17:47:32] <somers> I can see from the audit trail that one of the zombies is a grep process.  None of the other zombies showed up
 [2018-06-27 17:57:47] <somers> Hm.  Ktrace shows that all zombies are running /etc/security/audit_warn
+[2018-06-27 18:19:55] <aniketp> Yeah @somers, I never stop auditd(8)
+[2018-06-27 18:20:28] <somers> That's why you don't see the problem, then.  I run with auditd off, because I figure that's more fragile
+[2018-06-27 18:20:45] <somers> But it creates far more audit trails, which leads to the zombie problem.  I'm investigating now.
+[2018-06-27 18:22:11] <aniketp> Oh, alright. Btw after you fixed the bad Tailq panic, I gave multiple auditd(8) start-stop runs to all my 500+ tests then. But I did not notice any such problems 
+[2018-06-27 18:22:13] <aniketp> @somers 
+[2018-06-27 18:22:50] <aniketp> Also, the audit trails probably never exceeded some countable number
+[2018-06-27 18:23:31] <somers> Well, obviously.  But something tells me that you aren't talking about cardinality
+[2018-06-27 18:29:26] <aniketp> Yes, true. In my reference, 76,036 is equivalent to Aleph-naught :P
