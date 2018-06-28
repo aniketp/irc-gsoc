@@ -3146,3 +3146,5 @@
 [2018-06-28 14:39:44] * somers (~somers@63-224-81-235.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-06-28 16:38:01] <aniketp> Hi @somers_, does the pull request that you created in openbsm solve the zombie process issue? From what I could understand you manipulated the signal handling using struct sigaction
 [2018-06-28 16:38:29] <somers_> There are two issues.  The PR only solves one.
+[2018-06-28 18:13:27] <aniketp> Okay, also about the two revisions? @somers_ 
+[2018-06-28 18:16:04] <somers_> haven't reviewed them yet
