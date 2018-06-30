@@ -3226,3 +3226,5 @@
 [2018-06-29 16:46:43] * somers_ (~somers@63-224-80-199.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-06-29 16:46:59] * somers (~somers@63-224-81-161.hlrn.qwest.net) quit Ping timeout: 506 seconds
 [2018-06-29 16:54:47] * somers__ (~somers@63-224-80-91.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-30 02:51:59] * somers (~somers@63.224.81.101) join
+[2018-06-30 02:53:36] <somers> After you finish the last few syscalls, I think you should audit all syscalls, to make sure that each one is correctly correctly auditted or skipped.  Like how I mentioned that aio_fsync is skipped and shouldn't be.
