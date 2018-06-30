@@ -3277,3 +3277,18 @@
 [2018-06-30 11:33:51] * somers__ (~somers@63-224-81-227.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-06-30 11:34:13] * somers_ (~somers@63-224-81-132.hlrn.qwest.net) join
 [2018-06-30 11:42:29] * somers (~somers@63-224-80-39.hlrn.qwest.net) quit Ping timeout: 633 seconds
+[2018-06-30 12:43:35] <aniketp> Hi @somers_, would you recommended using the system swap file (if it exists) for testing swapon(2) and swapoff(2).
+[2018-06-30 12:43:35] <aniketp> Using getfsent(3), I was able to extract the swap device and then doing swapoff(2) and swapon(2) simultaneously worked and didn't affect anything in the system.
+[2018-06-30 12:46:43] <aniketp> However, if that is not recommended, I tried copying my system swap file to current directory (to use it for testing) but doing that shot up the CPU to 50% and it got stuck. And creating a swap file from a C program is not possible I think.
+[2018-06-30 12:47:12] <aniketp> Also, with the first approach, we can skip the success tests if the swap file does not exist in the system..
+[2018-06-30 13:20:22] * somers__ (~somers@63-224-81-77.hlrn.qwest.net) join
+[2018-06-30 13:27:13] * somers_ (~somers@63-224-81-132.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-06-30 13:33:56] * somers (~somers@63-224-80-159.hlrn.qwest.net) join
+[2018-06-30 13:40:09] * somers__ (~somers@63-224-81-77.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-06-30 13:40:13] * somers_ (~somers@63-224-81-248.hlrn.qwest.net) join
+[2018-06-30 13:43:50] * somers__ (~somers@63-224-81-2.hlrn.qwest.net) join
+[2018-06-30 13:47:11] * somers (~somers@63-224-80-159.hlrn.qwest.net) quit Ping timeout: 600 seconds
+[2018-06-30 13:49:16] * somers_ (~somers@63-224-81-248.hlrn.qwest.net) quit Ping timeout: 492 seconds
+[2018-06-30 13:53:19] * somers_ (~somers@63-224-80-111.hlrn.qwest.net) join
+[2018-06-30 13:56:29] * somers__ (~somers@63-224-81-2.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-06-30 13:59:59] * somers__ (~somers@63-224-81-124.hlrn.qwest.net) join
