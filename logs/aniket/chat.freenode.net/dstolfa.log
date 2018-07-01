@@ -1,0 +1,25 @@
+[2018-07-01 16:47:49] <aniketp41> Hello Domagoj, I'm Aniket, working on the audit(4) testsuite project.
+[2018-07-01 16:47:49] <aniketp41> I had to verify the auditability of cap_enter(2) and cap_getmode(2). Although, they were working fine as a separate program, however the man-page said that they both would fail if kernel is compiled without "options CAPABILITY_MODE".
+[2018-07-01 16:47:49] <aniketp41> So is there a way that I can check whether capability mode is enabled in the system or not? I noticed a sysctl command, "kern.capmode_coredump", though not sure if that would be useful.
+[2018-07-01 16:48:11] <aniketp41> I'd be glad if you could suggest some workaround this!
+[2018-07-01 16:48:33] <dstolfa> hey!
+[2018-07-01 16:48:34] <dstolfa> let me take a look
+[2018-07-01 16:48:57] <dstolfa> hrm
+[2018-07-01 16:49:16] <dstolfa> is this as a part of the FreeBSD build or a part of some separate software that's independently compiled from FreeBSD?
+[2018-07-01 16:50:21] <aniketp41> Oh, it would be solely for freebsd . Actually the tests would be automated using kyua(7). So, don't think it will be independent of FreeBSD
+[2018-07-01 16:53:04] <dstolfa> righto, then you can do an #ifdef at compile time
+[2018-07-01 16:53:30] <dstolfa> usually it's WITHOUT_CAPSICUM
+[2018-07-01 16:53:38] <dstolfa> or something like that
+[2018-07-01 16:54:12] <dstolfa> if you compile the tests for the wrong kernel, they shouldn't be expected to work anyway due to ABI problems
+[2018-07-01 17:03:34] <aniketp41> Okay, Btw is it HAVE_CAPSICUM? As I couldn't find WITHOUT_CAPSICUM using the github search on freebsd repository 😅 
+[2018-07-01 17:04:14] <dstolfa> ./usr.sbin/bhyve/uart_emul.c:#ifndef WITHOUT_CAPSICUM is one example where it's used
+[2018-07-01 17:04:19] <dstolfa> i'm not sure if that's the thing you want, but i know i've seen it
+[2018-07-01 17:06:18] <aniketp41> Right! So they all are #ifndef, I tried either #define or #ifdef to search for it, that's why didn't find any instance 
+[2018-07-01 17:06:32] <dstolfa> ah :)
+[2018-07-01 17:27:50] <aniketp41> Btw, if I have to check that from a user-space program, what could be a way to do it. (So that cap_enter() does not return ENOSYS)
+[2018-07-01 17:27:55] <aniketp41> *?
+[2018-07-01 17:30:03] <dstolfa> hrm
+[2018-07-01 17:30:05] <dstolfa> well
+[2018-07-01 17:30:15] <dstolfa> i don't know, you could either check compile time or check for ENOSYS
+[2018-07-01 17:32:05] <aniketp41> Hmm, sure, that would be a better way to do it!
+[2018-07-01 17:33:44] <aniketp41> Thanks!

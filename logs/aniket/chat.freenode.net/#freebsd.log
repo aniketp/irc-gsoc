@@ -780,3 +780,33 @@
 [2018-06-20 13:42:43] * stealintv (~stealintv@75.61.90.157) join
 [2018-06-20 13:44:27] * raichoo (~raichoo@office02.saltation.de) quit Ping timeout: 240 seconds
 [2018-06-20 13:45:13] * gp5st (~gp5st@pool-74-109-197-201.pitbpa.fios.verizon.net) join
+[2018-07-01 16:44:06] * aniketp41 (~aniketp41@159.65.149.37) join
+[2018-07-01 16:44:06] * undefined topic Welcome to #FreeBSD! :: Have fun, be civilized, respect others :: On-topic only, otherwise /join #freebsd-social :: /join #freebsd-irc for channel assistance | Speculative Execution Vulnerability Status: https://wiki.freebsd.org/SpeculativeExecutionVulnerabilities
+[2018-07-01 16:44:06] * debdrup topic_set_by
+[2018-07-01 16:44:27] * jamesaxl (~James_Axl@41.249.113.7) join
+[2018-07-01 16:46:15] <AppAraat> AllanJude: ping.
+[2018-07-01 16:47:39] <pong> inb4 I get a nickalert
+[2018-07-01 16:48:51] * tct (~tct@adsl-130-227.dsl.init7.net) join
+[2018-07-01 16:49:29] <AppAraat> lol, but have you ever received a nickalert of someone playing pong on FBSD?
+[2018-07-01 16:51:29] * maiz (~maiz@129.45.85.158) join
+[2018-07-01 16:54:35] <pong> I normally just do
+[2018-07-01 16:54:36] * pong action
+[2018-07-01 16:54:37] <pong> instead
+[2018-07-01 16:56:58] * drakonis (~drakonis@unaffiliated/drakonis) join
+[2018-07-01 17:00:00] * fstd_ (~fstd@unaffiliated/fisted) join
+[2018-07-01 17:00:10] <AppAraat> there seems to be only 3D version of it in ports: https://svnweb.freebsd.org/ports/head/games/3dpong/
+[2018-07-01 17:03:14] * fstd (~fstd@unaffiliated/fisted) quit Ping timeout: 268 seconds
+[2018-07-01 17:03:15] * fstd_ nick fstd
+[2018-07-01 17:03:31] * nullniverse (~nullniver@unaffiliated/nullniverse) quit Read error: Connection reset by peer
+[2018-07-01 17:04:28] * ca_cabot (~ca_cabota@162-237-147-199.lightspeed.miamfl.sbcglobal.net) join
+[2018-07-01 17:10:37] * timahvo1 (~rogue@41.90.137.68) quit Ping timeout: 245 seconds
+[2018-07-01 17:12:38] <_nir_> 1 question, guys: Why Linux guest from BHyVe is able to send ICMP packets to the outer world successfully, but when I try to connect to the website or send DNS query: All the guest can send is retransmission packets? I'm unable to receive any reply from the outer world except ICMP.
+[2018-07-01 17:14:58] <_nir_> dmesg
+[2018-07-01 17:15:34] * dkeav (~dkeav@c-98-212-233-208.hsd1.il.comcast.net) quit Ping timeout: 268 seconds
+[2018-07-01 17:17:21] * dkeav (~dkeav@c-98-212-233-208.hsd1.il.comcast.net) join
+[2018-07-01 17:22:52] <AllanJude> AppAraat: p0ng
+[2018-07-01 17:23:00] <AllanJude> also, pong deserves to get all of the pongs
+[2018-07-01 17:23:03] <ivaat> _nir_, you have firewall turned on?
+[2018-07-01 17:27:11] * sku1d (~sku1d@entwicklerseite.de) join
+[2018-07-01 17:27:56] * programings (~programin@unaffiliated/programings) join
+[2018-07-01 17:28:14] <AppAraat> AllanJude: ack

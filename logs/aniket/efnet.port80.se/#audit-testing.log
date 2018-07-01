@@ -3330,3 +3330,43 @@
 [2018-07-01 01:44:42] * gnn (~quassel@f373.x.rootbsd.net) join
 [2018-07-01 01:48:25] * gnn_ (~quassel@f373.x.rootbsd.net) quit Read error: Connection reset by peer
 [2018-07-01 03:43:41] * somers (~somers@63-224-80-148.hlrn.qwest.net) join
+[2018-07-01 16:06:03] <aniketp> Ping @somers, can you wait before committing the revision? 
+[2018-07-01 16:06:23] <aniketp> I've got two more process control syscalls coming up
+[2018-07-01 16:06:45] <aniketp> Oh, I'll create another revision now I think :P
+[2018-07-01 16:06:59] <somers> If you're not ready for a revision to be committed, you shouldn't post it to Phabricator
+[2018-07-01 16:07:11] <aniketp> Okay
+[2018-07-01 16:08:04] <aniketp> Btw about swap{on/off}(2), do you think the above approach is fine? @somers 
+[2018-07-01 16:08:38] <somers> I'm skeptical that there's no way to activate a swap device from a C program.
+[2018-07-01 16:09:58] <aniketp> Hmm, I had a look at the FreeBSD forum and they suggested using dd(1) utility for it
+[2018-07-01 16:10:29] <somers> To make a blank file?  That's hardly necessary.  You can easily do that from C.
+[2018-07-01 16:10:40] <somers> First, try truncate, which makes a blank, sparse file.
+[2018-07-01 16:13:46] <aniketp> But I need a block device, right? Wouldn't truncate(2) work on normal files. Besides, I tried creating a block device using both mknod(1) and mknod(2) but swap{on/off}(2) failed on both of them @somers 
+[2018-07-01 16:18:31] <somers> Files can be used for swap too.
+[2018-07-01 16:19:23] <somers> I've never personally done it; it might only work on UFS
+[2018-07-01 16:19:42] <somers> Or, you could take the first member of the Kyua config variable "disks" and use that.
+[2018-07-01 16:23:47] <aniketp> Okay. Btw @somers, is there a way to check whether the Capability mode is enabled in freebsd for not (from the test-program)?
+[2018-07-01 16:23:47] <aniketp> Cause cap_enter(2) would fail otherwise
+[2018-07-01 16:24:19] <somers> I don't know
+[2018-07-01 17:10:03] <aniketp> Btw @somers, are we allowed to use #define in kyua tests (I'm thinking not). Cause using #ifndef WITHOUT_CAPSICUM is an option
+[2018-07-01 17:11:04] <aniketp> But I guess they are used for kernel build so might not be an option
+[2018-07-01 17:11:12] <somers> Sure you are.
+[2018-07-01 17:11:35] <somers> But just checking WITHOUT_CAPSICUM is insufficient, because that doesn't tell you whether your program is running in capsicum mode.
+[2018-07-01 17:12:04] <somers> I just found the answer to your question in < 10 s of man page searches
+[2018-07-01 17:13:17] <aniketp> But cap_enter() places the process in capability mode, so why would we already need the process to be in capability mode 
+[2018-07-01 17:13:35] <somers> "?
+[2018-07-01 17:13:49] <somers> I thought you wanted to know whether or not you're already in capability mode
+[2018-07-01 17:15:50] <aniketp> No, actually I was talking about ENOSYS in cap_enter(2)'s man-page.
+[2018-07-01 17:15:50] <aniketp> [ENOSYS]           The kernel is compiled without:
+[2018-07-01 17:15:50] <aniketp>                             options CAPABILITY_MODE
+[2018-07-01 17:16:35] <aniketp> Oh, there is an option to do an #ifdef CAPABILITY_MODE
+[2018-07-01 17:33:37] <aniketp> Though @somers, since cap_enter() only fails with ENOSYS, (when kernel is indeed compiled without options CAPABILITY_MODE), would it be right to check the errno and if it is ENOSYS, skip the tests?
+[2018-07-01 17:34:18] <somers> No
+[2018-07-01 17:34:21] <somers> There's a better way
+[2018-07-01 17:36:50] <aniketp> @somers what is it?
+[2018-07-01 17:37:03] <somers> use the sysctl
+[2018-07-01 17:38:17] <aniketp> Yeah, I thought about it earlier and tried finding the relevant command. Is there any? I found "kern.capmode_coredump", but not sure if that would help..
+[2018-07-01 17:38:24] <aniketp> @somers 
+[2018-07-01 17:38:54] <somers> No.  Just do "sysctl -ad | grep cap" and look through the list
+[2018-07-01 17:40:40] <aniketp> Oh, this one right? "kern.trap_enotcap". I'm guessing if this returns 1, then we ought to skip the tests.. @somers 
+[2018-07-01 17:41:03] <somers> no
+[2018-07-01 17:41:50] <aniketp> Oh, sorry: I think this? "kern.features.security_capability_mode"

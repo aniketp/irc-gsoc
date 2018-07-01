@@ -113,3 +113,27 @@
 [2018-06-20 09:27:29] * aniketp41 mode +i
 [2018-06-20 09:27:29] * NickServ notice You are already logged in as aniketp41.
 [2018-06-20 09:27:35] * ChanServ notice [#freebsd] Please check the FreeBSD Handbook / Manual Pages first: https://freebsd.org/handbook - https://freebsd.org/cgi/man.cgi | Use a pastebin for >=3 lines: https://dpaste.de/ | More FreeBSD Channels: https://wiki.freebsd.org/IRC/Channels
+[2018-07-01 16:43:57] <undefined> Network created, connecting to chat.freenode.net:6697...
+[2018-07-01 16:43:57] <undefined> Connected to the network.
+[2018-07-01 16:43:57] * hitchcock.freenode.net notice *** Looking up your hostname...
+[2018-07-01 16:43:57] * hitchcock.freenode.net notice *** Checking Ident
+[2018-07-01 16:43:57] * hitchcock.freenode.net notice *** Couldn't look up your hostname
+[2018-07-01 16:43:57] * hitchcock.freenode.net notice *** No Ident response
+[2018-07-01 16:44:00] <undefined> Enabled capabilities: account-notify, extended-join, multi-prefix, sasl
+[2018-07-01 16:44:00] <undefined> You're now known as aniketp41
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * undefined unhandled
+[2018-07-01 16:44:00] * aniketp41 mode +Z
+[2018-07-01 16:44:00] * aniketp41 mode +i
+[2018-07-01 16:44:00] * NickServ notice You are already logged in as aniketp41.
+[2018-07-01 16:44:17] * ChanServ notice [#freebsd] Please check the FreeBSD Handbook / Manual Pages first: https://freebsd.org/handbook - https://freebsd.org/cgi/man.cgi | Use a pastebin for >=3 lines: https://dpaste.de/ | More FreeBSD Channels: https://wiki.freebsd.org/IRC/Channels
+[2018-07-01 17:24:25] * undefined error You can not part from networks, use /quit instead.
