@@ -3405,3 +3405,9 @@
 [2018-07-02 19:57:44] <somers> No, you should simply skip it on unsupported architectures
 [2018-07-02 19:58:15] <somers> Kyua's got builtin support for that
 [2018-07-02 19:59:44] <aniketp> Okay, will do that
+[2018-07-02 20:03:50] <aniketp> Btw @somers, can I use "sysctl hw.machine_arch" to use as a switch case for different architectures?
+[2018-07-02 20:03:50] <aniketp> This will provide wider coverage, I think
+[2018-07-02 20:04:20] <aniketp> I can use corresponding syscalls for each arch
+[2018-07-02 20:04:30] <somers> Yeah, you can do that.  Or just create a test case for each arch
+[2018-07-02 20:04:37] <somers> either one works
+[2018-07-02 20:04:43] <aniketp> Okay
