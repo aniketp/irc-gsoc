@@ -3389,3 +3389,19 @@
 [2018-07-02 17:31:19] <aniketp> Yeah, there were a lot. But I'm suspicious about "praudit /dev/auditpipe". I had never seen cap_enter(2) before with this command. 
 [2018-07-02 17:31:19] <aniketp> Btw @somers, shall I create a revision for them so that you can test whether you get the same test failure when auditd(8) is not already running?
 [2018-07-02 17:31:40] <somers> Sure
+[2018-07-02 18:10:17] <aniketp> Also @somers about sysarch(2). In the manpages, it suggests that it is architecture dependent and should not be called by user. 
+[2018-07-02 18:10:17] <aniketp> However, I had a look at my "machine/sysarch.h" which included "x86/sysarch.h". Now, in x86/sysarch header, I saw some architecture specific syscalls and using I386_GET_LDT with struct i386_ldt_args worked successfully. Although, I think for general test case, I can't use x86 syscalls.
+[2018-07-02 18:10:17] <aniketp> So is there any general syscall instruction which can be run on any architecture?
+[2018-07-02 18:45:28] <somers> Every i386 system call is emulated on amd64.  That's why it worked
+[2018-07-02 18:45:59] <somers> The answer to your second question is syscall(2), which you're already using.  But I don't think that's the question you meant to ask.
+[2018-07-02 18:46:46] <aniketp> Yeah, I meant like, would I386_GET_LDT work on every arch freebsd supports? (In case that's required)
+[2018-07-02 18:46:58] <somers> nope
+[2018-07-02 18:48:50] <aniketp> Btw @somers, reply to your comment: That happened with me too. Running any miscellaneous command shows up cap_enter() in the kyua debug stdout 
+[2018-07-02 19:10:02] <aniketp> Well, even this passed the test: int arg; sysarch(0, &arg); So @somers, would this be fine as a test-case? Since I'm not really passing any Syscall Number here (unless 0 is a number too)
+[2018-07-02 19:10:13] <aniketp> *syscall number too
+[2018-07-02 19:11:21] <somers> No, it's no ok to call an unknown syscall
+[2018-07-02 19:11:30] <somers> You have no idea what will happen if you do that
+[2018-07-02 19:29:50] <aniketp> Okay, so then should I skip the test case for success mode of sysarch(2), @somers ? Cause there doesn't look to be a universally supported syscall number in this case to me.
+[2018-07-02 19:57:44] <somers> No, you should simply skip it on unsupported architectures
+[2018-07-02 19:58:15] <somers> Kyua's got builtin support for that
+[2018-07-02 19:59:44] <aniketp> Okay, will do that
