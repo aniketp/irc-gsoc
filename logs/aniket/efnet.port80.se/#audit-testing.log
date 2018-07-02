@@ -3376,3 +3376,16 @@
 [2018-07-02 13:38:16] <aniketp> Same happened with cap_getmode(2) :/
 [2018-07-02 13:50:16] <aniketp> Alright, cap_getmode(2) worked! But still facing the same issue with the cap_enter(2) test case.
 [2018-07-02 13:59:05] <somers> I don't know.  That's pretty weird.  The only difference it should make that auditd is already running is in timing
+[2018-07-02 16:30:19] <aniketp> Btw @somers, it looks like my auditpipe(4) always runs in capability mode. Whenever I open it, I always get this: https://pastebin.com/PDF9RXvB (This only happens when auditd(8) is already running)
+[2018-07-02 16:30:19] <aniketp> I wonder whether it is related to the issue I'm facing..
+[2018-07-02 16:31:12] <aniketp> This didn't happen before, bte
+[2018-07-02 16:31:24] <somers> what do you mean "always runs in capability mode"?
+[2018-07-02 16:32:21] <aniketp> Not always I guess. But opening it with praudit(1) seems to enable capability mode for some processes
+[2018-07-02 16:33:18] <aniketp> @somers 
+[2018-07-02 16:36:10] <somers> that doesn't make sense.  You can't put another process into capability mode
+[2018-07-02 16:37:57] <aniketp> fork(2) is called before cap_enter(2). That looks like the child process is put inside capability mode. Identical to my approach in the test case. 
+[2018-07-02 16:47:17] <somers> Keep in mind that a lot of ordinary utilities use capability mode
+[2018-07-02 16:47:29] <somers> Just grep the source tree for cap_enter.  There are many.
+[2018-07-02 17:31:19] <aniketp> Yeah, there were a lot. But I'm suspicious about "praudit /dev/auditpipe". I had never seen cap_enter(2) before with this command. 
+[2018-07-02 17:31:19] <aniketp> Btw @somers, shall I create a revision for them so that you can test whether you get the same test failure when auditd(8) is not already running?
+[2018-07-02 17:31:40] <somers> Sure
