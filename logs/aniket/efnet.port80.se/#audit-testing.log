@@ -3370,3 +3370,9 @@
 [2018-07-01 17:40:40] <aniketp> Oh, this one right? "kern.trap_enotcap". I'm guessing if this returns 1, then we ought to skip the tests.. @somers 
 [2018-07-01 17:41:03] <somers> no
 [2018-07-01 17:41:50] <aniketp> Oh, sorry: I think this? "kern.features.security_capability_mode"
+[2018-07-02 13:15:29] <aniketp> Hi @somers, I created the test case for cap_enter(2): It fails when the auditd(8) is already running but passes when started by us.
+[2018-07-02 13:15:29] <aniketp> Debugging shows that cap_enter(2) doesn't show up in the auditpipe in first case: https://pastebin.com/mWc5zHYF
+[2018-07-02 13:16:31] <aniketp> What could be the problem here? I tried various approaches and this was the only one which resulted in test case success, let alone if only when auditd(8) is not running.
+[2018-07-02 13:38:16] <aniketp> Same happened with cap_getmode(2) :/
+[2018-07-02 13:50:16] <aniketp> Alright, cap_getmode(2) worked! But still facing the same issue with the cap_enter(2) test case.
+[2018-07-02 13:59:05] <somers> I don't know.  That's pretty weird.  The only difference it should make that auditd is already running is in timing
