@@ -3413,3 +3413,27 @@
 [2018-07-02 20:04:43] <aniketp> Okay
 [2018-07-03 00:40:45] * mpts (~mpts@boston-packets.hackerspace.pl) join
 [2018-07-03 00:40:56] * mpts_ (~mpts@boston-packets.hackerspace.pl) quit se.hub efnet.portlane.se
+[2018-07-03 16:46:55] <aniketp> Hi @somers, for PowerPC and ARM64, there weren't any syscall number in the headers, https://github.com/freebsd/freebsd/blob/master/sys/powerpc/include/sysarch.h
+[2018-07-03 16:46:55] <aniketp> what should I do about them?
+[2018-07-03 16:47:53] <somers> then you can't test sysarch on those platforms
+[2018-07-03 16:47:55] <somers> skip it
+[2018-07-03 16:57:34] <aniketp> Sure, also in SPARC64, I'm not sure whether the syscalls are safe enough to be tested. For example here: https://github.com/freebsd/freebsd/blob/master/sys/sparc64/include/sysarch.h#L43
+[2018-07-03 16:57:34] <aniketp> These functions look like they are installing something related to signal or a trap
+[2018-07-03 16:57:37] <aniketp> @somers 
+[2018-07-03 16:58:34] <somers> If you're not sure, then skip it.  Unless you know somebody with a Sparc64 that you can use for testing
+[2018-07-03 17:01:54] <aniketp> I don't think anyone in my company even knows about Sparc64 :P. But I found this 12-CURRENT ISO here: http://ftp.freebsd.org/pub/FreeBSD/snapshots/ISO-IMAGES/12.0/ Will try out the syscall later to see if it works fine
+[2018-07-03 17:03:40] <aniketp> Okay, so I have AMD64, i386, ARM and MIPS to safely test sysarch(2).
+[2018-07-03 17:19:32] <aniketp> Bt @somers, there's one problem though. I'll #include <machine/sysarch.h> for sysarch(2) syscall commands. That, in turn would include respective architecture's header. So my test case would fail to even compile for ex, "MIPS_GET_TLS" is not defined in my <machine/sysarch.h>
+[2018-07-03 17:23:03] <somers> Are you saying that the mips test case would fail to compile on an i386 machine?
+[2018-07-03 17:23:17] <somers> If so, then you obviously need to gate that test on #ifdef
+[2018-07-03 17:25:00] <aniketp> I mean, On an i386 machine, the compiler wouldn't know what MIPS_GET_TLS is, since that isn't defined in <x86/sysarch.h> included by <machine/sysarch.h> @somers. 
+[2018-07-03 17:25:24] <somers> Yeah, so you can't compile that test on i386
+[2018-07-03 17:25:39] <aniketp> Yeah, ifdef would do. But what should be the respective ifdefs here? 
+[2018-07-03 17:25:55] <somers> I don't know.
+[2018-07-03 17:26:09] <somers> Probably just #ifdef whatever_symbol_you_need
+[2018-07-03 17:26:35] <aniketp> Hmm, I'll try to define my own macros on the basis of result obtained by sysctlbyname(3) @somers  
+[2018-07-03 17:27:04] <somers> That won't work.  You can't use sysctlbyname until runtime.  #ifdef works at compile time
+[2018-07-03 17:29:54] <aniketp> Okay, then I can simply use "#ifdef MIPS_GET_TLS" for example, right? Cause for MIPS that would automatically be true. @somers  
+[2018-07-03 17:30:09] <somers> yeah
+[2018-07-03 17:30:33] <somers> otherwise, there are general-purpose arch symbols.  Like __i386__ or something; i don't remember exactly
+[2018-07-03 17:34:23] <aniketp> Yeah, you were right, its #ifdef __arch__ formatted : Like here https://github.com/freebsd/freebsd/blob/3ba444b8c8906a8a37071f0eab6921a21e3d66e5/lib/libkvm/kvm_mips.h#L32
