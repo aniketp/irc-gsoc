@@ -3437,3 +3437,11 @@
 [2018-07-03 17:30:09] <somers> yeah
 [2018-07-03 17:30:33] <somers> otherwise, there are general-purpose arch symbols.  Like __i386__ or something; i don't remember exactly
 [2018-07-03 17:34:23] <aniketp> Yeah, you were right, its #ifdef __arch__ formatted : Like here https://github.com/freebsd/freebsd/blob/3ba444b8c8906a8a37071f0eab6921a21e3d66e5/lib/libkvm/kvm_mips.h#L32
+[2018-07-03 19:31:26] <aniketp>  Ping @somers, I'm working on audit(2). Actually, I'm confused as to what "const char *record" means in this context. Is it a record file or just a char pointer?
+[2018-07-03 19:32:28] <somers> The declaration says that it's just a string
+[2018-07-03 19:32:41] <somers> If there is some special interpretation of that string, the prototype doesn't say so.
+[2018-07-03 19:54:03] <aniketp> @somers, passing normal string returns "Invalid argument". I think it needs valid record cause this is the failure reason:
+[2018-07-03 19:54:03] <aniketp>      [EINVAL]           The token ID is invalid or length is larger than
+[2018-07-03 19:54:03] <aniketp>                         MAXAUDITDATA.
+[2018-07-03 19:54:31] <somers> ok.
+[2018-07-03 19:54:49] <somers> The man page doesn't say anything about the format, so you'll have to figure it out.  Maybe then you can fix the man page.
