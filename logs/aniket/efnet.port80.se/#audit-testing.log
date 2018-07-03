@@ -3445,3 +3445,10 @@
 [2018-07-03 19:54:03] <aniketp>                         MAXAUDITDATA.
 [2018-07-03 19:54:31] <somers> ok.
 [2018-07-03 19:54:49] <somers> The man page doesn't say anything about the format, so you'll have to figure it out.  Maybe then you can fix the man page.
+[2018-07-03 20:01:14] <aniketp> Yeah @somers, the "record" is actually a audit record file. I copied one of them from /var/audit to the directory and passed the name of trail and execution was successful.
+[2018-07-03 20:01:24] <aniketp> However, this is where things get interesting
+[2018-07-03 20:02:37] <aniketp> unsuccessful invocation gets audited normally, but the successful invocation does not show up in the auditpipe(4) open in another window. And also, after that, auditpipe(4) stops showing _any_ audit event
+[2018-07-03 20:02:50] <aniketp> However, when I restart it, stuff works fine
+[2018-07-03 20:03:03] <aniketp> Untill I execute audit(2) successfully again
+[2018-07-03 20:04:26] <aniketp> I'll try creating an atf test case to see how it responds them
+[2018-07-03 20:04:34] <aniketp> *then, @somers 
