@@ -3457,3 +3457,4 @@
 [2018-07-04 14:55:01] <aniketp> Is there a way we can create a trail file at runtime in the local Kyua directory? @somers 
 [2018-07-04 14:57:38] <aniketp> Hmm, I replaced the trail with a normal trail file, and it worked. This is weird :|
 [2018-07-04 15:00:57] <aniketp> Hmm, in fact passing any string works now. I'm not sure what is happening now 😅
+[2018-07-04 16:46:20] <somers> So audit expects a filename but only relative filenames and not absolute filenames?  That doesn't make sense.  The man page doesn't even say anything about files
