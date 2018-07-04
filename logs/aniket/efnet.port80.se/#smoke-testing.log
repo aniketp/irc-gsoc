@@ -2,3 +2,4 @@
 [2018-06-30 17:08:10] <aniketp> Hello @brooks_ . I'm Aniket, working on the audit(4) testsuite project (remember?) with @asomers. Till now, I've been able to test about 175 auditable system calls, and would hopefully complete them soon. A lot of them are not even auditable, so couldn't test them.
 [2018-06-30 17:08:10] <aniketp> Have a look!: https://github.com/freebsd/freebsd/tree/master/tests/sys/audit 
 [2018-06-30 17:08:47] <aniketp> My project wiki: https://wiki.freebsd.org/SummerOfCode2018Projects/RegressionTestSuiteForAuditFramework\
+[2018-07-04 19:21:37] * aniketp (~aniketp41@159.65.149.37) join

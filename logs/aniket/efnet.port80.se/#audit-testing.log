@@ -3458,3 +3458,4 @@
 [2018-07-04 14:57:38] <aniketp> Hmm, I replaced the trail with a normal trail file, and it worked. This is weird :|
 [2018-07-04 15:00:57] <aniketp> Hmm, in fact passing any string works now. I'm not sure what is happening now 😅
 [2018-07-04 16:46:20] <somers> So audit expects a filename but only relative filenames and not absolute filenames?  That doesn't make sense.  The man page doesn't even say anything about files
+[2018-07-04 19:21:36] * aniketp (~aniketp41@159.65.149.37) join
