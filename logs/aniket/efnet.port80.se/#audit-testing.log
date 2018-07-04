@@ -3452,3 +3452,8 @@
 [2018-07-03 20:03:03] <aniketp> Untill I execute audit(2) successfully again
 [2018-07-03 20:04:26] <aniketp> I'll try creating an atf test case to see how it responds them
 [2018-07-03 20:04:34] <aniketp> *then, @somers 
+[2018-07-04 14:54:22] <aniketp> Ping @somers, I feel like it might not be feasible to test audit(2) in success mode. Although, if you have some ideas, please do suggest so.
+[2018-07-04 14:54:22] <aniketp> I've observed that audit(2) executes successfully when passing the name of a proper trail file as the first argument. Also, it doesn't work for local strings that contain audit record. And it doesn't work with absolute path as the first argument. 
+[2018-07-04 14:55:01] <aniketp> Is there a way we can create a trail file at runtime in the local Kyua directory? @somers 
+[2018-07-04 14:57:38] <aniketp> Hmm, I replaced the trail with a normal trail file, and it worked. This is weird :|
+[2018-07-04 15:00:57] <aniketp> Hmm, in fact passing any string works now. I'm not sure what is happening now 😅
