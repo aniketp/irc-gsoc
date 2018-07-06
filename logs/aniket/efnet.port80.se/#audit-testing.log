@@ -3466,3 +3466,11 @@
 [2018-07-06 17:24:11] <aniketp> Hi @somers, how would the buffering issue with auditpipe(4) be resolved?
 [2018-07-06 17:24:11] <aniketp> Btw, I've been travelling for two days, so couldn't do much. I'll resume tomorrow when I reach home
 [2018-07-06 17:59:16] * somers_ (~somers@63-224-81-175.hlrn.qwest.net) join
+[2018-07-06 18:02:17] * somers (~somers@63-224-81-138.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-06 18:55:37] <somers_> Travelling anywhere fun?
+[2018-07-06 18:55:52] <somers_> As for the buffering problem, is there an ioctl that can flush the buffer?
+[2018-07-06 18:56:07] <somers_> @aniketp
+[2018-07-06 18:56:35] <somers_> I'm unclear about what AUDITPIPE_FLUSH does.  Does it discard flushed records, or output them?
+[2018-07-06 19:06:11] <aniketp> Yeah, just a short trip from Kanpur to Lucknow with hostel friends. Will be back to New Delhi tomorrow.
+[2018-07-06 19:07:39] <aniketp> @somers, the man-page said that it clears sny outstanding audit record in the auditpipe. So I don't think it outputs them anywhere. Simply discards them
+[2018-07-06 19:07:49] <aniketp> @somers_
