@@ -3459,3 +3459,10 @@
 [2018-07-04 15:00:57] <aniketp> Hmm, in fact passing any string works now. I'm not sure what is happening now 😅
 [2018-07-04 16:46:20] <somers> So audit expects a filename but only relative filenames and not absolute filenames?  That doesn't make sense.  The man page doesn't even say anything about files
 [2018-07-04 19:21:36] * aniketp (~aniketp41@159.65.149.37) join
+[2018-07-06 17:22:58] <aniketp> Hi @somers, how would the buffering issue with auditpipe(4) be resolved?
+[2018-07-06 17:22:58] <aniketp> Btw, I've been travelling for two days, so couldn't do much. I'll resume tomorrow when I reach home
+[2018-07-06 17:23:20] <aniketp> .
+[2018-07-06 17:24:00] * aniketp (~aniketp41@159.65.149.37) join
+[2018-07-06 17:24:11] <aniketp> Hi @somers, how would the buffering issue with auditpipe(4) be resolved?
+[2018-07-06 17:24:11] <aniketp> Btw, I've been travelling for two days, so couldn't do much. I'll resume tomorrow when I reach home
+[2018-07-06 17:59:16] * somers_ (~somers@63-224-81-175.hlrn.qwest.net) join

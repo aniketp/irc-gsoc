@@ -212,3 +212,6 @@
 [2018-07-04 19:28:31] * undefined unhandled
 [2018-07-04 19:28:33] * undefined unhandled
 [2018-07-04 19:28:34] * undefined unhandled
+[2018-07-06 17:22:59] * undefined error #audit-testing: Cannot send to channel (cannot_send_to_channel)
+[2018-07-06 17:22:59] * undefined error #audit-testing: Cannot send to channel (cannot_send_to_channel)
+[2018-07-06 17:23:20] * undefined error #audit-testing: Cannot send to channel (cannot_send_to_channel)
