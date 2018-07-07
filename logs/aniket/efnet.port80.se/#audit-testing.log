@@ -3482,3 +3482,13 @@
 [2018-07-07 08:12:40] * gnn (~quassel@f373.x.rootbsd.net) quit Read error: Connection reset by peer
 [2018-07-07 15:15:20] <aniketp> @ somers_ I'll have a look at the code of auditpipe to determine that
 [2018-07-07 15:15:33] <aniketp> Btw, should we convert this to ATF tests? https://github.com/freebsd/freebsd/blob/master/tools/regression/audit/audit_pipe_ioctl/audit_pipe_ioctl.c
+[2018-07-07 18:40:20] <aniketp> Btw @somers_, I found out why I was getting EINVAL with audit_success case. The record gets verified by bsm_rec_verify() here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_syscalls.c#L119
+[2018-07-07 18:40:20] <aniketp> This function is not properly implemented yet, it just checks if the first character is AUT_HEADER{32,64,32_EX,64_EX} and if so, successfully returns
+[2018-07-07 18:41:26] <aniketp> Though, manipulating got me the successful invocation of audit(2), it is still not correct since I'm just submitting an incomplete audit record (with just one character in it).  
+[2018-07-07 18:42:07] <aniketp> Using this as a test case causes the test-case body to timeout and the "praudit /dev/auditpipe" open in another window to get stuck
+[2018-07-07 18:45:40] <somers_> aniketp converting that old test to ATF is not a bad idea
+[2018-07-07 18:47:04] <somers_> So you're saying that audit(2) should be used with a complete and valid audit record, but it's only partially verified?
+[2018-07-07 18:47:26] <aniketp> Yeah, this function here: https://github.com/freebsd/freebsd/blob/master/sys/security/audit/audit_bsm.c#L1751
+[2018-07-07 18:48:54] <aniketp> Otherwise normal auditing would be hampered, cause maybe audit(4) waits for certain tokens from incomplete record and ignores new records. @somers_ 
+[2018-07-07 18:49:40] <somers_> So I think you should be able to write an audit(2) success case, then.
+[2018-07-07 18:50:21] <aniketp> Hmm, I'll need to store a complete audit record for that. Figuring out how to do that
