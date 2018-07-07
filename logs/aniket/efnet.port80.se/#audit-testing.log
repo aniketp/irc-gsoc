@@ -3480,3 +3480,5 @@
 [2018-07-07 02:46:27] * gnn (~quassel@f373.x.rootbsd.net) join
 [2018-07-07 08:12:30] * gnn_ (~quassel@f373.x.rootbsd.net) join
 [2018-07-07 08:12:40] * gnn (~quassel@f373.x.rootbsd.net) quit Read error: Connection reset by peer
+[2018-07-07 15:15:20] <aniketp> @ somers_ I'll have a look at the code of auditpipe to determine that
+[2018-07-07 15:15:33] <aniketp> Btw, should we convert this to ATF tests? https://github.com/freebsd/freebsd/blob/master/tools/regression/audit/audit_pipe_ioctl/audit_pipe_ioctl.c
