@@ -3476,3 +3476,5 @@
 [2018-07-06 19:07:49] <aniketp> @somers_
 [2018-07-06 20:59:37] <somers_> aniketp Have you looked at the kernel source to try to deduce under what circumstances the audit records are sent down the pipe?
 [2018-07-07 00:57:28] * mpts nick _0mp
+[2018-07-07 02:44:00] * gnn (~quassel@f373.x.rootbsd.net) quit Read error: Connection reset by peer
+[2018-07-07 02:46:27] * gnn (~quassel@f373.x.rootbsd.net) join
