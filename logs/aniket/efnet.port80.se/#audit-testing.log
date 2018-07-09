@@ -3501,3 +3501,20 @@
 [2018-07-09 07:45:35] <aniketp> But also, I'll need an audit record to submit to the queue. Can I use the absolute path to test-program directory, i.e /tests/sys/audit. Cause not sure if an equivalent atf-c-api is available..
 [2018-07-09 14:08:33] <somers__> You can't hardcode the absolute path to the test program directory, because you don't know for sure what it will be
 [2018-07-09 15:15:45] * somers__ (~somers@63-224-80-108.hlrn.qwest.net) quit Remote host closed the connection
+[2018-07-09 19:08:26] <gnn_> BTW I submitted the 2nd evaluation today.
+[2018-07-09 19:08:39] <gnn_> Things continue to go along well.
+[2018-07-09 19:38:30] <aniketp> Sure @gnn_, Apart from a few remaining syscalls, I guess I can test auditdistd(8), auditpipe(4) (Convert the regression tests written by @rwatson to ATF: https://github.com/freebsd/freebsd/blob/master/tools/regression/audit/audit_pipe_ioctl/audit_pipe_ioctl.c) and auditreduce(1).
+[2018-07-09 19:38:30] <aniketp> Btw is there any other aspect of audit(4) system that you would want to be included in the testsuite I'm developing, @gnn_ ? I might have overlooked some of the features
+[2018-07-09 19:38:53] <gnn_> I think you're on track.
+[2018-07-09 19:39:13] <gnn_> One thing we can look at, once you've completed current tasks, are the audit bits that rwatson@ has added for DTrace
+[2018-07-09 19:39:17] <gnn_> I think those are now in HEAD
+[2018-07-09 19:47:11] <aniketp> @gnn_ I couldn't understand the part about audit bits. Are those some additional syscalls which were audited recently? I didn't have a chance to look thoroughly at DTrace cause I rarely had to use it. I'll try getting familiar with it
+[2018-07-09 19:48:51] <gnn_> Don't worry about it just yet.
+[2018-07-09 19:49:09] <gnn_> Let me check with rwatson to see if he did indeed push his changes to audit to make it talk to DTrace into HEAD
+[2018-07-09 19:49:17] <gnn_> That work was first done in a research branch.
+[2018-07-09 19:49:25] <aniketp> CADETS right?
+[2018-07-09 19:49:25] <gnn_> aniketp: Keep on with what you were already workin gon.
+[2018-07-09 19:49:52] <aniketp> Okay, sure
+[2018-07-09 19:51:12] <aniketp> Btw @gnn_ congrats for another successful core team tenure! I heard the new team was elected recently.
+[2018-07-09 19:51:24] <gnn_> Indeed it was.
+[2018-07-09 19:51:39] <gnn_> July 4th they took over
