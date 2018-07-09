@@ -3496,3 +3496,6 @@
 [2018-07-08 06:06:21] * somers_ (~somers@63-224-81-175.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-07-08 20:44:38] * _0mp (~mpts@boston-packets.hackerspace.pl) quit Ping timeout: 360 seconds
 [2018-07-08 20:44:45] * _0mp (~mpts@boston-packets.hackerspace.pl) join
+[2018-07-09 07:43:25] <aniketp> Hi @somers__, I was able to get audit(2) to work, after many tries 😅 
+[2018-07-09 07:43:25] <aniketp> The catch was to submit complete audit record to the queue. That way, the audit trail showed both audit(2) and the record I submitted. I also had to repeat the entire au_read_rec(3) and au_fetch_tok(3) procedure. 
+[2018-07-09 07:45:35] <aniketp> But also, I'll need an audit record to submit to the queue. Can I use the absolute path to test-program directory, i.e /tests/sys/audit. Cause not sure if an equivalent atf-c-api is available..
