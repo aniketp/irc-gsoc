@@ -3539,3 +3539,11 @@
 [2018-07-10 19:59:33] <aniketp> *?
 [2018-07-10 19:59:44] <somers_> fread(3) is used by au_read_rec(3)
 [2018-07-10 19:59:52] <aniketp> Oh, okay
+[2018-07-10 20:00:10] <somers_> The fact that it takes a FILE* argument instead of an int pretty much guarantees that it's using fread
+[2018-07-10 20:03:23] <aniketp> Yeah, there is the fread(3): https://github.com/openbsm/openbsm/blob/master/libbsm/bsm_io.c#L4694
+[2018-07-10 20:04:01] <aniketp> Oh, its at a lot more places down the function
+[2018-07-10 20:05:23] <aniketp> So, @somers_, how do we force fread(3) to push the data to the kernel? So that ppoll(2) can pick it up. 
+[2018-07-10 20:05:33] <aniketp> Would flushing help here?
+[2018-07-10 20:09:13] <somers_> nope
+[2018-07-10 20:10:18] <somers_> check stdio(3)
+[2018-07-10 21:57:23] * somers__ (~somers@63-224-81-246.hlrn.qwest.net) join
