@@ -3519,3 +3519,4 @@
 [2018-07-09 19:51:24] <gnn_> Indeed it was.
 [2018-07-09 19:51:39] <gnn_> July 4th they took over
 [2018-07-10 00:13:41] * somers (~somers@63-224-80-108.hlrn.qwest.net) join
+[2018-07-10 08:44:48] <aniketp> Btw @somers, adding the extra AUDITPIPE_FLUSH after calling cap_enter() resolved the buffering issue. I'll update the revision
