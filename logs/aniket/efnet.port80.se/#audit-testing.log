@@ -3526,3 +3526,16 @@
 [2018-07-10 17:25:21] <somers> flushing the audit pipe didn't fix the problem
 [2018-07-10 17:25:31] <somers> I'm investigating rwatson's suggestion right now
 [2018-07-10 17:26:20] <somers> Curiously, he seems to have gotten it backward.  It looks like ppoll correctly gets woken up when a new event arrives.  However, it seems like ppoll sometimes blocks when there are already events in the pipe
+[2018-07-10 19:52:12] * somers_ (~somers@63-224-80-29.hlrn.qwest.net) join
+[2018-07-10 19:53:59] <somers_> Hey aniketp, I figured it out
+[2018-07-10 19:55:33] * somers (~somers@63-224-80-108.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-10 19:57:21] <aniketp> @somers_ what was it?
+[2018-07-10 19:57:21] <aniketp> Sorry I had been watching the semifinal so I forgot 😅 
+[2018-07-10 19:57:40] <somers_> semifinal of soccer?
+[2018-07-10 19:58:18] <aniketp> Yeah, France just won :/
+[2018-07-10 19:58:28] <somers_> Good for France.  The problem with the cap_enter_success test is that you paired buffered I/O (fdopen and fread) with ppoll.
+[2018-07-10 19:59:07] <somers_> ppoll(2) was truthfully returning that the auditpipe(4) device had nothing stuck in the kernel.  But fread(3) left some data buffered in userland.
+[2018-07-10 19:59:30] <aniketp> @somers_ is fread used by auditpipe(4), cause I've only used fdopne(2) in the utility functions 
+[2018-07-10 19:59:33] <aniketp> *?
+[2018-07-10 19:59:44] <somers_> fread(3) is used by au_read_rec(3)
+[2018-07-10 19:59:52] <aniketp> Oh, okay
