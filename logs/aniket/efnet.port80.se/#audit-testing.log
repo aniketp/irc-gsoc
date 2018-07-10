@@ -3521,3 +3521,8 @@
 [2018-07-10 00:13:41] * somers (~somers@63-224-80-108.hlrn.qwest.net) join
 [2018-07-10 08:44:48] <aniketp> Btw @somers, adding the extra AUDITPIPE_FLUSH after calling cap_enter() resolved the buffering issue. I'll update the revision
 [2018-07-10 14:20:40] <somers> ok
+[2018-07-10 17:24:14] <aniketp> Also, @somers, is there any modification to be made in the capability mode syscalls' tests?
+[2018-07-10 17:24:14] <aniketp> I'll update the sysarch(2)'s test as you suggested
+[2018-07-10 17:25:21] <somers> flushing the audit pipe didn't fix the problem
+[2018-07-10 17:25:31] <somers> I'm investigating rwatson's suggestion right now
+[2018-07-10 17:26:20] <somers> Curiously, he seems to have gotten it backward.  It looks like ppoll correctly gets woken up when a new event arrives.  However, it seems like ppoll sometimes blocks when there are already events in the pipe
