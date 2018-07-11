@@ -3547,3 +3547,5 @@
 [2018-07-10 20:09:13] <somers_> nope
 [2018-07-10 20:10:18] <somers_> check stdio(3)
 [2018-07-10 21:57:23] * somers__ (~somers@63-224-81-246.hlrn.qwest.net) join
+[2018-07-10 22:03:50] * somers_ (~somers@63-224-80-29.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-07-10 22:10:08] * somers__ (~somers@63-224-81-246.hlrn.qwest.net) quit Remote host closed the connection
