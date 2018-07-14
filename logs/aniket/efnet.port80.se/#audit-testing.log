@@ -3563,3 +3563,4 @@
 [2018-07-12 19:38:13] * _0mp_ (~mpts@boston-packets.hackerspace.pl) join
 [2018-07-13 05:28:06] * rwatson (robert@fledge.watson.org) quit Read error: Operation timed out
 [2018-07-13 05:31:46] * rwatson (~robert@fledge.watson.org) join
+[2018-07-14 15:29:37] <aniketp> Hi @gnn_, I was wondering that, since the primary test-suite is already in Head, would it be right to remove the audit test-suite idea from this page? https://wiki.freebsd.org/SummerOfCodeIdeas#Testing
