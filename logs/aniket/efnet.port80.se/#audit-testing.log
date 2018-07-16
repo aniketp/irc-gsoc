@@ -3604,3 +3604,15 @@
 [2018-07-16 19:46:49] <somers> fread(3) is not a system call.  It's more complicated than that
 [2018-07-16 19:46:57] <somers> read stdio(3)
 [2018-07-16 19:47:03] <aniketp> Okay
+[2018-07-16 20:16:04] <aniketp> @somers, I disabled buffering via "setvbuf(pipestream, NULL, _IONBF, 0);" and it worked! 
+[2018-07-16 20:16:04] <aniketp> It was suggested in stdio(3). Is this a proper fix? @somers  
+[2018-07-16 20:16:22] <somers> Yep, that's what I came up with
+[2018-07-16 20:16:58] <somers> Disabling buffering will usually slow things down
+[2018-07-16 20:17:31] <somers> But for a test program that's fine.  And in this case the alternatives are pretty unattractive.
+[2018-07-16 20:19:48] <aniketp> Cool! I initially tried various things like fflush(memstream), fflush(pipestream) and even replaced _exit(2) with abort(3) but as expected, none of them worked.
+[2018-07-16 20:19:48] <aniketp> Yeah, we're going to kernel for every read operation this way.
+[2018-07-16 20:19:48] <aniketp> But I guess I can disable buffering with cap_enter(2) and _exit(2), that might then make only these test cases slower?
+[2018-07-16 20:20:50] <aniketp> @somers 
+[2018-07-16 20:41:32] <aniketp> Btw @somers, the setcond_success case never fails for me. Are you sure it is happening for you because of the buffer issue?
+[2018-07-16 21:51:51] <somers> No, don't do it.  There's nothing special about exit or cap_enter.  You need to leave buffering disabled for all tests
+[2018-07-16 21:52:19] <somers> @aniketp Not 100% sure that buffering was why, but it certainly looked like it
