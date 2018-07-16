@@ -3568,3 +3568,39 @@
 [2018-07-14 20:48:20] <gnn_> But do remind me :-)
 [2018-07-15 17:22:47] * _0mp_ nick _0mp
 [2018-07-15 20:54:25] * somers (~somers@63-224-80-117.hlrn.qwest.net) join
+[2018-07-16 18:57:11] <aniketp> Hi @somers, for sysarch(2), did you mean that I should initialize bzero() respective structures for all architectures?
+[2018-07-16 18:57:21] <aniketp> *(bzero())
+[2018-07-16 18:57:45] <somers> No.  You need to do whatever's appropriate.  It's probably different for each sysarch variant.
+[2018-07-16 18:58:08] <aniketp> I guess they all retrieve info and expect that each structure be provided
+[2018-07-16 18:58:27] <aniketp> It worked with void * for i386 and amd64 @somers 
+[2018-07-16 18:58:45] <somers> You need to look at it on a case-by-case basis
+[2018-07-16 18:58:58] <aniketp> Okay will, analyze in detail them
+[2018-07-16 18:59:14] <somers> BTW, have you made any progress with the buffered I/O problem?
+[2018-07-16 19:00:13] <aniketp> Btw, I didn't fully understand what is happening in the buffering issue. It looks like that only occurs when I call _exit(2) from child process after calling the respective syscall. (I did that in cap_enter() and _exit() itself)
+[2018-07-16 19:00:51] <somers> _exit has nothing to do with it
+[2018-07-16 19:01:26] <aniketp> Hmm, but that didn't happen till now. And _exit() is the only similarity I could find
+[2018-07-16 19:02:30] <somers> The problem is that you're using ppoll to ask the kernel whether /dev/auditpipe has any more data to read.  The kernel truthfully replies that it does not.  However, fread(3) has some extra data stashed in a userland buffer which au_read_rec hasn't yet processed.  Even though /dev/auditpipe has no more readable data, au_read_rec(3) would still make progress if you were to call it.
+[2018-07-16 19:09:43] <aniketp> Okay, so au_read_rec(3) is only called when ppoll(2) says that it found something in /dev/auditpipe via POLLIN (ready to read). So if you're saying that since /dev/auditpipe does not have anything in it, as returned by ppoll(2), au_read_rec(3) isn't even involved here. 
+[2018-07-16 19:09:43] <aniketp> So, did you mean I have to call au_read_rec(3) irrespective of what ppoll(2) returns because there is some buffered data in userland which au_read_rec(3) can process anyway? @somers 
+[2018-07-16 19:10:17] <somers> No, you shouldn't do that, because then au_read_rec might block
+[2018-07-16 19:11:46] <aniketp> But I can't understand how all of a sudden this buffered I/O issue came out, that too only with cap_enter(2) and _exit(2). I'll try various things to sort this out 
+[2018-07-16 19:12:31] <aniketp> Btw @somers, were the structs definitions for Sparc64 correct according to you?
+[2018-07-16 19:12:46] <somers> The only reason we never saw it before is that previous testcases all created enough data to fill up au_read_rec's buffer before /dev/auditpipe ran out
+[2018-07-16 19:12:50] <aniketp> I took help of the old man page you suggested
+[2018-07-16 19:13:01] <somers> But your new test case generates fewer and/or smaller audit records
+[2018-07-16 19:14:38] <somers> the sparc stuff looks reasonable
+[2018-07-16 19:19:43] <aniketp> Oh I see, so the buffer is only pushed when it crosses a certain threshold of buffered data. So, how're we gonna fix this issue? I can try something to push dummy data so that it crosses the threshold. Or maybe we can force the buffer to be written in /dev/auditpipe. Is there a mechanism to do that? I recall having used fflush(3) to forcefully write data to STDOUT once, but haven't tried with anything else 
+[2018-07-16 19:20:05] <aniketp> @somers 
+[2018-07-16 19:20:05] <aniketp> Maybe I can fflush(3) everything to /dev/auditpipe?
+[2018-07-16 19:20:28] <somers> what do you mean "pushed"?
+[2018-07-16 19:20:48] <aniketp> I meant, written to a descriptor
+[2018-07-16 19:21:05] <somers> this is about reading, not writing
+[2018-07-16 19:21:08] <aniketp> Or a stream
+[2018-07-16 19:41:42] <aniketp> Btw @somers, if au_read_rec(3) is directly reading from the /dev/auditpipe, how can it have buffered data in userland? Isn't auditpipe supposed to directly interact with the kernel?
+[2018-07-16 19:42:05] <somers> Because it's directly reading with fread(3), not read(2)
+[2018-07-16 19:46:26] <aniketp> But I still don't get how userland is involved here, is there a difference in how data is read from File Stream and a file descriptor @somers ?
+[2018-07-16 19:46:39] <somers> yes
+[2018-07-16 19:46:42] <aniketp> Apart from basic implementation
+[2018-07-16 19:46:49] <somers> fread(3) is not a system call.  It's more complicated than that
+[2018-07-16 19:46:57] <somers> read stdio(3)
+[2018-07-16 19:47:03] <aniketp> Okay
