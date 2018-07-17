@@ -3648,3 +3648,7 @@
 [2018-07-17 15:37:41] <somers> Depends.  2 hours is a reasonable time for a buildworld.  But it could be longer on slow hardware
 [2018-07-17 16:04:33] <aniketp> Okay, Also what about auditon_setcond? Did it pass after fixing the buffering issue, @somers ?
 [2018-07-17 16:07:31] <somers> i didn't try it
+[2018-07-17 18:13:58] <aniketp> @somers, the build failed for me too in the first case. But instead of ICACHE, I used "ARM_DRAIN_WRITEBUF" which does not take anything as the argument and it built successfully
+[2018-07-17 18:14:15] <aniketp> Would it be alright to replace the syscall
+[2018-07-17 18:14:17] <aniketp> *?
+[2018-07-17 19:05:46] <somers> sure.  Though you should try to figure out why the build is failing.
