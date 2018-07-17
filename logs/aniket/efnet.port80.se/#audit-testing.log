@@ -3646,3 +3646,5 @@
 [2018-07-17 15:13:51] <somers> Just to ARCH=arm TARGET_ARCH=arm make -jwhatever buildworld
 [2018-07-17 15:37:17] <aniketp> Okay, btw @somers, how much time did it take for the build to get to the error? For me its still building for about 17 mins
 [2018-07-17 15:37:41] <somers> Depends.  2 hours is a reasonable time for a buildworld.  But it could be longer on slow hardware
+[2018-07-17 16:04:33] <aniketp> Okay, Also what about auditon_setcond? Did it pass after fixing the buffering issue, @somers ?
+[2018-07-17 16:07:31] <somers> i didn't try it
