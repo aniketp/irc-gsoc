@@ -3634,3 +3634,15 @@
 [2018-07-17 07:23:37] * rwatson (robert@198.74.231.63) quit Ping timeout: 264 seconds
 [2018-07-17 07:24:55] * rwatson (~robert@198.74.231.63) join
 [2018-07-17 10:17:14] * _0mp_ nick _0mp
+[2018-07-17 15:03:50] <aniketp> Ping @somers, I had the proper semicolon terminated struct declaration. Why did the build fail then?
+[2018-07-17 15:04:03] <somers> reread the error message
+[2018-07-17 15:11:08] <aniketp> @somers I still didn't get it. Is it not recognising the struct declaration in sysarch.h?
+[2018-07-17 15:12:12] <somers> The error message is telling you that there was no struct declaration
+[2018-07-17 15:12:21] <somers> I thinks you're trying to declare it yourself.
+[2018-07-17 15:13:06] <aniketp> Weird, it's here: https://github.com/freebsd/freebsd/blob/master/sys/arm/include/sysarch.h#L85
+[2018-07-17 15:13:11] <aniketp> @somers 
+[2018-07-17 15:13:32] <somers> Well, either you aren't including the right file, or you aren't #defining something that you need to, or something like that
+[2018-07-17 15:13:41] <somers> Go ahead and try building it for arm yourself
+[2018-07-17 15:13:51] <somers> Just to ARCH=arm TARGET_ARCH=arm make -jwhatever buildworld
+[2018-07-17 15:37:17] <aniketp> Okay, btw @somers, how much time did it take for the build to get to the error? For me its still building for about 17 mins
+[2018-07-17 15:37:41] <somers> Depends.  2 hours is a reasonable time for a buildworld.  But it could be longer on slow hardware
