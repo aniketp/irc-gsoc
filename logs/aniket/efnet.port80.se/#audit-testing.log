@@ -3621,3 +3621,7 @@
 [2018-07-16 22:14:43] <somers> It depends.  You have to check what each individual syscall does.
 [2018-07-16 22:25:20] <aniketp> Yeah, it just retrieves something. https://github.com/freebsd/freebsd/blob/master/lib/libc/amd64/sys/amd64_get_fsbase.c
 [2018-07-16 22:25:24] <aniketp> @somers 
+[2018-07-17 01:18:24] * _0mp (~mpts@boston-packets.hackerspace.pl) quit Read error: Operation timed out
+[2018-07-17 01:21:22] * gnn_ (~quassel@f373.x.rootbsd.net) quit Ping timeout: 246 seconds
+[2018-07-17 01:21:46] * _0mp (~mpts@boston-packets.hackerspace.pl) join
+[2018-07-17 01:22:27] * gnn (~quassel@f373.x.rootbsd.net) join
