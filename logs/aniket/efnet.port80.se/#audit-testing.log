@@ -3616,3 +3616,8 @@
 [2018-07-16 20:41:32] <aniketp> Btw @somers, the setcond_success case never fails for me. Are you sure it is happening for you because of the buffer issue?
 [2018-07-16 21:51:51] <somers> No, don't do it.  There's nothing special about exit or cap_enter.  You need to leave buffering disabled for all tests
 [2018-07-16 21:52:19] <somers> @aniketp Not 100% sure that buffering was why, but it certainly looked like it
+[2018-07-16 22:13:56] <aniketp> OKay, Btw @somers, for ARM and Sparc64, I had to pass in arguments. Rest of them had functions which actually took in (void **) as the argument
+[2018-07-16 22:14:07] <aniketp> So can I pass in a void * address to them?
+[2018-07-16 22:14:43] <somers> It depends.  You have to check what each individual syscall does.
+[2018-07-16 22:25:20] <aniketp> Yeah, it just retrieves something. https://github.com/freebsd/freebsd/blob/master/lib/libc/amd64/sys/amd64_get_fsbase.c
+[2018-07-16 22:25:24] <aniketp> @somers 
