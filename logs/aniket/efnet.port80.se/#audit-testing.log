@@ -3656,3 +3656,9 @@
 [2018-07-17 21:14:06] * rwatson (robert@fledge.watson.org) join
 [2018-07-18 02:00:05] * somers_ (~somers@63-224-81-250.hlrn.qwest.net) join
 [2018-07-18 02:03:43] * somers (~somers@63.224.80.117) quit Ping timeout: 252 seconds
+[2018-07-18 18:20:52] <aniketp> Hi @somers, can you check if the auditon_setcond_success passes after disabling buffering the utility code? Few more events are left and I was waiting for these to get approved, following which I can work on those remaining events.
+[2018-07-18 18:21:05] <aniketp> @somers_ 
+[2018-07-18 18:55:12] <somers_> aniketp There was one other problem with that revision, too.  It almost, but not quite, regresses the bug you found in A_SETPOLICY
+[2018-07-18 18:55:30] <somers_> Absent a proper test suite for auditon(2), it would be nice to get coverage there
+[2018-07-18 19:08:20] <aniketp> @somers_, I didn't get it, "absent a proper test suite"?
+[2018-07-18 19:17:07] <somers_> I mean right now there are no tests for auditon's functionality
