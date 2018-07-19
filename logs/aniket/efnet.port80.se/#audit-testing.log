@@ -3684,3 +3684,22 @@
 [2018-07-19 15:53:40] <aniketp> I have a hunch it would have failed in that too. The error was in my code, not in the sysarch.h @somers__ 
 [2018-07-19 15:53:51] <somers__> missing include?
 [2018-07-19 15:54:23] <aniketp> Nope. You'll see :P. I'll update the review after I confirm my suspicion
+[2018-07-19 16:01:14] <aniketp> Yup, suspicions right! Build passed with ARM_ICACHE_ARGS. Btw @somers__, Both "uintptr_t addr" and "size_t len" would be 0 right? If that is the case, would bzeroing be a valid choice that setting each member as 0? 
+[2018-07-19 16:01:25] <aniketp> s/that/than
+[2018-07-19 16:02:02] <somers__> bzero is a valid way to set fields to 0.
+[2018-07-19 16:02:11] <aniketp> Okay.
+[2018-07-19 16:17:23] <aniketp> Also @somers__, for  specifically testing auditon(2), I've been thinking about various ways in which I can approach writing the tests. For A_GET*, I can initialize the arg structure with an impossible value and then call auditon(2) with A_GET*. If the value of the arg structure changes then the test was successful, i.e auditon(2) recieved some value. 
+[2018-07-19 16:17:23] <aniketp> But I'm how would I test A_SET* this way? As we can't really set some random value like this.. 
+[2018-07-19 16:18:11] <somers__> I don't know
+[2018-07-19 16:21:31] <aniketp> Would something like this work? First GET the current value. Then SET some random value, then GET again to check if the value was modified. Then finally SET the original value to make everything as it was initially.
+[2018-07-19 16:21:31] <aniketp> However, if test fails at any of the above steps, we could end up with random values too, @somers__ 
+[2018-07-19 16:22:33] <somers__> So try to pick a value that won't be too disruptive
+[2018-07-19 16:22:44] <aniketp> Hmm, okay.
+[2018-07-19 16:37:49] <aniketp> Btw @somers__, UTH_NOCHANGE is defined as (-1) so why would it be recognised as a pointer?
+[2018-07-19 16:39:44] <somers__> read the error message again
+[2018-07-19 16:40:18] <aniketp> Oops, its the invert. Hmmm
+[2018-07-19 16:40:27] <aniketp> *inverse
+[2018-07-19 16:40:57] <aniketp> So its expecting a pointer and I provided an int
+[2018-07-19 17:21:17] <aniketp> Hmm interesting, I got the "Redundant declaration error" in sparc! Would build again after fixing it
+[2018-07-19 17:57:29] <somers__> Why did you say that the behavior of audit(2) is undeterministic?
+[2018-07-19 17:57:33] <somers__> What's intermittent about it?
