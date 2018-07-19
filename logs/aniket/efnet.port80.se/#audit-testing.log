@@ -3662,3 +3662,10 @@
 [2018-07-18 18:55:30] <somers_> Absent a proper test suite for auditon(2), it would be nice to get coverage there
 [2018-07-18 19:08:20] <aniketp> @somers_, I didn't get it, "absent a proper test suite"?
 [2018-07-18 19:17:07] <somers_> I mean right now there are no tests for auditon's functionality
+[2018-07-18 23:12:00] <aniketp> But @somers_, don't the tests on specific command for auditon(2) do just that? Like, try out all auditable "cmd" argument with the respective arg structures..
+[2018-07-18 23:12:52] <somers_> No, because there are different code paths for 32-bit values vs 64-bit values.  Also, you aren't attempting to validate what auditon does, just that the auditon syscall itself is validated.
+[2018-07-18 23:18:58] <aniketp> Oh, I see. Btw some of the auditable options are not even implemented. Programmed to return ENOSYS when called. So shall I go for an expected failure or just a failure case? @somers_ 
+[2018-07-18 23:20:32] <somers_> ENOSYS means that the system call isn't supported.  It's not a failure of the audit system.  So just a failure case is fine.  Make sure you comment about why there's no success case
+[2018-07-18 23:24:30] <aniketp> Okay. Also, about the auditon(2), can you please give some examples where I could add test coverage? Like I understood about the 32-bit vs 64-bit part but not about the validation of the individual option's functionality. I mean, the audit record doesn't contain anything useful about these syscalls so how would I go about validating their proper functionality?
+[2018-07-18 23:24:36] <aniketp> @somers_ 
+[2018-07-18 23:25:24] <somers_> I'm not talking about better coverage of how auditon is auditted.  I'm talking about testing whether or not auditdon does its job
