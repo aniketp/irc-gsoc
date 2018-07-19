@@ -3671,3 +3671,16 @@
 [2018-07-18 23:25:24] <somers_> I'm not talking about better coverage of how auditon is auditted.  I'm talking about testing whether or not auditdon does its job
 [2018-07-19 06:43:06] * somers__ (~somers@63-224-80-167.hlrn.qwest.net) join
 [2018-07-19 06:46:41] * somers_ (~somers@63-224-81-250.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-19 15:25:11] <aniketp> Hi @somers__, to complete buildworld for ARM arch faster after a successful build, is there any option that can be added to the make -j4 buildworld command? (Just like -DKERNFAST to buildkernel)?
+[2018-07-19 15:26:09] <somers__> yep
+[2018-07-19 15:26:11] <somers__> use -DNO_CLEAN
+[2018-07-19 15:26:17] <aniketp> Okay
+[2018-07-19 15:51:48] <aniketp> Btw @somers__ did the build pass in Sparc64?
+[2018-07-19 15:52:36] <somers__> what build?
+[2018-07-19 15:52:57] <somers__> are  you talking about the sysarch code review?
+[2018-07-19 15:53:00] <aniketp> The build for sysarch tests.
+[2018-07-19 15:53:01] <aniketp> Yeah
+[2018-07-19 15:53:07] <somers__> I do the buildworlds in serial, not in parallel.  So I don't know
+[2018-07-19 15:53:40] <aniketp> I have a hunch it would have failed in that too. The error was in my code, not in the sysarch.h @somers__ 
+[2018-07-19 15:53:51] <somers__> missing include?
+[2018-07-19 15:54:23] <aniketp> Nope. You'll see :P. I'll update the review after I confirm my suspicion
