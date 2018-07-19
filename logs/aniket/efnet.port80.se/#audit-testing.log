@@ -3703,3 +3703,9 @@
 [2018-07-19 17:21:17] <aniketp> Hmm interesting, I got the "Redundant declaration error" in sparc! Would build again after fixing it
 [2018-07-19 17:57:29] <somers__> Why did you say that the behavior of audit(2) is undeterministic?
 [2018-07-19 17:57:33] <somers__> What's intermittent about it?
+[2018-07-19 18:35:43] * somers_ (~somers@63-224-81-92.hlrn.qwest.net) join
+[2018-07-19 18:39:07] * somers__ (~somers@63-224-80-167.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-19 18:58:11] * somers__ (~somers@63-224-80-155.hlrn.qwest.net) join
+[2018-07-19 19:02:13] * somers_ (~somers@63-224-81-92.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-19 19:08:48] * somers_ (~somers@63-224-81-219.hlrn.qwest.net) join
+[2018-07-19 19:12:07] * somers__ (~somers@63-224-80-155.hlrn.qwest.net) quit Ping timeout: 252 seconds
