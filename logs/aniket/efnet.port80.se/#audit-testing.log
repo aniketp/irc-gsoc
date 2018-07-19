@@ -3669,3 +3669,5 @@
 [2018-07-18 23:24:30] <aniketp> Okay. Also, about the auditon(2), can you please give some examples where I could add test coverage? Like I understood about the 32-bit vs 64-bit part but not about the validation of the individual option's functionality. I mean, the audit record doesn't contain anything useful about these syscalls so how would I go about validating their proper functionality?
 [2018-07-18 23:24:36] <aniketp> @somers_ 
 [2018-07-18 23:25:24] <somers_> I'm not talking about better coverage of how auditon is auditted.  I'm talking about testing whether or not auditdon does its job
+[2018-07-19 06:43:06] * somers__ (~somers@63-224-80-167.hlrn.qwest.net) join
+[2018-07-19 06:46:41] * somers_ (~somers@63-224-81-250.hlrn.qwest.net) quit Ping timeout: 252 seconds
