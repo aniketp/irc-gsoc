@@ -3709,3 +3709,12 @@
 [2018-07-19 19:02:13] * somers_ (~somers@63-224-81-92.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-07-19 19:08:48] * somers_ (~somers@63-224-81-219.hlrn.qwest.net) join
 [2018-07-19 19:12:07] * somers__ (~somers@63-224-80-155.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-19 20:26:28] <aniketp> Oh, I guess the wording is wrong. 
+[2018-07-19 20:26:28] <aniketp> Actually the issue is that, 1) I need a sample audit record to be able to successfully call audit(2). And in the successful invocation, the audit(2) did not show up in the /dev/auditpipe (but the record that we manually submitted did show up). And after the manual record came up in auditpipe, the "praudit /dev/auditpipe" closed automatically. 
+[2018-07-19 20:26:28] <aniketp> And the test-case also does not show up audit(2) in the auditpipe. 
+[2018-07-19 20:26:54] <aniketp> But in this process, audit(2) does show up in global trail at /var/audit\
+[2018-07-19 20:27:00] <aniketp> @somers_ 
+[2018-07-19 20:28:04] <somers_> Have you tried since you fixed the buffering problem?
+[2018-07-19 20:31:06] <aniketp> No I haven't. But I have a feeling these issues are unrelated. Cause why did the praudit /dev/auditpipe close audit(2) is called. @somers_ 
+[2018-07-19 20:31:15] <aniketp> *after audit(2) is called
+[2018-07-19 20:31:41] <somers_> Dunno.  Sounds like something you should fix.
