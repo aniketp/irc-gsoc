@@ -3720,3 +3720,25 @@
 [2018-07-19 20:31:41] <somers_> Dunno.  Sounds like something you should fix.
 [2018-07-20 07:28:36] * somers__ (~somers@63-224-81-89.hlrn.qwest.net) join
 [2018-07-20 07:32:03] * somers_ (~somers@63-224-81-219.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-20 17:21:39] <aniketp> Hi @somers__, is there something left to do in D16255?
+[2018-07-20 17:22:42] <somers__> Have you decided what you're going to do about testing auditon(2) ?
+[2018-07-20 17:24:59] <aniketp> Yeah, I'll have an independent test-program because I'm actually testing that particular syscall, not it's auditing. The Test program will have test cases corresponding to individual command arguments, similar strategy to what I did in case of praudit(1)
+[2018-07-20 17:24:59] <aniketp> D16255, tests the audit_events getting audited. The testing you desired is different than D16255, hence the approach @somers__  
+[2018-07-20 17:25:42] <aniketp> Same can be done for auditpipe(4)'s ioctls too
+[2018-07-20 17:26:06] <aniketp> Like converting the regression tests by @rwatson for auditpipe to ATF
+[2018-07-20 17:33:43] <somers__> Ok, then D16255 is ready to go
+[2018-07-20 17:34:59] <somers__> BTW, the 12.0 release cycle starts on August 10
+[2018-07-20 17:35:09] <somers__> When does GSoC formally end?
+[2018-07-20 17:36:44] <aniketp> I guess it on August 14. Why though?
+[2018-07-20 17:36:44] <aniketp> I feel like there is a lot to do in audit(4) even beyond my proposed work for SoC
+[2018-07-20 17:37:36] <somers__> Because after August 24 you need releng approval to commit anything, and releng won't approve this stuff.  It doesn't mean you can't work in a branch; you just can't commit to head
+[2018-07-20 17:39:53] <somers__> administrative:auditon_setcond_success is still failing for me
+[2018-07-20 17:39:53] <aniketp> Oh I see, I've heard about the code freeze and related things. I guess this must be similar
+[2018-07-20 17:39:53] <aniketp> Btw @somers__, about audit(2)?
+[2018-07-20 17:39:53] <aniketp> I tried a lot yesterday to get it to work. I feel like it is difficult to get it to pass on demand, in a Kyua test case.  
+[2018-07-20 17:40:41] <aniketp> What does the kyua say about the setcond failure? @somers__
+[2018-07-20 17:42:29] <somers__> Looking for 'audit startup' in 'header_ex,64,11,audit startup,0,192.168.0.27,Fri Jul 20 17:39:55 2018, + 220 msectext,auditd::Audit startupreturn,success,0trailer,64'
+[2018-07-20 17:42:30] <somers__> Files left in work directory after failure: started_auditd
+[2018-07-20 17:42:30] <somers__> administrative:auditon_setcond_success  ->  failed: set audit state.*8672.*success not found in auditpipe within the time limit
+[2018-07-20 17:42:51] <somers__> But it works if auditd is already running
+[2018-07-20 17:44:16] <somers__> Oh, I see!
