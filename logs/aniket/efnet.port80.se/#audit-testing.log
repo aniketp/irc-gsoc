@@ -3718,3 +3718,5 @@
 [2018-07-19 20:31:06] <aniketp> No I haven't. But I have a feeling these issues are unrelated. Cause why did the praudit /dev/auditpipe close audit(2) is called. @somers_ 
 [2018-07-19 20:31:15] <aniketp> *after audit(2) is called
 [2018-07-19 20:31:41] <somers_> Dunno.  Sounds like something you should fix.
+[2018-07-20 07:28:36] * somers__ (~somers@63-224-81-89.hlrn.qwest.net) join
+[2018-07-20 07:32:03] * somers_ (~somers@63-224-81-219.hlrn.qwest.net) quit Ping timeout: 252 seconds
