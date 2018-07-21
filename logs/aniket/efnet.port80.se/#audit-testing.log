@@ -3754,3 +3754,7 @@
 [2018-07-21 05:36:44] * somers_ (~somers@63-224-80-104.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-07-21 06:57:18] * somers_ (~somers@63-224-80-139.hlrn.qwest.net) join
 [2018-07-21 07:03:38] * somers__ (~somers@63-224-80-112.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-07-21 12:15:31] <aniketp> Hi @somers_, what was the timeout property to test case you suggested for reducing expected failure timeout to 2 seconds?
+[2018-07-21 12:15:31] <aniketp> Using "atf_tc_set_md_var(tc, "timeout", "2");" as 2 seconds results in broken test case body
+[2018-07-21 12:17:28] <aniketp> Oh, I see. The polling is for 10 seconds but we're setting overall timeout to 2 seconds which measn the test doesn't get sufficient time to fail. That results in this:
+[2018-07-21 12:17:37] <aniketp> file-attribute-access:lgetfh_success  ->  broken: Test case body timed out  [2.045s]
