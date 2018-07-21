@@ -3758,3 +3758,11 @@
 [2018-07-21 12:15:31] <aniketp> Using "atf_tc_set_md_var(tc, "timeout", "2");" as 2 seconds results in broken test case body
 [2018-07-21 12:17:28] <aniketp> Oh, I see. The polling is for 10 seconds but we're setting overall timeout to 2 seconds which measn the test doesn't get sufficient time to fail. That results in this:
 [2018-07-21 12:17:37] <aniketp> file-attribute-access:lgetfh_success  ->  broken: Test case body timed out  [2.045s]
+[2018-07-21 14:27:05] * somers__ (~somers@63-224-81-50.hlrn.qwest.net) join
+[2018-07-21 14:33:28] * somers_ (~somers@63-224-80-139.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-07-21 15:41:13] <aniketp> Ping @somers__, what should be the format of PR numbers in the atf_tc_expect_fail() statement?
+[2018-07-21 15:41:25] <aniketp> Like, format of the messages
+[2018-07-21 15:42:57] <somers__> I use "PR 12345 foo(8) is broken"
+[2018-07-21 15:43:54] <aniketp> OK. Though I have one PR for all three of them. Same PR will do right?
+[2018-07-21 15:44:01] <aniketp> @somers__ 
+[2018-07-21 15:44:23] <somers__> Sure
