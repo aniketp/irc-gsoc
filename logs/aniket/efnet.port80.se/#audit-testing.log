@@ -3742,3 +3742,5 @@
 [2018-07-20 17:42:30] <somers__> administrative:auditon_setcond_success  ->  failed: set audit state.*8672.*success not found in auditpipe within the time limit
 [2018-07-20 17:42:51] <somers__> But it works if auditd is already running
 [2018-07-20 17:44:16] <somers__> Oh, I see!
+[2018-07-21 02:49:06] * somers_ (~somers@63-224-80-167.hlrn.qwest.net) join
+[2018-07-21 02:52:33] * somers__ (~somers@63-224-81-89.hlrn.qwest.net) quit Ping timeout: 252 seconds
