@@ -3779,3 +3779,6 @@
 [2018-07-21 23:35:57] * somers (~somers@63-224-81-124.hlrn.qwest.net) quit Read error: Operation timed out
 [2018-07-21 23:37:00] * somers (~somers@63-224-81-152.hlrn.qwest.net) join
 [2018-07-21 23:41:17] * somers__ (~somers@63-224-80-35.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-07-22 15:22:35] <aniketp> Hi @somers, where should I put the test for auditpipe? Should it be another directory here? https://github.com/freebsd/freebsd/tree/master/tests/sys
+[2018-07-22 15:23:39] <somers> I would say tests/sys/auditpipe
+[2018-07-22 15:23:55] <aniketp> Hmm, I was thinking the same
