@@ -3790,3 +3790,5 @@
 [2018-07-22 18:40:10] <aniketp> Okay, the issue seems to have gone away, I was transferring the files to some other the directory by mistake earlier. That is why I kept getting the error even after numerous fix attempts.
 [2018-07-22 18:47:49] <aniketp> Oh, the issue was because one of my "wrong" ATF check failed in cleanup section. @somers 
 [2018-07-22 18:48:21] <aniketp> I'm able to reproduce it now
+[2018-07-22 21:41:41] * somers_ (~somers@63-224-81-41.hlrn.qwest.net) join
+[2018-07-22 21:44:48] * somers (~somers@63-224-81-152.hlrn.qwest.net) quit Read error: Operation timed out
