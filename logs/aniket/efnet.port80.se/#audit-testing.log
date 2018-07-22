@@ -3782,3 +3782,5 @@
 [2018-07-22 15:22:35] <aniketp> Hi @somers, where should I put the test for auditpipe? Should it be another directory here? https://github.com/freebsd/freebsd/tree/master/tests/sys
 [2018-07-22 15:23:39] <somers> I would say tests/sys/auditpipe
 [2018-07-22 15:23:55] <aniketp> Hmm, I was thinking the same
+[2018-07-22 17:21:25] <aniketp> Btw @somers, how would I pass the value of curr_qlimit from test case body to cleanup? I had thought about it earlier but couldn't find a way so decided to put it in the body section
+[2018-07-22 17:23:00] <somers> You need to store it in a file
