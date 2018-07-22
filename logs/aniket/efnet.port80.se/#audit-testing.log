@@ -3784,3 +3784,9 @@
 [2018-07-22 15:23:55] <aniketp> Hmm, I was thinking the same
 [2018-07-22 17:21:25] <aniketp> Btw @somers, how would I pass the value of curr_qlimit from test case body to cleanup? I had thought about it earlier but couldn't find a way so decided to put it in the body section
 [2018-07-22 17:23:00] <somers> You need to store it in a file
+[2018-07-22 18:17:25] <aniketp> @somers Out of a sudden I've started getting a new kind of error: This seems to mention the abnormal termination of test case cleanup. But it even persisted when I removed the cleanup section... https://pastebin.com/Dbik6kpJ
+[2018-07-22 18:18:29] <aniketp> A while back it was working fine, after I introduced the file storing part. But now it doesn't work even after backtracking the changes I made
+[2018-07-22 18:18:58] <somers> I've never seen that one before.
+[2018-07-22 18:40:10] <aniketp> Okay, the issue seems to have gone away, I was transferring the files to some other the directory by mistake earlier. That is why I kept getting the error even after numerous fix attempts.
+[2018-07-22 18:47:49] <aniketp> Oh, the issue was because one of my "wrong" ATF check failed in cleanup section. @somers 
+[2018-07-22 18:48:21] <aniketp> I'm able to reproduce it now
