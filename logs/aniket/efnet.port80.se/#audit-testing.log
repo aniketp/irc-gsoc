@@ -3792,3 +3792,4 @@
 [2018-07-22 18:48:21] <aniketp> I'm able to reproduce it now
 [2018-07-22 21:41:41] * somers_ (~somers@63-224-81-41.hlrn.qwest.net) join
 [2018-07-22 21:44:48] * somers (~somers@63-224-81-152.hlrn.qwest.net) quit Read error: Operation timed out
+[2018-07-23 05:56:56] * somers_ (~somers@63-224-81-41.hlrn.qwest.net) quit Read error: Connection reset by peer
