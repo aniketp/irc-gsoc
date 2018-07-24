@@ -3799,3 +3799,10 @@
 [2018-07-24 19:39:29] * somers (~somers@63-224-80-39.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-07-24 19:49:35] * somers__ (~somers@63-224-80-245.hlrn.qwest.net) join
 [2018-07-24 19:53:03] * somers_ (~somers@63.224.80.196) quit Ping timeout: 252 seconds
+[2018-07-24 20:44:10] <aniketp> Ping @somers__, would you commit the auditpipe tests? I have some more waiting for reviews, including the one that found the bound limit bug 
+[2018-07-24 20:45:23] <somers__> As soon as I can.  But right now my fbsd12 machine is tied up doing a "make universe", and it's taking a very long time.
+[2018-07-24 20:45:50] <aniketp> Oh, okay. No issues
+[2018-07-24 21:06:30] * somers__ (~somers@63-224-80-245.hlrn.qwest.net) quit Remote host closed the connection
+[2018-07-24 21:06:43] * somers__ (~somers@63-224-80-245.hlrn.qwest.net) join
+[2018-07-24 21:11:53] * somers__ (~somers@63-224-80-245.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-24 21:14:23] * somers (~somers@63-224-80-245.hlrn.qwest.net) join
