@@ -215,3 +215,25 @@
 [2018-07-06 17:22:59] * undefined error #audit-testing: Cannot send to channel (cannot_send_to_channel)
 [2018-07-06 17:22:59] * undefined error #audit-testing: Cannot send to channel (cannot_send_to_channel)
 [2018-07-06 17:23:20] * undefined error #audit-testing: Cannot send to channel (cannot_send_to_channel)
+[2018-07-24 09:09:37] <undefined> Ping timeout, disconnecting…
+[2018-07-24 09:09:37] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 1 of 360)
+[2018-07-24 09:11:56] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 2 of 360)
+[2018-07-24 09:12:44] <undefined> Connected to the network.
+[2018-07-24 09:12:45] * efnet.port80.se notice *** Processing connection to efnet.port80.se
+[2018-07-24 09:12:45] * efnet.port80.se notice *** Looking up your hostname...
+[2018-07-24 09:12:45] * efnet.port80.se notice *** Checking Ident
+[2018-07-24 09:12:45] * efnet.port80.se notice *** Couldn't look up your hostname
+[2018-07-24 09:12:45] * efnet.port80.se notice *** No Ident response
+[2018-07-24 09:12:47] <undefined> Enabled capabilities: multi-prefix
+[2018-07-24 09:12:47] <undefined> You're now known as aniketp
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
+[2018-07-24 09:12:47] * undefined unhandled
