@@ -3806,3 +3806,8 @@
 [2018-07-24 21:06:43] * somers__ (~somers@63-224-80-245.hlrn.qwest.net) join
 [2018-07-24 21:11:53] * somers__ (~somers@63-224-80-245.hlrn.qwest.net) quit Ping timeout: 252 seconds
 [2018-07-24 21:14:23] * somers (~somers@63-224-80-245.hlrn.qwest.net) join
+[2018-07-25 13:44:27] <aniketp> Btw @somers, you were referring to testing auditon with 32 bit and 64 bit code path. Did you mean having different test cases for both conditions? Just like success and failure?
+[2018-07-25 13:46:25] <somers> Yeah, but not as part of the audit(4) test suite, because both use the same audit event
+[2018-07-25 13:46:45] <somers> rather, I was talking about testing both code paths to validate auditon's functionality
+[2018-07-25 13:46:53] <aniketp> Yeah, I have a separate test program in separate directory
+[2018-07-25 13:47:06] <aniketp> Just like auditpipe(4)
