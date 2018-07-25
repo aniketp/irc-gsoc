@@ -3811,3 +3811,11 @@
 [2018-07-25 13:46:45] <somers> rather, I was talking about testing both code paths to validate auditon's functionality
 [2018-07-25 13:46:53] <aniketp> Yeah, I have a separate test program in separate directory
 [2018-07-25 13:47:06] <aniketp> Just like auditpipe(4)
+[2018-07-25 14:32:45] <aniketp> Btw @somers, for the auditon(2) arguments which have a lot of members in their struct argument, do I need to set each of them incorrectly and then check if the value was changed or shall I do it for a few of them?\
+[2018-07-25 14:34:39] <somers> I'm not sure I follow
+[2018-07-25 14:35:14] <aniketp> Like the structure here, which is used with A_SETKAUDIT, https://github.com/freebsd/freebsd/blob/master/sys/bsm/audit.h#L214
+[2018-07-25 14:36:13] <somers> and?
+[2018-07-25 14:36:31] <aniketp> I'm basically setting impossible values and then checking if they were changed, (like I did for auditpipe ioctls). Do I need to do that for every member of a struct such as above?
+[2018-07-25 14:36:34] <aniketp> @somers 
+[2018-07-25 14:36:48] <somers> that sounds good
+[2018-07-25 14:37:03] <aniketp> Okay
