@@ -3825,3 +3825,5 @@
 [2018-07-25 17:48:32] <somers> Yeah, that's fine.  You can also bzero the structure, if that's easier.  Most of those fields probably can't be zero.
 [2018-07-25 17:50:45] <aniketp> Yeah, I thought about it earlier, but the tests failed cause for my case, at_port was 0. And it is included in two of the 3 structures. Using impossible values would make sure that all these are set appropriately @somers 
 [2018-07-25 17:51:00] <somers> sure
+[2018-07-25 18:45:07] <aniketp> Okay, and about committing the auditpipe tests, @somers ?
+[2018-07-25 19:01:51] <somers> Hopefully this afternoon @aniketp
