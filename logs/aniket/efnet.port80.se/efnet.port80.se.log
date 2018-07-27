@@ -239,3 +239,45 @@
 [2018-07-24 09:12:47] * undefined unhandled
 [2018-07-24 21:00:15] * undefined unhandled
 [2018-07-24 21:00:23] * undefined error No such nick/channel (no_such_nick)
+[2018-07-27 19:50:00] <undefined> Ping timeout, disconnecting…
+[2018-07-27 19:50:00] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 1 of 360)
+[2018-07-27 19:50:13] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 2 of 360)
+[2018-07-27 19:50:24] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 3 of 360)
+[2018-07-27 19:50:35] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 4 of 360)
+[2018-07-27 19:50:45] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 5 of 360)
+[2018-07-27 19:50:56] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 6 of 360)
+[2018-07-27 19:51:12] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 7 of 360)
+[2018-07-27 19:51:22] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 8 of 360)
+[2018-07-27 19:51:35] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 9 of 360)
+[2018-07-27 19:51:46] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 10 of 360)
+[2018-07-27 19:51:57] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 11 of 360)
+[2018-07-27 19:52:07] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 12 of 360)
+[2018-07-27 19:52:18] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 13 of 360)
+[2018-07-27 19:52:28] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 14 of 360)
+[2018-07-27 19:52:39] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 15 of 360)
+[2018-07-27 19:52:50] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 16 of 360)
+[2018-07-27 19:53:01] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 17 of 360)
+[2018-07-27 19:53:11] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 18 of 360)
+[2018-07-27 19:53:23] <undefined> Connected to the network.
+[2018-07-27 19:53:24] * efnet.port80.se notice *** Processing connection to efnet.port80.se
+[2018-07-27 19:53:24] * efnet.port80.se notice *** Looking up your hostname...
+[2018-07-27 19:53:24] * efnet.port80.se notice *** Checking Ident
+[2018-07-27 19:53:24] * efnet.port80.se notice *** Couldn't look up your hostname
+[2018-07-27 19:53:24] * efnet.port80.se notice *** No Ident response
+[2018-07-27 19:53:26] <undefined> Enabled capabilities: multi-prefix
+[2018-07-27 19:53:26] <undefined> You're now known as aniketp
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:53:26] * undefined unhandled
+[2018-07-27 19:56:57] <undefined> Ping timeout, disconnecting…
+[2018-07-27 19:56:57] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 1 of 360)
+[2018-07-27 19:59:15] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 2 of 360)
+[2018-07-27 19:59:57] <undefined> Disconnected from the network. Reconnecting in 10 seconds… (Attempt 3 of 360)
