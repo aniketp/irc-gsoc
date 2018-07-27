@@ -3833,3 +3833,9 @@
 [2018-07-27 12:22:29] <aniketp> Hi @somers_, did you have a look at the revision D16448?
 [2018-07-27 16:15:31] <somers_> not yet
 [2018-07-27 19:53:27] * aniketp (~aniketp41@159.65.149.37) join
+[2018-07-27 20:00:12] * aniketp (~aniketp41@159.65.149.37) join
+[2018-07-27 20:06:12] <aniketp> So, would it be better to set the auditing mode "local" for AUDITPIPE_FLUSH test case and then turn off auditd using an external file (and turn it on again if already running). That way, since auditd(8) wasn't running, nothing would show up in the local auditpipe, @somers_ 
+[2018-07-27 20:06:19] <aniketp> *?
+[2018-07-27 20:07:12] <somers_> what about an external file?
+[2018-07-27 20:09:30] <somers_> Turning off auditd is probably overkill.  Better just to pause auditing with auditon(A_SETCOND, AUC_NOAUDIT)
+[2018-07-27 20:14:35] <aniketp> External file as in to store the info whether auditd(8) was already running or not. But using auditon(2) seems a better idea probably
