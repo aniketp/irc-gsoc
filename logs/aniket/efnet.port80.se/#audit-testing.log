@@ -3839,3 +3839,26 @@
 [2018-07-27 20:07:12] <somers_> what about an external file?
 [2018-07-27 20:09:30] <somers_> Turning off auditd is probably overkill.  Better just to pause auditing with auditon(A_SETCOND, AUC_NOAUDIT)
 [2018-07-27 20:14:35] <aniketp> External file as in to store the info whether auditd(8) was already running or not. But using auditon(2) seems a better idea probably
+[2018-07-27 22:01:07] * somers__ (~somers@63-224-81-133.hlrn.qwest.net) join
+[2018-07-27 22:02:16] <somers__> Are you watching the eclipse right now?
+[2018-07-27 22:03:57] * somers (~somers@63.224.81.167) join
+[2018-07-27 22:04:45] * somers_ (~somers@63-224-81-4.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-27 22:06:35] * somers__ (~somers@63-224-81-133.hlrn.qwest.net) quit Ping timeout: 252 seconds
+[2018-07-27 23:31:21] <aniketp> No I'm working on praudit(1) :P
+[2018-07-27 23:31:36] <aniketp> Is this piece of code fine? @somers_ 
+[2018-07-27 23:31:36] <aniketp> 	do {
+[2018-07-27 23:31:36] <aniketp> 		/* If end of file is encountered, exit cleanly */
+[2018-07-27 23:31:36] <aniketp> 		if ((type = fgetc(fp)) == EOF)
+[2018-07-27 23:31:36] <aniketp> 			return 0;
+[2018-07-27 23:31:36] <aniketp> 	} while(type != (AUT_HEADER32 | AUT_HEADER64 |
+[2018-07-27 23:31:36] <aniketp> 		AUT_HEADER32_EX | AUT_HEADER64_EX));
+[2018-07-27 23:31:43] <aniketp> Oops formatting
+[2018-07-27 23:32:25] <aniketp> Though it still didn't work for empty files. I'll have to figure it out I guess @somers 
+[2018-07-27 23:34:07] <somers> ok
+[2018-07-27 23:34:17] <somers> My country got skunked by this eclipse
+[2018-07-27 23:43:34] <aniketp> Oh no, the clouds :/
+[2018-07-27 23:51:54] <somers> Ahh, too bad
+[2018-07-27 23:54:18] <aniketp> But still the Astro Club of our institute was capturing this eclipse. Hopefully they would've got something they can later share!
+[2018-07-27 23:58:06] <aniketp> Btw @somers I've tried various approaches, and checking for EOF doesn't seem to work.
+[2018-07-27 23:58:23] <aniketp> As in, the CPU is still spinning
+[2018-07-27 23:58:31] <somers> Are you talking about praudit?
