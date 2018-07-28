@@ -3872,3 +3872,28 @@
 [2018-07-28 00:18:21] <somers> ok
 [2018-07-28 01:16:47] * johnvx (~johnvx@37.237.65.237) join
 [2018-07-28 01:16:48] * johnvx (~johnvx@37.237.65.237) part >> youtube.com/watch?v=mnfiVwSRMQE <<
+[2018-07-28 16:50:13] <aniketp> Ping @somers, I'm using perror(3) here too: https://github.com/freebsd/freebsd/blob/master/tests/sys/audit/utils.c#L73 
+[2018-07-28 16:50:13] <aniketp> Wouldn't it work for praudit(1) too?
+[2018-07-28 16:51:40] <somers> perror prints an errno-dependent message.  So it only makes sense to call immediately after a function that sets errno
+[2018-07-28 16:51:45] <somers> print_tokens does not do that.
+[2018-07-28 16:52:39] <somers> au_fetch_tok doesn't either, so your usage in utils.c is also wrong
+[2018-07-28 16:53:47] <aniketp> Well you had suggested that earlier, so I thought it would work.
+[2018-07-28 16:53:47] <aniketp> So what should be the alternative here? Using printf(3)?
+[2018-07-28 16:54:27] <aniketp> @somers 
+[2018-07-28 16:55:16] <somers> fprintf, to stderr
+[2018-07-28 16:57:06] <aniketp> Okay, would this be fine: if (print_tokens(fp) < 0)
+[2018-07-28 16:57:06] <aniketp> 				               fprintf(stderr, "Corrupted trail: %s\n", argv[i]);
+[2018-07-28 16:57:18] <aniketp> @somers 
+[2018-07-28 17:00:14] <somers> Sure, but a little ambiguous sounding.  I would go with "corrupted audit trail".
+[2018-07-28 17:00:28] <somers> Also, as of your last push, it's no longer possible for print_tokens to return anything but 0
+[2018-07-28 17:01:38] <aniketp> Oh, I see. Didn't notice that: Then I should use retval to keep track of eventual return value. @somers 
+[2018-07-28 17:16:55] <aniketp> Btw @somers, is it necessary to print "corrupted audit trail" if corrupted trails are encountered midway? My take is to let it continue the execution normally.
+[2018-07-28 17:16:55] <aniketp> For that, I guess print_token() should always return 0
+[2018-07-28 17:17:30] <aniketp> Otherwise there are a lot of local variables 😅
+[2018-07-28 17:17:39] <aniketp> in that function
+[2018-07-28 17:17:45] <somers> That's not unreasonable.  You might want to print a warning when the corrupted record is discovered, though.  That should be pretty rare.
+[2018-07-28 17:21:48] <aniketp> So you mean moving fprintf(3) up, right after au_fetch_tok? @somers 
+[2018-07-28 17:23:32] <somers> yeah
+[2018-07-28 17:36:29] <aniketp> @somers, I squashed the commits, please have a look. The commit is the same as last one
+[2018-07-28 17:37:34] <somers> ok
+[2018-07-28 17:51:55] <somers> Looks good, apart from the build failure
