@@ -3862,3 +3862,13 @@
 [2018-07-27 23:58:06] <aniketp> Btw @somers I've tried various approaches, and checking for EOF doesn't seem to work.
 [2018-07-27 23:58:23] <aniketp> As in, the CPU is still spinning
 [2018-07-27 23:58:31] <somers> Are you talking about praudit?
+[2018-07-28 00:00:37] <aniketp> Oh I see, EOF is -1 and type was being converted to unsigned int because "type" is u_char. 
+[2018-07-28 00:01:27] <aniketp> Replacing u_char with int did the trick @somers. But I guess I'm not allowed to change the type in the source.
+[2018-07-28 00:01:27] <aniketp> Yeah, praudit's EOF issue
+[2018-07-28 00:02:25] <somers> why not?
+[2018-07-28 00:03:35] <aniketp> I'm not sure, could be some dependencies in the other programs maybe? Though if it is safe, then that would fix the issue @somers 
+[2018-07-28 00:03:48] <somers> I mean, why can't you change the source?
+[2018-07-28 00:18:15] <aniketp> Okay, it worked. @somers please have a look at the PR. I fixed the issues you had mentioned
+[2018-07-28 00:18:21] <somers> ok
+[2018-07-28 01:16:47] * johnvx (~johnvx@37.237.65.237) join
+[2018-07-28 01:16:48] * johnvx (~johnvx@37.237.65.237) part >> youtube.com/watch?v=mnfiVwSRMQE <<
