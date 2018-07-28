@@ -3897,3 +3897,8 @@
 [2018-07-28 17:36:29] <aniketp> @somers, I squashed the commits, please have a look. The commit is the same as last one
 [2018-07-28 17:37:34] <somers> ok
 [2018-07-28 17:51:55] <somers> Looks good, apart from the build failure
+[2018-07-28 20:25:43] * somers_ (~somers@63-224-81-147.hlrn.qwest.net) join
+[2018-07-28 20:32:06] * somers (~somers@63.224.81.167) quit Read error: Operation timed out
+[2018-07-28 21:22:54] <aniketp> Oh I see, @somers_ would you recommend passing the argv[i] to print_token() function to better print the error statement?
+[2018-07-28 21:22:54] <aniketp> Or shall I simply print the default "corrupted audit trail" string?
+[2018-07-28 21:23:27] <somers_> Might be nice to know the filename
