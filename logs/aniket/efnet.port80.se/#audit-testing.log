@@ -3902,3 +3902,5 @@
 [2018-07-28 21:22:54] <aniketp> Oh I see, @somers_ would you recommend passing the argv[i] to print_token() function to better print the error statement?
 [2018-07-28 21:22:54] <aniketp> Or shall I simply print the default "corrupted audit trail" string?
 [2018-07-28 21:23:27] <somers_> Might be nice to know the filename
+[2018-07-28 22:39:00] * somers__ (~somers@63-224-81-97.hlrn.qwest.net) join
+[2018-07-28 22:44:59] * somers_ (~somers@63-224-81-147.hlrn.qwest.net) quit Read error: Operation timed out
